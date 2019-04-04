@@ -42,6 +42,53 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return NotFound("Invalid id");
         }
 
+        [Route("regionspecificbreaksrules")]
+        [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverDuty)]
+        public ActionResult<List<DriverBreakRule>> AllBreakRules()
+        {
+                var result = m_Context.DriverBreakRule.ToList();
+                return result;
+        }
+
+        [Route("byid/regionspecificbreaksrules/{id}")]
+        [HttpGet]
+        [Authorize(Roles =
+            TelematicsRoles.Admin + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
+        public ActionResult<DriverBreakRule> GetBreakRuleById(string id)
+        {
+            if (Guid.TryParse(id, out var guid))
+            {
+                var result = m_Context.DriverBreakRule.FirstOrDefault(c => c.Id == guid);
+                return result;
+            }
+
+            return NotFound("Invalid id");
+        }
+
+        [Route("regionspecificwaivers")]
+        [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverDuty)]
+        public ActionResult<List<DriverWaiver>> AllWaivers()
+        {
+            var result = m_Context.DriverWaiver.ToList();
+            return result;
+        }
+
+        [Route("byid/regionspecificwaivers/{id}")]
+        [HttpGet]
+        [Authorize(Roles =
+            TelematicsRoles.Admin + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
+        public ActionResult<DriverWaiver> GetWaiverById(string id)
+        {
+            if (Guid.TryParse(id, out var guid))
+            {
+                var result = m_Context.DriverWaiver.FirstOrDefault(c => c.Id == guid);
+                return result;
+            }
+
+            return NotFound("Invalid id");
+        }
+
+
         [Route("driveravailability/{id}")]
         [HttpGet]
         [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
