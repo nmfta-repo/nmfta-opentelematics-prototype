@@ -1,0 +1,10 @@
+﻿CREATE TABLE [dbo].[Driver] (
+    [Id]            UNIQUEIDENTIFIER CONSTRAINT [DF_Driver_Id] DEFAULT (newid()) NOT NULL,
+    [username]            NVARCHAR (250)   NULL,
+    [dirverLicenseNumber] NVARCHAR (50)    NULL,
+    [country]             NVARCHAR (50)    NULL,
+    [region]              NVARCHAR (50)    NULL,
+    [driverHomeTerminal]  NCHAR (10)       NULL,
+    CONSTRAINT [PK_Driver] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+

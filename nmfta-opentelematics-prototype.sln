@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Prototype.OpenTelematics.Api", "Prototype.OpenTelematics.Api\Prototype.OpenTelematics.Api.csproj", "{FD2A996F-50BA-4D28-BE6D-6E3ED0DE4F43}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Prototype.OpenTelematics.Models", "Prototype.OpenTelematics.Models\Prototype.OpenTelematics.Models.csproj", "{48DE46E5-FB9C-4E15-9F97-EBB45D8A7371}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Prototype.OpenTelematics.DataAccess", "Prototype.OpenTelematics.DataAccess\Prototype.OpenTelematics.DataAccess.csproj", "{37FFFC98-11F0-49F9-95F8-E19A6F45A370}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Prototype.Telematics.BridgeServer", "Prototype.Telematics.BridgeServer\Prototype.Telematics.BridgeServer.sqlproj", "{07398DC7-B803-4610-8DE4-5EFB992AE51D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD2A996F-50BA-4D28-BE6D-6E3ED0DE4F43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD2A996F-50BA-4D28-BE6D-6E3ED0DE4F43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD2A996F-50BA-4D28-BE6D-6E3ED0DE4F43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD2A996F-50BA-4D28-BE6D-6E3ED0DE4F43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48DE46E5-FB9C-4E15-9F97-EBB45D8A7371}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48DE46E5-FB9C-4E15-9F97-EBB45D8A7371}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48DE46E5-FB9C-4E15-9F97-EBB45D8A7371}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48DE46E5-FB9C-4E15-9F97-EBB45D8A7371}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37FFFC98-11F0-49F9-95F8-E19A6F45A370}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37FFFC98-11F0-49F9-95F8-E19A6F45A370}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37FFFC98-11F0-49F9-95F8-E19A6F45A370}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37FFFC98-11F0-49F9-95F8-E19A6F45A370}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07398DC7-B803-4610-8DE4-5EFB992AE51D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07398DC7-B803-4610-8DE4-5EFB992AE51D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07398DC7-B803-4610-8DE4-5EFB992AE51D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{07398DC7-B803-4610-8DE4-5EFB992AE51D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07398DC7-B803-4610-8DE4-5EFB992AE51D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07398DC7-B803-4610-8DE4-5EFB992AE51D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {91076DE8-F478-4AB8-B28A-7C1AB4293AA0}
+	EndGlobalSection
+EndGlobal
