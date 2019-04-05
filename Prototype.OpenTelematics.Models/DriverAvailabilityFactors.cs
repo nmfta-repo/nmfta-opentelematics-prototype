@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Prototype.OpenTelematics.DataAccess;
+﻿using Prototype.OpenTelematics.DataAccess;
 
 namespace Prototype.OpenTelematics.Models
 {
-    using System;
-    using System.Collections.Generic;
-
-    using System.Globalization;
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Converters;
 
     public partial class DriverAvailability
     {

@@ -138,6 +138,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
                 return NotFound("Invalid id");
             }
 
+            // TODO:K Find How Time Resolution is set
             var courseLocationHistory =
                 m_Context.CoarseVehicleLocationTimeHistory.Where(c => c.driverId == guid && c.dateTime >= start && c.dateTime <= stop);
             var dutyStatusLogs = m_Context.DutyStatusLog.Where(c => c.driverId == guid && c.dateTime >= start && c.dateTime <= stop);
