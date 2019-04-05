@@ -13,6 +13,9 @@ using Microsoft.Extensions.Options;
 
 namespace Prototype.OpenTelematics.Api.Security
 {
+    /// <summary>
+    /// Core Authentication Handler
+    /// </summary>
     public class BasicAuthenticationHandler : AuthenticationHandler<BasicAuthenticationOptions>
     {
         private const string AuthorizationHeaderName = "Authorization";
@@ -30,6 +33,16 @@ namespace Prototype.OpenTelematics.Api.Security
             _authenticationService = authenticationService;
         }
 
+        /// <summary>
+        /// Handle the Authentication Processing
+        /// <para>Extracts the authentication information from the Header. Validates to make sure the value is in proper format</para>
+        /// <para>If Parameters are valid, we hit the back-end to validate the user name and password</para>
+        /// <para>If User Name, Password is valid, we extract the applicable Roles for the User</para>
+        /// <para>Creates the Claims Principal and attaches the User Claims (User Id, Client Id, Roles) to the current Request</para>
+        /// <para>This information is now available in all of the downstream methods of the Request Pipeline</para>
+        /// <para>TODO:K How/When to block request if User Name, Password is valid. Support IP white listing? </para>
+        /// </summary>
+        /// <returns></returns>
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
             if (!Request.Headers.ContainsKey(AuthorizationHeaderName))
@@ -56,6 +69,7 @@ namespace Prototype.OpenTelematics.Api.Security
                 return AuthenticateResult.NoResult();
             }
 
+            // Make sure the Authorization header is in proper format
             string userAndPassword;
             try
             {
@@ -77,6 +91,7 @@ namespace Prototype.OpenTelematics.Api.Security
             var user = parts[0];
             var password = parts[1];
 
+            // check user name and password
             IdentityUser identityUser;
             var isValidUser = _authenticationService.IsValidUser(user, password, out identityUser);
             if (!isValidUser)
@@ -111,6 +126,11 @@ namespace Prototype.OpenTelematics.Api.Security
             return AuthenticateResult.Success(ticket);
         }
 
+        /// <summary>
+        /// Validation Failed, return proper status. This method also validates to make sure the Request is using HTTPS
+        /// </summary>
+        /// <param name="properties">Runtime Properties Parameter</param>
+        /// <returns>Validation Result</returns>
         protected override Task HandleChallengeAsync(AuthenticationProperties properties)
         {
             if (!Request.IsHttps)

@@ -186,6 +186,13 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return model;
         }
 
+        /// <summary>
+        /// Update Duty Status Change
+        /// <para>TODO:K Validate Incoming Data and Save to back-end</para>
+        /// </summary>
+        /// <param name="id">Driver Identifier</param>
+        /// <param name="postedModel">Updated Duty Status Change</param>
+        /// <returns>Patch Status</returns>
         [Route("driveravailability/dutystatuschanges/{id}")]
         [HttpPatch]
         [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverDuty)]

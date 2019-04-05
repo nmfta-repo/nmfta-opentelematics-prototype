@@ -5,6 +5,9 @@ using Microsoft.Extensions.Options;
 
 namespace Prototype.OpenTelematics.Api.Security
 {
+    /// <summary>
+    /// Helper Extension Methods. Used to attach the Custom Authentication Handler into ASP.NET Core Request Processing Pipeline
+    /// </summary>
     public static class BasicAuthenticationExtensions
     {
         public static AuthenticationBuilder AddBasic<TAuthService>(this AuthenticationBuilder builder)

@@ -16,12 +16,16 @@ namespace Prototype.OpenTelematics.DataAccess
         }
 
         public virtual DbSet<CoarseVehicleLocationTimeHistory> CoarseVehicleLocationTimeHistory { get; set; }
+        public virtual DbSet<CurrentServiceStatus> CurrentServiceStatus { get; set; }
+        public virtual DbSet<CurrentServiceStatusFactor> CurrentServiceStatusFactor { get; set; }
         public virtual DbSet<Driver> Driver { get; set; }
         public virtual DbSet<DriverBreakRule> DriverBreakRule { get; set; }
         public virtual DbSet<DriverPerformanceSummary> DriverPerformanceSummary { get; set; }
         public virtual DbSet<DriverWaiver> DriverWaiver { get; set; }
         public virtual DbSet<DutyStatusLog> DutyStatusLog { get; set; }
         public virtual DbSet<DutyStatusLogAnnotation> DutyStatusLogAnnotation { get; set; }
+        public virtual DbSet<ServiceStatusEvent> ServiceStatusEvent { get; set; }
+        public virtual DbSet<ServiceStatusEventFactor> ServiceStatusEventFactor { get; set; }
         public virtual DbSet<VehicleFlaggedEvent> VehicleFlaggedEvent { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -42,6 +46,24 @@ namespace Prototype.OpenTelematics.DataAccess
                 entity.Property(e => e.latitude).HasColumnType("numeric(18, 8)");
 
                 entity.Property(e => e.longitude).HasColumnType("numeric(18, 8)");
+            });
+
+            modelBuilder.Entity<CurrentServiceStatus>(entity =>
+            {
+                entity.Property(e => e.Id).HasDefaultValueSql("newid()");
+
+                entity.Property(e => e.Status)
+                    .IsRequired()
+                    .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<CurrentServiceStatusFactor>(entity =>
+            {
+                entity.Property(e => e.Id).HasDefaultValueSql("newid()");
+
+                entity.Property(e => e.Factor)
+                    .IsRequired()
+                    .HasMaxLength(1000);
             });
 
             modelBuilder.Entity<Driver>(entity =>
@@ -146,6 +168,24 @@ namespace Prototype.OpenTelematics.DataAccess
                 entity.Property(e => e.comment)
                     .IsRequired()
                     .HasMaxLength(4000);
+            });
+
+            modelBuilder.Entity<ServiceStatusEvent>(entity =>
+            {
+                entity.Property(e => e.Id).HasDefaultValueSql("newid()");
+
+                entity.Property(e => e.Status)
+                    .IsRequired()
+                    .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<ServiceStatusEventFactor>(entity =>
+            {
+                entity.Property(e => e.Id).HasDefaultValueSql("newid()");
+
+                entity.Property(e => e.Factor)
+                    .IsRequired()
+                    .HasMaxLength(1000);
             });
 
             modelBuilder.Entity<VehicleFlaggedEvent>(entity =>
