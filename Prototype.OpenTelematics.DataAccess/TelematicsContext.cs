@@ -20,6 +20,9 @@ namespace Prototype.OpenTelematics.DataAccess
         public virtual DbSet<DriverPerformanceSummary> DriverPerformanceSummary { get; set; }
         public virtual DbSet<DriverWaiver> DriverWaiver { get; set; }
 
+        public virtual DbSet<Vehicle> Vehicle { get; set; }
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -81,6 +84,19 @@ namespace Prototype.OpenTelematics.DataAccess
                 entity.Property(e => e.region)
                     .IsRequired()
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Vehicle>(entity =>
+            {
+                entity.Property(e => e.Id).HasDefaultValueSql("newid()");
+
+                entity.Property(e => e.providerId).HasMaxLength(100);
+
+                entity.Property(e => e.name).HasMaxLength(100);
+
+                entity.Property(e => e.cmvVIN).HasMaxLength(100);
+
+                entity.Property(e => e.licensePlate).HasMaxLength(50);
             });
 
             OnModelCreatingPartial(modelBuilder);
