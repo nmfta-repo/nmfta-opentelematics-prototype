@@ -40,7 +40,8 @@ namespace Prototype.OpenTelematics.Api.Security
         /// <para>If User Name, Password is valid, we extract the applicable Roles for the User</para>
         /// <para>Creates the Claims Principal and attaches the User Claims (User Id, Client Id, Roles) to the current Request</para>
         /// <para>This information is now available in all of the downstream methods of the Request Pipeline</para>
-        /// <para>TODO:K How/When to block request if User Name, Password is valid. Support IP white listing? </para>
+        /// <para>TODO:K How/When to block request if User Name, Password is valid. Support IP white listing?
+        /// Differentiate between legitimate access and brute force attacks </para>
         /// </summary>
         /// <returns></returns>
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()

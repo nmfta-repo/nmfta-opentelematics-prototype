@@ -6,7 +6,7 @@ using Prototype.OpenTelematics.DataAccess;
 namespace Prototype.OpenTelematics.Api.Controllers
 {
     /// <summary>
-    /// Helper Controller to Create and Roles to User
+    /// Helper Controller to Create and Add Roles to User
     /// <para>NOTE: ***INTERNAL USE ONLY***. Throw away code and this will not be part of the Telematics API</para>
     /// </summary>
     [ApiController]
