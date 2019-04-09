@@ -35,11 +35,4 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="eventId" />
   </Operation>
-  <Operation Name="Rename Refactor" Key="07f51a4a-34e8-4f0e-aa66-5f20e3a76f19" ChangeDateTime="04/09/2019 16:04:40">
-    <Property Name="ElementName" Value="[dbo].[StopGeographicDetails].[long]" />
-    <Property Name="ElementType" Value="SqlSimpleColumn" />
-    <Property Name="ParentElementName" Value="[dbo].[StopGeographicDetails]" />
-    <Property Name="ParentElementType" Value="SqlTable" />
-    <Property Name="NewName" Value="longitude" />
-  </Operation>
 </Operations>
