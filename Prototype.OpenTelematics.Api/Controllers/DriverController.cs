@@ -9,6 +9,9 @@ using Prototype.OpenTelematics.Models;
 
 namespace Prototype.OpenTelematics.Api.Controllers
 {
+    /// <summary>
+    /// Controller that process and returns data for all Driver related operations
+    /// </summary>
     [ApiController]
     public class DriverController : TelematicsBaseController
     {
@@ -19,6 +22,11 @@ namespace Prototype.OpenTelematics.Api.Controllers
             m_Context = context;
         }
 
+        /// <summary>
+        /// Returns All Driver Information
+        /// <para>TODO:K Support Paging and Time Constraints</para>
+        /// </summary>
+        /// <returns></returns>
         [Route("drivers")]
         [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverDuty)]
         public ActionResult<List<Driver>> AllDrivers()
@@ -27,6 +35,11 @@ namespace Prototype.OpenTelematics.Api.Controllers
                 return result;
         }
 
+        /// <summary>
+        /// Returns specific driver information for passed in <paramref name="id"/>
+        /// </summary>
+        /// <param name="id">Driver Identifier</param>
+        /// <returns>Driver Data</returns>
         [Route("byid/drivers/{id}")]
         [HttpGet]
         [Authorize(Roles =
@@ -42,6 +55,11 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return NotFound("Invalid id");
         }
 
+        /// <summary>
+        /// Returns all Driver Break Rules
+        /// <para>TODO:K Support Paging and Time Constraints</para>
+        /// </summary>
+        /// <returns>Driver Break Rules</returns>
         [Route("regionspecificbreaksrules")]
         [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverDuty)]
         public ActionResult<List<DriverBreakRule>> AllBreakRules()
@@ -50,6 +68,11 @@ namespace Prototype.OpenTelematics.Api.Controllers
                 return result;
         }
 
+        /// <summary>
+        /// Returns specific driver break rule for passed in <paramref name="id"/>
+        /// </summary>
+        /// <param name="id">Break Rule Identifier</param>
+        /// <returns>Driver Break Rule</returns>
         [Route("byid/regionspecificbreaksrules/{id}")]
         [HttpGet]
         [Authorize(Roles =
@@ -65,6 +88,11 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return NotFound("Invalid id");
         }
 
+        /// <summary>
+        /// Returns all Driver Waivers
+        /// <para>TODO:K Support Paging and Time Constraints</para>
+        /// </summary>
+        /// <returns>Region Specific Waivers</returns>
         [Route("regionspecificwaivers")]
         [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverDuty)]
         public ActionResult<List<DriverWaiver>> AllWaivers()
@@ -73,6 +101,11 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Returns specific waiver for passed in <paramref name="id"/>
+        /// </summary>
+        /// <param name="id">Region Specific Waiver Data</param>
+        /// <returns></returns>
         [Route("byid/regionspecificwaivers/{id}")]
         [HttpGet]
         [Authorize(Roles =
@@ -88,28 +121,79 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return NotFound("Invalid id");
         }
 
-
+        /// <summary>
+        /// Returns Driver Availability factors for passed in driver <paramref name="id"/>, start date and stop time
+        /// </summary>
+        /// <param name="id">Driver Identifier</param>
+        /// <param name="start">Start Date</param>
+        /// <param name="stop">Stop Date</param>
+        /// <returns>Driver Availability Factors</returns>
         [Route("driveravailability/{id}")]
         [HttpGet]
         [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
         public ActionResult<DriverAvailability> Get(string id, DateTime start, DateTime stop)
         {
-            var model = DriverAvailability.FromJson(System.IO.File.ReadAllText(@"DriverAvailability.json"));
+            if (!Guid.TryParse(id, out var guid))
+            {
+                return NotFound("Invalid id");
+            }
+
+            // TODO:K Find How Time Resolution is set
+            var courseLocationHistory =
+                m_Context.CoarseVehicleLocationTimeHistory.Where(c => c.driverId == guid && c.dateTime >= start && c.dateTime <= stop);
+            var dutyStatusLogs = m_Context.DutyStatusLog.Where(c => c.driverId == guid && c.dateTime >= start && c.dateTime <= stop);
+            var vehicleFlaggedEvents =
+                m_Context.VehicleFlaggedEvent.Where(c => c.driverId == guid && c.eventStart >= start && c.eventEnd <= stop);
+            var model = new DriverAvailability
+            {
+                CoarseVehicleLocationTimeHistory = new CoarseVehicleLocationTimeHistoryModel
+                {
+                    TimeResolution = "TIMERESOLUTION_NOT_MAX",
+                    VehicleLocationTimeHistories = courseLocationHistory.ToArray()
+                },
+                DutyStatusLogs = dutyStatusLogs.ToArray(),
+                VehicleFlaggedEvents = vehicleFlaggedEvents.ToArray()
+            };
 
             return model;
         }
 
+        /// <summary>
+        /// Returns Driver Break Rules and Waivers for passed in driver <paramref name="id"/>, start date and stop time
+        /// </summary>
+        /// <param name="id">Driver Identifier</param>
+        /// <param name="start">Start Date</param>
+        /// <param name="stop">Stop Date</param>
+        /// <returns>Driver Break Rules and Waivers</returns>
         [Route("driveravailability/breakrulesandwaivers/{id}")]
         [HttpGet]
         [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverQuery + "," + 
                            TelematicsRoles.DriverFollow + "," + TelematicsRoles.HR)]
         public ActionResult<BreakRulesAndWaivers> GetBreakRulesAndWaivers(string id, DateTime start, DateTime stop)
         {
-            var model = BreakRulesAndWaivers.FromJson(System.IO.File.ReadAllText(@"BreakRulesAndWaivers.json"));
+            if (!Guid.TryParse(id, out var guid))
+            {
+                return NotFound("Invalid id");
+            }
+
+            var driverBreakRules = m_Context.DriverBreakRule.Where(c => c.driverId == guid && c.activeFrom >= start && c.activeTo <= stop);
+            var driverWaivers = m_Context.DriverWaiver.Where(c => c.driverId == guid && c.waiverDay >= start && c.waiverDay <= stop);
+            var model = new BreakRulesAndWaivers
+            {
+                BreakRules = driverBreakRules.ToArray(),
+                Waivers = driverWaivers.ToArray()
+            };
 
             return model;
         }
 
+        /// <summary>
+        /// Update Duty Status Change
+        /// <para>TODO:K Validate Incoming Data and Save to back-end</para>
+        /// </summary>
+        /// <param name="id">Driver Identifier</param>
+        /// <param name="postedModel">Updated Duty Status Change</param>
+        /// <returns>Patch Status</returns>
         [Route("driveravailability/dutystatuschanges/{id}")]
         [HttpPatch]
         [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverDuty)]

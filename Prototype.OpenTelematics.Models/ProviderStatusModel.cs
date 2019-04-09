@@ -5,8 +5,8 @@ namespace Prototype.OpenTelematics.Models
 {
     public class ProviderStatusModel : ApiModelBase
     {
-        public ServiceStatus serviceStatus { get; set; }
-        public DateTime dateTime { get; set; }
+        public string serviceStatus { get; set; }
+        public DateTimeOffset dateTime { get; set; }
         public string[] factors { get; set; }
     }
 

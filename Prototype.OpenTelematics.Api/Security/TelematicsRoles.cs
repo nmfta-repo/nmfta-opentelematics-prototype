@@ -1,5 +1,8 @@
 ﻿namespace Prototype.OpenTelematics.Api.Security
 {
+    /// <summary>
+    /// Current List of Open Telematics API Roles
+    /// </summary>
     public static class TelematicsRoles
     {
         public const string VehicleQuery = "Vehicle Query";

@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[DutyStatusLogAnnotation]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT newid(), 
+    [driverId] UNIQUEIDENTIFIER NOT NULL, 
+    [comment] NVARCHAR(4000) NOT NULL, 
+    [dateTime] DATETIMEOFFSET NOT NULL
+)

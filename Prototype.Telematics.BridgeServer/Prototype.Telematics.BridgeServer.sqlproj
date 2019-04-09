@@ -79,6 +79,14 @@
     <Build Include="dbo\Tables\DriverPerformanceSummary.sql" />
     <Build Include="dbo\Stored Procedures\GetClientForUser.sql" />
     <Build Include="dbo\Stored Procedures\AddUserToClient.sql" />
+    <Build Include="dbo\Tables\CoarseVehicleLocationTimeHistory.sql" />
+    <Build Include="dbo\Tables\DutyStatusLogAnnotation.sql" />
+    <Build Include="dbo\Tables\DutyStatusLog.sql" />
+    <Build Include="dbo\Tables\VehicleFlaggedEvent.sql" />
+    <Build Include="dbo\Tables\ServiceStatusEvent.sql" />
+    <Build Include="dbo\Tables\ServiceStatusEventFactor.sql" />
+    <Build Include="dbo\Tables\CurrentServiceStatus.sql" />
+    <Build Include="dbo\Tables\CurrentServiceStatusFactor.sql" />
     <Build Include="dbo\Tables\Vehicle.sql" />
   </ItemGroup>
   <ItemGroup>

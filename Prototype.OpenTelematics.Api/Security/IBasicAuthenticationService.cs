@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Prototype.OpenTelematics.DataAccess;
 
 namespace Prototype.OpenTelematics.Api.Security
 {
+    /// <summary>
+    /// Basic Authentication Service Interface
+    /// </summary>
     public interface IBasicAuthenticationService
     {
         TelematicsContext DbContext { get;}

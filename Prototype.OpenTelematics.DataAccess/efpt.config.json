@@ -9,6 +9,18 @@
   "Tables": [
     {
       "HasPrimaryKey": true,
+      "Name": "dbo.CoarseVehicleLocationTimeHistory"
+    },
+    {
+      "HasPrimaryKey": true,
+      "Name": "dbo.CurrentServiceStatus"
+    },
+    {
+      "HasPrimaryKey": true,
+      "Name": "dbo.CurrentServiceStatusFactor"
+    },
+    {
+      "HasPrimaryKey": true,
       "Name": "dbo.Driver"
     },
     {
@@ -22,6 +34,26 @@
     {
       "HasPrimaryKey": true,
       "Name": "dbo.DriverWaiver"
+    },
+    {
+      "HasPrimaryKey": true,
+      "Name": "dbo.DutyStatusLog"
+    },
+    {
+      "HasPrimaryKey": true,
+      "Name": "dbo.DutyStatusLogAnnotation"
+    },
+    {
+      "HasPrimaryKey": true,
+      "Name": "dbo.ServiceStatusEvent"
+    },
+    {
+      "HasPrimaryKey": true,
+      "Name": "dbo.ServiceStatusEventFactor"
+    },
+    {
+      "HasPrimaryKey": true,
+      "Name": "dbo.VehicleFlaggedEvent"
     },
     {
       "HasPrimaryKey": true,
