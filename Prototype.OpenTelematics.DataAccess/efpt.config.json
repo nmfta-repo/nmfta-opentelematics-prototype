@@ -53,11 +53,27 @@
     },
     {
       "HasPrimaryKey": true,
+      "Name": "dbo.Vehicle"
+    },
+    {
+      "HasPrimaryKey": true,
       "Name": "dbo.VehicleFlaggedEvent"
     },
     {
       "HasPrimaryKey": true,
-      "Name": "dbo.Vehicle"
+      "Name": "dbo.VehicleFaultCodeEvent"
+    },
+    {
+      "HasPrimaryKey": true,
+      "Name": "dbo.VehiclePerformanceEvent"
+    },
+    {
+      "HasPrimaryKey": true,
+      "Name": "dbo.VehiclePerformanceThreshold"
+    },
+    {
+      "HasPrimaryKey": true,
+      "Name": "dbo.StopGeographicDetails"
     }
   ],
   "UseDatabaseNames": true,

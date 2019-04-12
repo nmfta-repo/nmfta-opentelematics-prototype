@@ -26,9 +26,12 @@ namespace Prototype.OpenTelematics.DataAccess
         public virtual DbSet<DutyStatusLogAnnotation> DutyStatusLogAnnotation { get; set; }
         public virtual DbSet<ServiceStatusEvent> ServiceStatusEvent { get; set; }
         public virtual DbSet<ServiceStatusEventFactor> ServiceStatusEventFactor { get; set; }
-        public virtual DbSet<VehicleFlaggedEvent> VehicleFlaggedEvent { get; set; }
-
         public virtual DbSet<Vehicle> Vehicle { get; set; }
+        public virtual DbSet<VehicleFlaggedEvent> VehicleFlaggedEvent { get; set; }
+        public virtual DbSet<VehicleFaultCodeEvent> VehicleFaultCodeEvent { get; set; }
+        public virtual DbSet<VehiclePerformanceEvent> VehiclePerformanceEvent { get; set; }
+        public virtual DbSet<VehiclePerformanceThreshold> VehiclePerformanceThreshold { get; set; }
+        public virtual DbSet<StopGeographicDetails> StopGeographicDetails { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -191,6 +194,19 @@ namespace Prototype.OpenTelematics.DataAccess
                     .HasMaxLength(1000);
             });
 
+            modelBuilder.Entity<Vehicle>(entity =>
+            {
+                entity.Property(e => e.Id).HasDefaultValueSql("newid()");
+
+                entity.Property(e => e.providerId).HasMaxLength(100);
+
+                entity.Property(e => e.name).HasMaxLength(100);
+
+                entity.Property(e => e.cmvVIN).HasMaxLength(100);
+
+                entity.Property(e => e.licensePlate).HasMaxLength(50);
+            });
+
             modelBuilder.Entity<VehicleFlaggedEvent>(entity =>
             {
                 entity.Property(e => e.Id).HasDefaultValueSql("newid()");
@@ -226,17 +242,71 @@ namespace Prototype.OpenTelematics.DataAccess
                     .HasMaxLength(100);
             });
 
-            modelBuilder.Entity<Vehicle>(entity =>
+            modelBuilder.Entity<VehicleFaultCodeEvent>(entity =>
             {
                 entity.Property(e => e.Id).HasDefaultValueSql("newid()");
 
                 entity.Property(e => e.providerId).HasMaxLength(100);
 
-                entity.Property(e => e.name).HasMaxLength(100);
+                entity.Property(e => e.vehicleId).HasMaxLength(36);
 
-                entity.Property(e => e.cmvVIN).HasMaxLength(100);
+                entity.Property(e => e.latitude).HasColumnType("numeric(18, 8)");
 
-                entity.Property(e => e.licensePlate).HasMaxLength(50);
+                entity.Property(e => e.longitude).HasColumnType("numeric(18, 8)");
+
+                entity.Property(e => e.eventComment).HasMaxLength(500);
+
+                entity.Property(e => e.parameterOrSubsystemIdType).HasMaxLength(50);
+
+                entity.Property(e => e.gpsQuality).HasMaxLength(50);
+
+                entity.Property(e => e.clearType).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<VehiclePerformanceThreshold>(entity =>
+            {
+                entity.Property(e => e.Id).HasDefaultValueSql("newid()");
+
+            });
+
+            modelBuilder.Entity<VehiclePerformanceEvent>(entity =>
+            {
+                entity.Property(e => e.Id).HasDefaultValueSql("newid()");
+
+                entity.Property(e => e.providerId).HasMaxLength(100);
+
+                entity.Property(e => e.vehicleId).HasMaxLength(36);
+
+                entity.Property(e => e.eventComment).HasMaxLength(1000);
+
+                entity.Property(e => e.performanceThresholdId).HasMaxLength(36);
+
+                entity.Property(e => e.engineLoadStopped).HasColumnType("numeric(3, 2)");
+
+                entity.Property(e => e.engineLoadMoving).HasColumnType("numeric(3, 2)");
+
+                entity.Property(e => e.particulateFilterStatus).HasMaxLength(50);
+
+            });
+
+            modelBuilder.Entity<VehiclePerformanceEvent>()
+                .HasOne(t => t.thresholds)
+                .WithOne();
+
+            modelBuilder.Entity<StopGeographicDetails>(entity =>
+            {
+                entity.Property(e => e.Id).HasDefaultValueSql("newid()");
+
+                entity.Property(e => e.providerId).HasMaxLength(100);
+
+                entity.Property(e => e.stopName).HasMaxLength(200);
+
+                entity.Property(e => e.address).HasMaxLength(500);
+
+                entity.Property(e => e.latitude).HasColumnType("numeric(18, 8)");
+
+                entity.Property(e => e.longitude).HasColumnType("numeric(18, 8)");
+
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -35,4 +35,158 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="eventId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="1ef47031-e91f-45d4-8d03-37b06c81a952" ChangeDateTime="04/09/2019 18:28:53">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[cruiseStatusCoastSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="cruiseStatusCCCoastSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="7aa8d3ca-5bbb-41a9-b02a-4cf4d89b161e" ChangeDateTime="04/09/2019 18:28:57">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[cruiseStatusClutchSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="cruiseStatusCCClutchSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="fc8bba22-309b-4e03-a5f6-f0ceee472b41" ChangeDateTime="04/09/2019 18:29:44">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[cruiseStatusCC]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="cruiseStatusCCBrakeSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f8039814-8bce-49cf-922f-0c492a610069" ChangeDateTime="04/09/2019 18:30:36">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[cruiseStatusCCSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CCSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f01ea61b-c160-4d2c-a0ce-fd0b34dd38f3" ChangeDateTime="04/09/2019 18:30:38">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[cruiseStatusCCSetSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CCSetSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a0238f65-90a7-44e9-9e45-c30dd13be46e" ChangeDateTime="04/09/2019 18:30:40">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[cruiseStatusCCCoastSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CCCoastSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f76bea8b-e9cd-47f2-a338-65ab7a692ac0" ChangeDateTime="04/09/2019 18:30:42">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[cruiseStatusCCClutchSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CCClutchSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="dfb95d6d-b356-49c1-86b2-97b8d5b9ad77" ChangeDateTime="04/09/2019 18:30:45">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[cruiseStatusCCCruiseSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CCCruiseSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="42a818d0-e779-46c9-9c11-6228612666ca" ChangeDateTime="04/09/2019 18:30:47">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[cruiseStatusCCResumeSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CCResumeSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="dce03f7c-480b-4a1f-8cd8-4d3f260b999f" ChangeDateTime="04/09/2019 18:30:49">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[cruiseStatusCCAccelerationSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CCAccelerationSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="80caffbd-8819-4c22-8a94-6dbe2f76c6db" ChangeDateTime="04/09/2019 18:30:51">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[cruiseStatusCCBrakeSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CCBrakeSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="0c54ff95-9236-4bae-b685-92cbf244c032" ChangeDateTime="04/09/2019 18:30:53">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[cruiseStatusCCSpeed]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CCSpeed" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1ec0083c-8200-4350-92af-09e1507c688c" ChangeDateTime="04/09/2019 18:30:56">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[CCSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ccSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="84f215cc-0276-42f7-a69d-996bd501e894" ChangeDateTime="04/09/2019 18:30:59">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[CCSetSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ccSetSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2f3ea0d1-9d3a-4cea-8357-696c432a779f" ChangeDateTime="04/09/2019 18:31:01">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[CCCoastSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ccCoastSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="382fbe1c-ecf6-4524-9798-e46d91af51a8" ChangeDateTime="04/09/2019 18:31:03">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[CCClutchSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ccClutchSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1d2db52a-4008-4137-9d3b-56819b047e95" ChangeDateTime="04/09/2019 18:31:05">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[CCCruiseSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ccCruiseSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f5e7fcc0-6863-4084-9084-81fd72ebc3fb" ChangeDateTime="04/09/2019 18:31:07">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[CCResumeSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ccResumeSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4bec940b-33d1-4958-98d8-8179a88c0c47" ChangeDateTime="04/09/2019 18:31:09">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[CCAccelerationSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ccAccelerationSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="7abb4f78-761a-4c0c-8d35-1032c07b9328" ChangeDateTime="04/09/2019 18:31:10">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[CCBrakeSwitch]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ccBrakeSwitch" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="4574799f-2c87-43fa-b9dc-c70a608e713f" ChangeDateTime="04/09/2019 18:31:13">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[CCSpeed]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ccSpeed" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="37116e36-a604-4650-9850-42acbde9aa91" ChangeDateTime="04/09/2019 20:37:30">
+    <Property Name="ElementName" Value="[dbo].[FK_VehiclePerformanceEvent_ToTable]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[VehiclePerformanceEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_VehiclePerformanceEvent_VechiclePerformanceThreshold]" />
+  </Operation>
 </Operations>
