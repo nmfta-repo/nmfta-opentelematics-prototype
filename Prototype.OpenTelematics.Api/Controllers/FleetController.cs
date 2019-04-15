@@ -23,12 +23,12 @@ namespace Prototype.OpenTelematics.Api.Controllers
             m_Context = context;
         }
 
-        [Route("api/fleet/coarse_locations")]
+        [Route("api/fleet/locations")]
         [HttpGet]
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
-            + "," + TelematicsRoles.DriverDispatch)]
-        public ActionResult<LocationHistory> FleetCourseLocations(string start, string stop)
+            + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverDispatch)]
+        public ActionResult<LocationHistory> Locations(string start, string stop)
         {
             if (!DateTime.TryParse(start, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
                 return NotFound("Invalid start date");
@@ -40,41 +40,87 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return result;
         }
 
-        [Route("api/fleet/vehicle_infos")]
+
+        [Route("api/fleet/flagged_events")]
         [HttpGet]
         [Authorize(Roles =
-            TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow)]
-        public ActionResult<VehicleInfoHistory> FleetVehicleInfos(string start, string stop)
+            TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
+            + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverDispatch)]
+        public ActionResult<List<VehicleFlaggedEvent>> FlaggedEvents(string start, string stop)
         {
             if (!DateTime.TryParse(start, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
                 return NotFound("Invalid start date");
             if (!DateTime.TryParse(stop, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
                 return NotFound("Invalid stop date");
 
-            LocationHistory locHistory = GetCourseLocationHistory(startDate, stopDate);
             List<VehicleFlaggedEvent> flaggedEventHistory =
-                                           m_Context.VehicleFlaggedEvent.Where(
-                                                   x => x.eventStart >= startDate &&
-                                                   x.eventStart <= stopDate).ToList();
-            List<VehiclePerformanceEvent> performanceEventHistory =
-                                            m_Context.VehiclePerformanceEvent
-                                                .Include(VehiclePerformanceThreshold => VehiclePerformanceThreshold.thresholds)
-                                                .Where(
-                                                    x => x.eventStart >= startDate &&
-                                                    x.eventStart <= stopDate).ToList();
-            List<VehicleFaultCodeEvent> vehicleFaultCodeEventHistory =
-                                            m_Context.VehicleFaultCodeEvent.Where(
-                                                    x => x.triggerDate >= startDate &&
-                                                    x.triggerDate <= stopDate).ToList();
-            VehicleInfoHistory result = new VehicleInfoHistory
-            {
-                coarseVehicleLocationTimeHistories = locHistory,
-                vehicleFlaggedEvents = flaggedEventHistory,
-                vehiclePerformanceEvents = performanceEventHistory,
-                vehicleFaultCodeEvents = vehicleFaultCodeEventHistory
-            };
-            return result;
+                               m_Context.VehicleFlaggedEvent.Where(
+                                       x => x.eventStart >= startDate &&
+                                       x.eventStart <= stopDate).ToList();
+
+            return flaggedEventHistory;
         }
+
+        [Route("api/fleet/performance_events")]
+        [HttpGet]
+        [Authorize(Roles =
+            TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
+            + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverDispatch)]
+        public ActionResult<List<VehiclePerformanceEvent>> PerformanceEvents(string start, string stop)
+        {
+            if (!DateTime.TryParse(start, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
+                return NotFound("Invalid start date");
+            if (!DateTime.TryParse(stop, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
+                return NotFound("Invalid stop date");
+
+            List<VehiclePerformanceEvent> performanceEventHistory =
+                               m_Context.VehiclePerformanceEvent.Where(
+                                       x => x.eventStart >= startDate &&
+                                       x.eventStart <= stopDate).ToList();
+
+            return performanceEventHistory;
+        }
+
+        [Route("api/fleet/performance_thresholds")]
+        [HttpGet]
+        [Authorize(Roles =
+            TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
+            + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverDispatch)]
+        public ActionResult<List<VehiclePerformanceThreshold>> PerformanceThresholds(string start, string stop)
+        {
+            if (!DateTime.TryParse(start, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
+                return NotFound("Invalid start date");
+            if (!DateTime.TryParse(stop, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
+                return NotFound("Invalid stop date");
+
+            List<VehiclePerformanceThreshold> performanceThresholds =
+                               m_Context.VehiclePerformanceThreshold.Where(
+                                       x => x.activeFrom >= startDate &&
+                                       x.activeFrom <= stopDate).ToList();
+
+            return performanceThresholds;
+        }
+
+        [Route("api/fleet/faults")]
+        [HttpGet]
+        [Authorize(Roles =
+            TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
+            + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverDispatch)]
+        public ActionResult<List<VehicleFaultCodeEvent>> VehicleFaults(string start, string stop)
+        {
+            if (!DateTime.TryParse(start, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
+                return NotFound("Invalid start date");
+            if (!DateTime.TryParse(stop, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
+                return NotFound("Invalid stop date");
+
+            List<VehicleFaultCodeEvent> performanceThresholds =
+                               m_Context.VehicleFaultCodeEvent.Where(
+                                       x => x.triggerDate >= startDate &&
+                                       x.triggerDate <= stopDate).ToList();
+
+            return performanceThresholds;
+        }
+
 
         private LocationHistory GetCourseLocationHistory(DateTime startDate, DateTime stopDate)
         {
