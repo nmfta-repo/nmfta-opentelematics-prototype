@@ -32,6 +32,7 @@ namespace Prototype.OpenTelematics.DataAccess
         public virtual DbSet<VehiclePerformanceEvent> VehiclePerformanceEvent { get; set; }
         public virtual DbSet<VehiclePerformanceThreshold> VehiclePerformanceThreshold { get; set; }
         public virtual DbSet<StopGeographicDetails> StopGeographicDetails { get; set; }
+        public virtual DbSet<Route> Route { get; set; }
         public virtual DbSet<VehicleStopXRef> VehicleStopXRef { get; set; }
 
 
