@@ -78,6 +78,10 @@ namespace Prototype.OpenTelematics.Api
 
             // configuration (resolvers, counter key builders)
             services.AddSingleton<IRateLimitConfiguration, CustomRateLimitConfiguration>();
+
+            //load application configuration from appsettings.json
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

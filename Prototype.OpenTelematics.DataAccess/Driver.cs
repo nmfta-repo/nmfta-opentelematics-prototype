@@ -7,7 +7,7 @@ namespace Prototype.OpenTelematics.DataAccess
     {
         public Guid Id { get; set; }
         public string username { get; set; }
-        public string dirverLicenseNumber { get; set; }
+        public string driverLicenseNumber { get; set; }
         public string country { get; set; }
         public string region { get; set; }
         public string driverHomeTerminal { get; set; }

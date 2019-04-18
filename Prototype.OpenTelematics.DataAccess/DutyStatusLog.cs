@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Prototype.OpenTelematics.DataAccess
 {
@@ -17,7 +18,7 @@ namespace Prototype.OpenTelematics.DataAccess
         public decimal longitude { get; set; }
         public string malfunction { get; set; }
         public string origin { get; set; }
-        public Guid parentId { get; set; }
+        public Guid? parentId { get; set; }
         public int sequence { get; set; }
         public string state { get; set; }
         public string status { get; set; }
@@ -25,5 +26,10 @@ namespace Prototype.OpenTelematics.DataAccess
         public int multidayBasis { get; set; }
         public string outputFileComment { get; set; }
         public string eventDataChecksum { get; set; }
+
+        [ForeignKey("locationId")]
+        public Location location { get; set; }
+        
+        public List<DutyStatusLogAnnotation> annotations { get; set; }
     }
 }

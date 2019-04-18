@@ -7,7 +7,6 @@ namespace Prototype.OpenTelematics.DataAccess
     public partial class VehicleFaultCodeEvent
     {
         public Guid Id { get; set; }
-        public string providerId { get; set; }
         public Guid vehicleId { get; set; }
         public decimal longitude { get; set; }
         public decimal latitude { get; set; }

@@ -7,7 +7,6 @@ namespace Prototype.OpenTelematics.DataAccess
     public partial class StopGeographicDetails
     {
         public Guid Id { get; set; }
-        public string providerId { get; set; }
         public string stopName { get; set; }
         public string address { get; set; }
         public string comment { get; set; }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 
+
 namespace Prototype.OpenTelematics.Models
 {
     public class LocationHistory
@@ -30,13 +31,14 @@ namespace Prototype.OpenTelematics.Models
 
         public VehicleLocation(CoarseVehicleLocationTimeHistory model)
         {
+            
             Id = model.Id;
             //TODO: How will we determine the providerId?
             //providerId = model.providerId;
             vehicleId = model.vehicleId;
             driverId = model.driverId;
             dateTime = model.dateTime;
-            location = string.Format("{0},{1}", model.latitude.ToString(), model.longitude.ToString());
+            location = string.Format("{0} {1}", model.latitude.ToString(), model.longitude.ToString());
         }
     }
 

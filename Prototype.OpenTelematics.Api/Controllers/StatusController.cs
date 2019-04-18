@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Prototype.OpenTelematics.DataAccess;
 using Prototype.OpenTelematics.Models;
 
@@ -14,11 +16,10 @@ namespace Prototype.OpenTelematics.Api.Controllers
     [Authorize]
     public class StatusController : TelematicsBaseController
     {
-        private readonly TelematicsContext m_Context;
 
-        public StatusController(TelematicsContext context)
+        public StatusController(TelematicsContext context, IOptions<AppSettings> settings, IDataProtectionProvider provider) 
+            : base(context, settings, provider)
         {
-            m_Context = context;
         }
 
         /// <summary>

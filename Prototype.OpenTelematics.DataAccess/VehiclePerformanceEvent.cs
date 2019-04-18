@@ -8,7 +8,6 @@ namespace Prototype.OpenTelematics.DataAccess
     public partial class VehiclePerformanceEvent
     {
         public Guid Id { get; set; }
-        public string providerId { get; set; }
         public DateTimeOffset eventStart { get; set; }
         public DateTimeOffset eventEnd { get; set; }
         public Guid vehicleId { get; set; }

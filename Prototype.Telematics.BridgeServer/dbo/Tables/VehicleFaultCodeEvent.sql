@@ -1,7 +1,6 @@
 ﻿CREATE TABLE [dbo].[VehicleFaultCodeEvent]
 (
 	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
-    [providerId] NVARCHAR(100) NULL, 
     [vehicleId] UNIQUEIDENTIFIER NULL, 
     [longitutude] NUMERIC(18, 8) NULL, 
     [latitude] NUMERIC(18, 8) NULL, 

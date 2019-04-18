@@ -1,7 +1,6 @@
 ﻿CREATE TABLE [dbo].[VehiclePerformanceEvent]
 (
 	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
-    [providerId] NVARCHAR(100) NULL, 
     [eventStart] DATETIMEOFFSET NULL, 
     [eventEnd] DATETIMEOFFSET NULL, 
     [vehicleId] UNIQUEIDENTIFIER NULL, 

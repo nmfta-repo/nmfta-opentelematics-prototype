@@ -19,5 +19,6 @@
     [verifyDateTime] DATETIMEOFFSET NULL, 
     [multidayBasis] INT NOT NULL, 
     [outputFileComment] NVARCHAR(1000) NOT NULL, 
-    [eventDataChecksum] NVARCHAR(100) NULL
+    [eventDataChecksum] NVARCHAR(100) NULL, 
+    [locationId] UNIQUEIDENTIFIER NULL
 )

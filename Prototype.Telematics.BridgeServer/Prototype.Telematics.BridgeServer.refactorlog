@@ -189,4 +189,39 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="[FK_VehiclePerformanceEvent_VechiclePerformanceThreshold]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="6062542d-95b2-4578-9ddb-ebc5d7e6fbf6" ChangeDateTime="04/16/2019 20:28:28">
+    <Property Name="ElementName" Value="[dbo].[VehiclePerformanceThreshold].[overSeedValue]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehiclePerformanceThreshold]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="overSpeedValue" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="80504405-7727-41d9-baaa-36d1316b0e02" ChangeDateTime="04/16/2019 22:35:22">
+    <Property Name="ElementName" Value="[dbo].[Driver].[dirverLicenseNumber]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Driver]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="driverLicenseNumber" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e76e48d8-6170-4b20-a8b5-463de5f92b71" ChangeDateTime="04/17/2019 17:18:36">
+    <Property Name="ElementName" Value="[dbo].[DriverWorkLog].[DriverKey]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DriverWorkLog]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="driverId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a1cd1825-3794-4963-ba09-1bae71bc1645" ChangeDateTime="04/17/2019 17:18:42">
+    <Property Name="ElementName" Value="[dbo].[DriverWorkLog].[WorkDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DriverWorkLog]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="workDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="6c01abb8-0288-46cb-a2cd-2a98b104cc10" ChangeDateTime="04/17/2019 17:18:45">
+    <Property Name="ElementName" Value="[dbo].[DriverWorkLog].[HoursWorked]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DriverWorkLog]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="hoursWorked" />
+  </Operation>
 </Operations>

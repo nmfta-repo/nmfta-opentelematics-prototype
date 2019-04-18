@@ -9,6 +9,8 @@ using Prototype.OpenTelematics.DataAccess;
 using Prototype.OpenTelematics.Api.Security;
 using Prototype.OpenTelematics.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace Prototype.OpenTelematics.Api.Controllers
 {
@@ -16,11 +18,11 @@ namespace Prototype.OpenTelematics.Api.Controllers
     [Authorize]
      public class FleetController : TelematicsBaseController
     {
-        private readonly TelematicsContext m_Context;
 
-        public FleetController(TelematicsContext context)
+        public FleetController(TelematicsContext context, IOptions<AppSettings> settings, IDataProtectionProvider provider) 
+            : base(context, settings, provider)
         {
-            m_Context = context;
+
         }
 
         [Route("api/fleet/locations")]

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Prototype.OpenTelematics.Api.Security;
 using Prototype.OpenTelematics.DataAccess;
 
@@ -15,11 +17,10 @@ namespace Prototype.OpenTelematics.Api.Controllers
     public class StopsController : TelematicsBaseController
     {
 
-        private readonly TelematicsContext m_Context;
-
-        public StopsController(TelematicsContext context)
+        public StopsController(TelematicsContext context, IOptions<AppSettings> settings, IDataProtectionProvider provider) 
+            : base(context, settings, provider)
         {
-            m_Context = context;
+
         }
 
         [Route("api/stops/{stopId}")]

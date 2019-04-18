@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Prototype.OpenTelematics.Api.Security;
 using Prototype.OpenTelematics.DataAccess;
 using Prototype.OpenTelematics.Models;
@@ -15,11 +19,11 @@ namespace Prototype.OpenTelematics.Api.Controllers
     [ApiController]
     public class DriverController : TelematicsBaseController
     {
-        private readonly TelematicsContext m_Context;
 
-        public DriverController(TelematicsContext context)
+        public DriverController(TelematicsContext context, IOptions<AppSettings> settings, IDataProtectionProvider provider) 
+            : base(context, settings, provider)
         {
-            m_Context = context;
+
         }
 
         /// <summary>
@@ -201,6 +205,89 @@ namespace Prototype.OpenTelematics.Api.Controllers
         {
             System.IO.File.WriteAllText(@"DutyStatusChange_REQ.json",postedModel.ToJson());
             return string.Empty;
+        }
+
+        [Route("api/drivers/{driverId}")]
+        [HttpPatch]
+        [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.HR)]
+        public ActionResult<string> Driver(string driverId, DriverChangeModel model)
+        {
+            if (Guid.TryParse(driverId, out var guid))
+            {
+                var driver = m_Context.Driver.FirstOrDefault(c => c.Id == guid);
+                if (driver != null)
+                {
+                    driver.username = model.username;
+                    driver.driverLicenseNumber = model.driverLicenseNumber ?? driver.driverLicenseNumber;
+                    driver.driverHomeTerminal = model.driverHomeTerminal ?? driver.driverHomeTerminal;
+                    driver.country = model.country ?? driver.country;
+                    driver.region = model.region ?? driver.region;
+
+                    if (model.hoursWorked > 0)
+                    {
+                        var driverWorkLog = m_Context.DriverWorkLog.FirstOrDefault(w => w.workDate == DateTime.Today);
+                        if (driverWorkLog == null)
+                        {
+                            driverWorkLog = new DriverWorkLog();
+                            driverWorkLog.driverId = driver.Id;
+                            driverWorkLog.workDate = DateTime.Today;
+                            driverWorkLog.hoursWorked = model.hoursWorked;
+                            m_Context.DriverWorkLog.Add(driverWorkLog);
+                        }
+                        else
+                            driverWorkLog.hoursWorked = model.hoursWorked;
+                    }
+
+                    m_Context.SaveChanges();
+                    return Ok();
+                }
+                else
+                    return NotFound("Driver not found");
+            }
+            else
+                return NotFound("Invalid id");
+        }
+
+        [Route("api/event_logs/feed")]
+        [HttpGet]
+        [Authorize(Roles = TelematicsRoles.DriverFollow + "," + TelematicsRoles.DriverDispatch 
+            + "," + TelematicsRoles.HR + "," + TelematicsRoles.Admin)]
+        public ActionResult<DutyStatusLogFollow> FeedFollowDutyStatus(string token)
+        {
+            DateTimeOffset fromTime;
+            DateTimeOffset toTime = DateTimeOffset.Now.ToUniversalTime();
+
+            if (string.IsNullOrEmpty(token))
+            {
+                fromTime = new DateTimeOffset(2019, 01, 01, 0, 0, 0, 0, TimeSpan.FromHours(0));
+            }
+            else
+            {
+                string strFromTime = m_dataProtector.Unprotect(token);
+                if (!DateTimeOffset.TryParse(strFromTime, out fromTime))
+                    return BadRequest("token parameter invalid");
+            }
+                       
+            var dsl = new DutyStatusLogFollow();
+            dsl.token = m_dataProtector.Protect(toTime.ToString());
+            var logs = m_Context.DutyStatusLog
+                                       .Include(l => l.location)
+                                       .Include(a => a.annotations)
+                                       .Where(x => x.dateTime >= fromTime && x.dateTime <= toTime)
+                                       .ToList();
+
+            dsl.feed = DutyStatusLogToFollowModel(logs);
+            return dsl;
+        }
+
+        private List<DutyStatusLogModel> DutyStatusLogToFollowModel(List<DutyStatusLog> logs)
+        {
+            List<DutyStatusLogModel> logList = new List<DutyStatusLogModel>();
+            foreach(DutyStatusLog log in logs)
+            {
+                logList.Add(new DutyStatusLogModel(log, m_appSettings.ProviderId));
+            }
+            return logList;
         }
     }
 }

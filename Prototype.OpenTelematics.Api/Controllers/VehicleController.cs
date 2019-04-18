@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Prototype.OpenTelematics.Api.Security;
 using Prototype.OpenTelematics.DataAccess;
 using Prototype.OpenTelematics.Models;
@@ -13,25 +15,27 @@ namespace Prototype.OpenTelematics.Api.Controllers
     [ApiController]
     public class VehicleController : TelematicsBaseController
     {
-        private readonly TelematicsContext m_Context;
 
-        public VehicleController(TelematicsContext context)
+        public VehicleController(TelematicsContext context, IOptions<AppSettings> settings, IDataProtectionProvider provider) 
+            : base(context, settings, provider)
         {
-            m_Context = context;
+
         }
 
         [Route("api/vehicles/{vehicleId}")]
         [HttpGet]
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow)]
-        public ActionResult<Vehicle> Get(string vehicleId)
+        public ActionResult<VehicleModel> Get(string vehicleId)
         {
             if (Guid.TryParse(vehicleId, out var guid))
             {
-                var result = m_Context.Vehicle.FirstOrDefault(c => c.Id == guid);
-                return result;
+                Vehicle result = m_Context.Vehicle.FirstOrDefault(c => c.Id == guid);
+                if (result != null)
+                    return new VehicleModel(result, m_appSettings.ProviderId);
+                else
+                    return NotFound("Invalid id");
             }
-
             return NotFound("Invalid id");
         }
 
@@ -100,7 +104,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
                 return NotFound("Invalid vehicle id");
 
             var data = m_Context.VehiclePerformanceEvent
-                                            .Include(VehiclePerformanceThreshold => VehiclePerformanceThreshold.thresholds)
+                                            .Include(e => e.thresholds)
                                             .Where(x => x.eventStart >= startDate &&
                                                    x.eventStart <= stopDate &&
                                                    x.vehicleId == guid).ToList();

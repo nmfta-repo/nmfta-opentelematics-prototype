@@ -5,7 +5,7 @@
     [activeFrom] DATETIMEOFFSET NULL, 
     [activeTo] DATETIMEOFFSET NULL, 
     [rpmOverValue] INT NULL, 
-    [overSeedValue] INT NULL, 
+    [overSpeedValue] INT NULL, 
     [excessSpeedValue] INT NULL, 
     [longIdleValue] INT NULL, 
     [hiThrottleValue] INT NULL
