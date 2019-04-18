@@ -20,7 +20,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
             m_Context = context;
         }
 
-        [Route("api/vehicles/{vehicleId}")]
+        [Route("vehicles/{vehicleId}")]
         [HttpGet]
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow)]
@@ -35,7 +35,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return NotFound("Invalid id");
         }
 
-        [Route("api/vehicles/{vehicleId}/flagged_events")]
+        [Route("vehicles/{vehicleId}/flagged_events")]
         [HttpGet]
         [Authorize(Roles =
         TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery)]
@@ -60,7 +60,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
                 return NotFound("Invalid vehicle id");
         }
 
-        [Route("api/vehicles/{vehicleId}/coarse_locations")]
+        [Route("vehicles/{vehicleId}/coarse_locations")]
         [HttpGet]
         [Authorize(Roles =
         TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
@@ -85,7 +85,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return result;
         }
 
-        [Route("api/vehicles/{vehicleId}/performance_events")]
+        [Route("vehicles/{vehicleId}/performance_events")]
         [HttpGet]
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
@@ -109,7 +109,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
         }
 
 
-        [Route("api/vehicles/{vehicleId}/fault_code_events")]
+        [Route("vehicles/{vehicleId}/fault_code_events")]
         [HttpGet]
         [Authorize(Roles =
         TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
@@ -130,5 +130,63 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
             return data;
         }
+
+        /// <summary>
+        /// Save Stop 
+        /// </summary>
+        /// <param name="vehicleId">Vehicle Identifier</param>
+        /// <param name="postedModel">Route Model</param>
+        /// <returns>Post Status</returns>
+        [Route("vehicles/{vehicleId}/message")]
+        [HttpPost]
+        [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverDispatch)]
+        public IActionResult PostVehicleMessage(string vehicleId, PostVehicleMessageModel postedModel)
+        {
+            if (postedModel == null)
+            {
+                return StatusCode(204);
+            }
+
+            if (!Guid.TryParse(vehicleId, out var vehicleGuidId))
+            {
+                return NotFound("Invalid Vehicle id");
+            }
+
+            if (string.IsNullOrWhiteSpace(postedModel.subject))
+            {
+                return BadRequest("Subject is required");
+            }
+
+            if (string.IsNullOrWhiteSpace(postedModel.message))
+            {
+                return BadRequest("Message is required");
+            }
+
+            // make sure the vehicle exists
+            var vehicleFound = m_Context.Vehicle.Any(c => c.Id == vehicleGuidId);
+            if (!vehicleFound)
+            {
+                return NotFound("Invalid Vehicle id");
+            }
+
+            // create the message
+            var vehicleMessage = new VehicleMessage
+            {
+                Id = Guid.NewGuid(),
+                vehicleId = vehicleGuidId,
+                subject = postedModel.subject,
+                message = postedModel.message,
+                displayAt = DateTimeOffset.Now,
+                createdOn = DateTimeOffset.Now
+            };
+
+            // add and save
+            m_Context.VehicleMessage.Add(vehicleMessage);
+            m_Context.SaveChanges();
+
+            // return result
+            return StatusCode(201);
+        }
+
     }
 }

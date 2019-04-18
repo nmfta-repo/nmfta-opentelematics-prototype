@@ -23,7 +23,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
             m_Context = context;
         }
 
-        [Route("api/fleet/locations")]
+        [Route("fleet/locations")]
         [HttpGet]
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
@@ -41,7 +41,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
         }
 
 
-        [Route("api/fleet/flagged_events")]
+        [Route("fleet/flagged_events")]
         [HttpGet]
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
@@ -61,7 +61,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return flaggedEventHistory;
         }
 
-        [Route("api/fleet/performance_events")]
+        [Route("fleet/performance_events")]
         [HttpGet]
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
@@ -81,7 +81,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return performanceEventHistory;
         }
 
-        [Route("api/fleet/performance_thresholds")]
+        [Route("fleet/performance_thresholds")]
         [HttpGet]
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
@@ -101,7 +101,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return performanceThresholds;
         }
 
-        [Route("api/fleet/faults")]
+        [Route("fleet/faults")]
         [HttpGet]
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
