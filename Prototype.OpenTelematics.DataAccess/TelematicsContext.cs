@@ -34,6 +34,9 @@ namespace Prototype.OpenTelematics.DataAccess
         public virtual DbSet<VehiclePerformanceThreshold> VehiclePerformanceThreshold { get; set; }
         public virtual DbSet<StopGeographicDetails> StopGeographicDetails { get; set; }
         public virtual DbSet<Location> Location { get; set; }
+        public virtual DbSet<Route> Route { get; set; }
+        public virtual DbSet<VehicleStopXRef> VehicleStopXRef { get; set; }
+        public virtual DbSet<VehicleMessage> VehicleMessage { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
