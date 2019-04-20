@@ -278,7 +278,8 @@ namespace Prototype.OpenTelematics.DataAccess
 
                 entity.Property(e => e.eventComment).HasMaxLength(500);
 
-                entity.Property(e => e.parameterOrSubsystemIdType).HasMaxLength(50);
+                entity.Property(e => e.parameterOrSubsystemIdType).HasDefaultValue("")
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.gpsQuality).HasMaxLength(50);
 

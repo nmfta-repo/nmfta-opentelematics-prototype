@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Prototype.OpenTelematics.DataAccess
 {
@@ -16,9 +14,9 @@ namespace Prototype.OpenTelematics.DataAccess
         public int occurences { get; set; }
         public int messageIdentifier { get; set; }
         public string parameterOrSubsystemIdType { get; set; }
-        public int faultCodeParameterOfSubsystemId { get; set; }
+        public int faultCodeParameterOrSubsystemId { get; set; }
         public int sourceAddress { get; set; }
-        public int suspectParameterNumber { get; set; }
+        public int? suspectParameterNumber { get; set; }
         public int failureModeIdentifier { get; set; }
         public bool urgentFlag { get; set; }
         public int odometer { get; set; }

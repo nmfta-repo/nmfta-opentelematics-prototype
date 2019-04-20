@@ -64,7 +64,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
                 return NotFound("Invalid vehicle id");
         }
 
-        [Route("vehicles/{vehicleId}/coarse_locations")]
+        [Route("vehicles/{vehicleId}/locations")]
         [HttpGet]
         [Authorize(Roles =
         TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow

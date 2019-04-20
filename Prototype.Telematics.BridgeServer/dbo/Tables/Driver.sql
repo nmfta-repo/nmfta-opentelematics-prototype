@@ -5,6 +5,8 @@
     [country]             NVARCHAR (50)    NULL,
     [region]              NVARCHAR (50)    NULL,
     [driverHomeTerminal]  NCHAR (10)       NULL,
+    [password] NVARCHAR(250) NULL, 
+    [enabled] BIT NULL DEFAULT 1, 
     CONSTRAINT [PK_Driver] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
