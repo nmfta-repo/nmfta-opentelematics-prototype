@@ -242,11 +242,35 @@ namespace Prototype.OpenTelematics.Api.Controllers
                     return Ok();
                 }
                 else
-                    return NotFound("Driver not found");
+                    return NotFound("driverId not found");
             }
             else
-                return NotFound("Invalid id");
+                return NotFound("Invalid driverId");
         }
+
+        [Route("drivers/{driverId}/driverportaluser")]
+        [HttpPatch]
+        [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.HR)]
+        public ActionResult<string> UpdateUser(string driverId, DriverChangeLoginModel model)
+        {
+            if (Guid.TryParse(driverId, out var guid))
+            {
+                var driver = m_Context.Driver.FirstOrDefault(c => c.Id == guid);
+                if (driver != null)
+                {
+                    driver.username = model.username;
+                    driver.password = m_dataProtector.Protect(model.password);
+                    driver.enabled = model.enabled;
+                    m_Context.SaveChanges();
+                    return Ok();
+                }
+                else
+                    return NotFound("driverId not found");
+            }
+            else
+                return BadRequest("Invalid driverId");
+        }
+
 
         [Route("api/event_logs/feed")]
         [HttpGet]
@@ -259,6 +283,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
             if (string.IsNullOrEmpty(token))
             {
+                //set a reasonable start time
                 fromTime = new DateTimeOffset(2019, 01, 01, 0, 0, 0, 0, TimeSpan.FromHours(0));
             }
             else
@@ -284,10 +309,38 @@ namespace Prototype.OpenTelematics.Api.Controllers
         {
             List<DutyStatusLogModel> logList = new List<DutyStatusLogModel>();
             foreach(DutyStatusLog log in logs)
-            {
                 logList.Add(new DutyStatusLogModel(log, m_appSettings.ProviderId));
-            }
             return logList;
+        }
+
+        [Route("drivers/{driverId}/performance_summaries")]
+        [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.HR)]
+        public ActionResult<DriverPerformanceSummaryModel> DriverPerformanceSummaries(string driverId, string start, string stop)
+        {
+
+            if (!DateTime.TryParse(start, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startTime))
+                return BadRequest("Invalid start time");
+            if (!DateTime.TryParse(stop, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopTime))
+                return BadRequest("Invalid stop time");
+            if (!Guid.TryParse(driverId, out var guid))
+                return BadRequest("Invalid driver id");
+
+            // make sure the driver exists
+            var driverFound = m_Context.Driver.Any(c => c.Id == guid);
+            if (!driverFound)
+            {
+                return NotFound("driverId Not Found");
+            }
+
+            var summaries = m_Context.DriverPerformanceSummary.Where
+                (s => s.driverId == guid &&
+                 s.eventStart >= startTime &&
+                 s.eventStart <= stopTime)
+                .ToList();
+
+            DriverPerformanceSummaryModel result = new DriverPerformanceSummaryModel();
+            result.performanceSummaries = summaries;
+            return result;
         }
     }
 }

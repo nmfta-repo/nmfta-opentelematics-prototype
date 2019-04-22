@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Prototype.OpenTelematics.DataAccess;
 using Prototype.OpenTelematics.Api.Security;
 using Prototype.OpenTelematics.Models;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.EntityFrameworkCore;
 
 namespace Prototype.OpenTelematics.Api.Controllers
 {
@@ -115,14 +113,13 @@ namespace Prototype.OpenTelematics.Api.Controllers
             if (!DateTime.TryParse(stop, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
                 return NotFound("Invalid stop date");
 
-            List<VehicleFaultCodeEvent> performanceThresholds =
+            List<VehicleFaultCodeEvent> faultEvents =
                                m_Context.VehicleFaultCodeEvent.Where(
                                        x => x.triggerDate >= startDate &&
                                        x.triggerDate <= stopDate).ToList();
 
-            return performanceThresholds;
+            return faultEvents;
         }
-
 
         private LocationHistory GetCourseLocationHistory(DateTime startDate, DateTime stopDate)
         {
@@ -133,6 +130,81 @@ namespace Prototype.OpenTelematics.Api.Controllers
             var result = new LocationHistory(data);
             //TODO: How to determine timeResolution?
             result.timeResolution = TimeResolution.TIMERESOLUTION_MAX;
+            return result;
+        }
+
+        [Route("fleet/faults/feed")]
+        [HttpGet]
+        [Authorize(Roles = TelematicsRoles.DriverFollow + "," + TelematicsRoles.VehicleFollow
+            + "," + TelematicsRoles.Admin)]
+        public ActionResult<VehicleFaultCodeEventFollow> FeedFollowVehcicleFaults(string token)
+        {
+            DateTimeOffset fromTime;
+            DateTimeOffset toTime = DateTimeOffset.Now.ToUniversalTime();
+
+            if (string.IsNullOrEmpty(token))
+            {
+                //set a reasonable start time
+                fromTime = new DateTimeOffset(2019, 01, 01, 0, 0, 0, 0, TimeSpan.FromHours(0));
+            }
+            else
+            {
+                string strFromTime = m_dataProtector.Unprotect(token);
+                if (!DateTimeOffset.TryParse(strFromTime, out fromTime))
+                    return BadRequest("token parameter invalid");
+            }
+
+            var vfcf = new VehicleFaultCodeEventFollow();
+            vfcf.token = m_dataProtector.Protect(toTime.ToString());
+            var logs = m_Context.VehicleFaultCodeEvent
+                                       .Where(x => x.triggerDate >= fromTime && x.triggerDate <= toTime)
+                                       .ToList();
+            vfcf.feed = VehicleFaultCodeListToModelList(logs);
+            return vfcf;
+        }
+
+        private List<VehicleFaultCodeModel> VehicleFaultCodeListToModelList(List<VehicleFaultCodeEvent> events)
+        {
+            List<VehicleFaultCodeModel> eventList = new List<VehicleFaultCodeModel>();
+            foreach (VehicleFaultCodeEvent item in events)
+                eventList.Add(new VehicleFaultCodeModel(item, m_appSettings.ProviderId));
+            return eventList;
+        }
+
+        [Route("fleet/infos")]
+        [HttpGet]
+        [Authorize(Roles = TelematicsRoles.Admin
+            + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.VehicleQuery
+            + "," + TelematicsRoles.DriverFollow + "," + TelematicsRoles.VehicleFollow)]
+        public ActionResult<VehicleInfoHistory> FleetVehicleInfos(string start, string stop)
+        {
+            if (!DateTime.TryParse(start, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
+                return NotFound("Invalid start date");
+            if (!DateTime.TryParse(stop, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
+                return NotFound("Invalid stop date");
+
+            LocationHistory locHistory = GetCourseLocationHistory(startDate, stopDate);
+            List<VehicleFlaggedEvent> flaggedEventHistory =
+                                           m_Context.VehicleFlaggedEvent.Where(
+                                                   x => x.eventStart >= startDate &&
+                                                   x.eventStart <= stopDate).ToList();
+            List<VehiclePerformanceEvent> performanceEventHistory =
+                                            m_Context.VehiclePerformanceEvent
+                                                .Include(VehiclePerformanceThreshold => VehiclePerformanceThreshold.thresholds)
+                                                .Where(
+                                                    x => x.eventStart >= startDate &&
+                                                    x.eventStart <= stopDate).ToList();
+            List<VehicleFaultCodeEvent> vehicleFaultCodeEventHistory =
+                                            m_Context.VehicleFaultCodeEvent.Where(
+                                                    x => x.triggerDate >= startDate &&
+                                                    x.triggerDate <= stopDate).ToList();
+            VehicleInfoHistory result = new VehicleInfoHistory
+            {
+                coarseVehicleLocationTimeHistories = locHistory,
+                flaggedVehiclePerformanceEvents = flaggedEventHistory,
+                vehiclePerformanceEvents = performanceEventHistory,
+                vehicleFaultCodeEvents = VehicleFaultCodeListToModelList(vehicleFaultCodeEventHistory)
+            };
             return result;
         }
 

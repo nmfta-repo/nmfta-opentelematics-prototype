@@ -224,4 +224,25 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="hoursWorked" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="6b5bd0da-5e93-489d-9ca5-8bfc2477035c" ChangeDateTime="04/19/2019 19:50:54">
+    <Property Name="ElementName" Value="[dbo].[VehicleFaultCodeEvent].[longitutude]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehicleFaultCodeEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="longitude" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="77f4f1eb-23df-46d1-afb7-d6628690ed40" ChangeDateTime="04/19/2019 19:55:45">
+    <Property Name="ElementName" Value="[dbo].[VehiclePerformanceEvent].[cuiseFuel]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehiclePerformanceEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="cruiseFuel" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="14a53839-d017-40a2-8e55-41b312f451ce" ChangeDateTime="04/19/2019 20:01:07">
+    <Property Name="ElementName" Value="[dbo].[VehiclePerformanceEvent].[cuiseFuel]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[VehiclePerformanceEvent]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="cruiseFuel" />
+  </Operation>
 </Operations>

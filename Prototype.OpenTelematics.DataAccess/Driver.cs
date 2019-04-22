@@ -11,5 +11,7 @@ namespace Prototype.OpenTelematics.DataAccess
         public string country { get; set; }
         public string region { get; set; }
         public string driverHomeTerminal { get; set; }
+        public string password { get; set; }
+        public bool enabled { get; set; }
     }
 }

@@ -28,7 +28,7 @@
     [shortIdleFuel] INT NULL, 
     [cruiseEvents] INT NULL, 
     [cruiseTime] INT NULL, 
-    [cuiseFuel] INT NULL, 
+    [cruiseFuel] INT NULL, 
     [cruiseDistance] INT NULL, 
     [topGearValue] INT NULL, 
     [topGearTime] INT NULL, 
