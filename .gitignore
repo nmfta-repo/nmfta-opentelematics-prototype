@@ -339,3 +339,6 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /Prototype.OpenTelematics.Api/Security/SimpleDataProtector.cs
+/Client/python/env/Lib/site-packages
+/Client/python/env/Scripts
+/Client/python/.vscode
