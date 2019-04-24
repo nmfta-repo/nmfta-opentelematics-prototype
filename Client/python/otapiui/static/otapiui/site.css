@@ -29,3 +29,7 @@
     padding: 5px;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+.main-panel {
+    min-height: 80vh;
+}

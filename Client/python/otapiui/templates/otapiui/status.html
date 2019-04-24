@@ -1,0 +1,7 @@
+{% extends "otapiui/layout.html" %}
+{% block title %}
+Home Page
+{% endblock %}
+{% block content %}
+System Status : As of {{system_status.as_of}} server status is {{system_status.service_status}}, factors are {{system_status.factors}}
+{% endblock %}
