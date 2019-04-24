@@ -4,7 +4,8 @@ import jsons
 from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import render
-from .library.models.status_model import status_model
+
+from .otapisdk.models.status_model import status_model
 # Create your views here.
 def system_status(request):
     #http = HTTPSession()
