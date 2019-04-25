@@ -35,9 +35,27 @@ namespace Prototype.OpenTelematics.Api.Controllers
             if (!DateTime.TryParse(stop, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
                 return NotFound("Invalid stop date");
 
-            LocationHistory result = GetCourseLocationHistory(startDate, stopDate);
+            LocationHistory result = GetCourseLocationHistory(startDate, stopDate, TimeResolution.TIMERESOLUTION_MAX);
 
             return result;
+        }
+
+        [Route("fleet/locations/{id}")]
+        [HttpGet]
+        [Authorize(Roles =
+            TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
+            + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
+        public ActionResult<VehicleLocation> Location(string id)
+        {
+            if (Guid.TryParse(id, out var guid))
+            {
+                CoarseVehicleLocationTimeHistory result = m_Context.CoarseVehicleLocationTimeHistory.FirstOrDefault(c => c.Id == guid);
+                if (result != null)
+                    return new VehicleLocation(result, m_appSettings.ProviderId);
+                else
+                    return NotFound("Invalid id");
+            }
+            return NotFound("Invalid id");
         }
 
 
@@ -61,6 +79,25 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return flaggedEventHistory;
         }
 
+        [Route("fleet/flagged_events/{id}")]
+        [HttpGet]
+        [Authorize(Roles =
+            TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
+            + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
+        public ActionResult<VehicleFlaggedEvent> FlaggedEvent(string id)
+        {
+            if (Guid.TryParse(id, out var guid))
+            {
+                VehicleFlaggedEvent result = m_Context.VehicleFlaggedEvent.FirstOrDefault(c => c.Id == guid);
+                if (result != null)
+                    return result;
+                else
+                    return NotFound("Invalid id");
+            }
+            return NotFound("Invalid id");
+        }
+
+
         [Route("fleet/performance_events")]
         [HttpGet]
         [Authorize(Roles =
@@ -81,6 +118,24 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return performanceEventHistory;
         }
 
+        [Route("fleet/performance_events/{id}")]
+        [HttpGet]
+        [Authorize(Roles =
+            TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
+            + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
+        public ActionResult<VehiclePerformanceEvent> PerformanceEvent(string id)
+        {
+            if (Guid.TryParse(id, out var guid))
+            {
+                VehiclePerformanceEvent result = m_Context.VehiclePerformanceEvent.FirstOrDefault(c => c.Id == guid);
+                if (result != null)
+                    return result;
+                else
+                    return NotFound("Invalid id");
+            }
+            return NotFound("Invalid id");
+        }
+
         [Route("fleet/performance_thresholds")]
         [HttpGet]
         [Authorize(Roles =
@@ -95,10 +150,28 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
             List<VehiclePerformanceThreshold> performanceThresholds =
                                m_Context.VehiclePerformanceThreshold.Where(
-                                       x => x.activeFrom >= startDate &&
+                                       x => x.activeTo >= startDate &&
                                        x.activeFrom <= stopDate).ToList();
 
             return performanceThresholds;
+        }
+
+        [Route("fleet/performance_thresholds/{id}")]
+        [HttpGet]
+        [Authorize(Roles =
+            TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
+            + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
+        public ActionResult<VehiclePerformanceThreshold> PerformanceThreshold(string id)
+        {
+            if (Guid.TryParse(id, out var guid))
+            {
+                VehiclePerformanceThreshold result = m_Context.VehiclePerformanceThreshold.FirstOrDefault(c => c.Id == guid);
+                if (result != null)
+                    return result;
+                else
+                    return NotFound("Invalid id");
+            }
+            return NotFound("Invalid id");
         }
 
         [Route("fleet/faults")]
@@ -121,15 +194,33 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return faultEvents;
         }
 
-        private LocationHistory GetCourseLocationHistory(DateTime startDate, DateTime stopDate)
+
+        [Route("fleet/faults/{id}")]
+        [HttpGet]
+        [Authorize(Roles =
+            TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
+            + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
+        public ActionResult<VehicleFaultCodeModel> VehicleFault(string id)
+        {
+            if (Guid.TryParse(id, out var guid))
+            {
+                VehicleFaultCodeEvent result = m_Context.VehicleFaultCodeEvent.FirstOrDefault(c => c.Id == guid);
+                if (result != null)
+                    return new VehicleFaultCodeModel(result, m_appSettings.ProviderId);
+                else
+                    return NotFound("Invalid id");
+            }
+            return NotFound("Invalid id");
+        }
+
+        private LocationHistory GetCourseLocationHistory(DateTime startDate, DateTime stopDate, TimeResolution timeResolution)
         {
             var data = m_Context.CoarseVehicleLocationTimeHistory.Where(
                                                  x => x.dateTime >= startDate &&
                                                       x.dateTime <= stopDate).ToList();
 
-            var result = new LocationHistory(data);
-            //TODO: How to determine timeResolution?
-            result.timeResolution = TimeResolution.TIMERESOLUTION_MAX;
+            var result = new LocationHistory(data, m_appSettings.ProviderId);
+            result.timeResolution = timeResolution;
             return result;
         }
 
@@ -183,7 +274,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
             if (!DateTime.TryParse(stop, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
                 return NotFound("Invalid stop date");
 
-            LocationHistory locHistory = GetCourseLocationHistory(startDate, stopDate);
+            LocationHistory locHistory = GetCourseLocationHistory(startDate, stopDate, TimeResolution.TIMERESOLUTION_NOT_MAX);
             List<VehicleFlaggedEvent> flaggedEventHistory =
                                            m_Context.VehicleFlaggedEvent.Where(
                                                    x => x.eventStart >= startDate &&

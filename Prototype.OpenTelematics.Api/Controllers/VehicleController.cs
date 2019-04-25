@@ -22,13 +22,13 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
         }
 
-        [Route("vehicles/{vehicleId}")]
+        [Route("vehicles/{id}")]
         [HttpGet]
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow)]
-        public ActionResult<VehicleModel> Get(string vehicleId)
+        public ActionResult<VehicleModel> Get(string id)
         {
-            if (Guid.TryParse(vehicleId, out var guid))
+            if (Guid.TryParse(id, out var guid))
             {
                 Vehicle result = m_Context.Vehicle.FirstOrDefault(c => c.Id == guid);
                 if (result != null)
@@ -83,7 +83,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
                                                       x.dateTime <= stopDate && 
                                                       x.vehicleId == guid).ToList();
 
-            var result = new LocationHistory(data);
+            var result = new LocationHistory(data, m_appSettings.ProviderId);
             //TODO: How to determine timeResolution?
             result.timeResolution = TimeResolution.TIMERESOLUTION_MAX;
             return result;

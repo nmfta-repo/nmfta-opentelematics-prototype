@@ -342,5 +342,23 @@ namespace Prototype.OpenTelematics.Api.Controllers
             result.performanceSummaries = summaries;
             return result;
         }
+
+
+        [Route("driver_performance_summaries/{id}")]
+        [HttpGet]
+        [Authorize(Roles =
+            TelematicsRoles.Admin + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
+        public ActionResult<DriverPerformanceSummary> DriverPerformanceSummary(string id)
+        {
+            if (Guid.TryParse(id, out var guid))
+            {
+                DriverPerformanceSummary result = m_Context.DriverPerformanceSummary.FirstOrDefault(c => c.Id == guid);
+                if (result != null)
+                    return result;
+                else
+                    return NotFound("Invalid id");
+            }
+            return NotFound("Invalid id");
+        }
     }
 }

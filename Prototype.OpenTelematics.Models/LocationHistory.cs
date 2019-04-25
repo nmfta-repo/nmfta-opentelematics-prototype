@@ -10,31 +10,30 @@ namespace Prototype.OpenTelematics.Models
         public List<VehicleLocation> data { get; set; }
         public TimeResolution timeResolution { get; set; }
 
-        public LocationHistory(List<CoarseVehicleLocationTimeHistory> locationList)
+        public LocationHistory(List<CoarseVehicleLocationTimeHistory> locationList, string ProviderId)
         {
             data = new List<VehicleLocation>();
             foreach(CoarseVehicleLocationTimeHistory location in locationList)
             {
-                data.Add(new VehicleLocation(location));
+                data.Add(new VehicleLocation(location, ProviderId));
             }
         }
     }
 
     public class VehicleLocation
     {
-        public Guid Id { get; set; }
+        public Guid id { get; set; }
         public string providerId { get; set; }
         public Guid vehicleId { get; set; }
         public Guid driverId { get; set; }
         public DateTimeOffset dateTime { get; set; }
         public string location { get; set; }
 
-        public VehicleLocation(CoarseVehicleLocationTimeHistory model)
+        public VehicleLocation(CoarseVehicleLocationTimeHistory model, string ProviderId)
         {
             
-            Id = model.Id;
-            //TODO: How will we determine the providerId?
-            //providerId = model.providerId;
+            id = model.Id;
+            providerId = ProviderId;
             vehicleId = model.vehicleId;
             driverId = model.driverId;
             dateTime = model.dateTime;
