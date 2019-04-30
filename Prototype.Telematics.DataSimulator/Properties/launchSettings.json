@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Prototype.Telematics.DataSimulator": {
+      "commandName": "Project",
+      "commandLineArgs": "5 10"
+    }
+  }
+}

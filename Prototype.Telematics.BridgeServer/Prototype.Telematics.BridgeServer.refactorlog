@@ -252,4 +252,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="HwySectionName" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="f946ec7a-7734-4cfc-8299-18dc7c84c05c" ChangeDateTime="04/26/2019 17:08:02">
+    <Property Name="ElementName" Value="[dbo].[HwyDataPoints].[Order]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[HwyDataPoints]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Sequence" />
+  </Operation>
 </Operations>

@@ -61,6 +61,7 @@
     <Folder Include="dbo\" />
     <Folder Include="dbo\Tables\" />
     <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="dbo\Data" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\__EFMigrationsHistory.sql" />
@@ -97,9 +98,14 @@
     <Build Include="dbo\Tables\VehicleStopXRef.sql" />
     <Build Include="dbo\Tables\Route.sql" />
     <Build Include="dbo\Tables\VehicleMessage.sql" />
-    <Build Include="dbo\Tables\USHwyDataPoints.sql" />
+    <Build Include="dbo\Tables\HwyDataPoints.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Prototype.Telematics.BridgeServer.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dbo\Data\dbo.Driver.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.HwyDataPoints.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.Vehicle.Table.Data.sql" />
   </ItemGroup>
 </Project>

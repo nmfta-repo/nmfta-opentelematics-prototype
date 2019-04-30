@@ -37,7 +37,7 @@ namespace Prototype.OpenTelematics.DataAccess
         public virtual DbSet<Route> Route { get; set; }
         public virtual DbSet<VehicleStopXRef> VehicleStopXRef { get; set; }
         public virtual DbSet<VehicleMessage> VehicleMessage { get; set; }
-
+        public virtual DbSet<HwyDataPoint> HwyDataPoints { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -194,10 +194,6 @@ namespace Prototype.OpenTelematics.DataAccess
                     .HasMaxLength(4000);
             });
 
-
-            //modelBuilder.Entity<DutyStatusLogAnnotation>()
-            //    .HasOne(l => l.dutyStatusLog)
-            //    .WithMany(a => a.annotations);
 
             modelBuilder.Entity<DutyStatusLog>()
                 .HasMany(a => a.annotations);
