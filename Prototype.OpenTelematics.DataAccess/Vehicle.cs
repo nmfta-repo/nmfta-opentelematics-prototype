@@ -11,6 +11,6 @@ namespace Prototype.OpenTelematics.DataAccess
         public string name { get; set; }
         public string cmvVIN { get; set; }
         public string licensePlate { get; set; }
-
+        public int sequence { get; set; }
     }
 }

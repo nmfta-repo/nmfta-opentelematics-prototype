@@ -5,5 +5,6 @@
     [driverId] UNIQUEIDENTIFIER NOT NULL, 
     [dateTime] DATETIMEOFFSET NOT NULL, 
     [latitude] NUMERIC(18, 8) NOT NULL, 
-    [longitude] NUMERIC(18, 8) NOT NULL
+    [longitude] NUMERIC(18, 8) NOT NULL,
+	[sequence] BIGINT IDENTITY(1000, 1) NOT NULL
 )

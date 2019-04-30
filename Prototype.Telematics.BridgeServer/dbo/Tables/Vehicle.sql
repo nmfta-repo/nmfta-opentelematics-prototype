@@ -3,5 +3,6 @@
 	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
     [name] NVARCHAR(100) NULL, 
     [cmvVIN] NVARCHAR(100) NULL, 
-    [licensePlate] NVARCHAR(50) NULL
+    [licensePlate] NVARCHAR(50) NULL, 
+    [sequence] INT IDENTITY(1000, 1) NOT NULL
 )

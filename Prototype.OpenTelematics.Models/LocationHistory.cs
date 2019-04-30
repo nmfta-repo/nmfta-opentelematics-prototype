@@ -30,8 +30,7 @@ namespace Prototype.OpenTelematics.Models
         public string location { get; set; }
 
         public VehicleLocation(CoarseVehicleLocationTimeHistory model, string ProviderId)
-        {
-            
+        {            
             id = model.Id;
             providerId = ProviderId;
             vehicleId = model.vehicleId;

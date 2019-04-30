@@ -28,14 +28,35 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
             + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverDispatch)]
-        public ActionResult<LocationHistory> Locations(string start, string stop)
+        public ActionResult<LocationHistory> Locations(string startTime, string stopTime, int? page, int? count)
         {
-            if (!DateTime.TryParse(start, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
-                return NotFound("Invalid start date");
-            if (!DateTime.TryParse(stop, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
-                return NotFound("Invalid stop date");
+            if (!DateTime.TryParse(startTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
+                return NotFound("Invalid start time");
+            if (!DateTime.TryParse(stopTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
+                return NotFound("Invalid stop time");
+            page = page ?? 1;
+            count = count ?? 50;
+            int totalCount = 0;
 
-            LocationHistory result = GetCourseLocationHistory(startDate, stopDate, TimeResolution.TIMERESOLUTION_MAX);
+            LocationHistory result = GetPageCourseLocationHistory(startDate, stopDate, TimeResolution.TIMERESOLUTION_MAX, (int)page, (int)count, ref totalCount);
+            Response.Headers.Add("X-Total-Count", totalCount.ToString());
+
+            return result;
+        }
+
+        [Route("fleet/locations/latest")]
+        [HttpGet]
+        [Authorize(Roles =
+            TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
+            + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverDispatch)]
+        public ActionResult<LocationHistory> Locations(int? page, int? count)
+        {
+            page = page ?? 1;
+            count = count ?? 50;
+            int totalCount = 0;
+
+            LocationHistory result = GetPageLatestCourseLocationHistory(TimeResolution.TIMERESOLUTION_MAX, (int)page, (int)count, ref totalCount);
+            Response.Headers.Add("X-Total-Count", totalCount.ToString());
 
             return result;
         }
@@ -64,12 +85,12 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
             + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverDispatch)]
-        public ActionResult<List<VehicleFlaggedEvent>> FlaggedEvents(string start, string stop)
+        public ActionResult<List<VehicleFlaggedEvent>> FlaggedEvents(string startTime, string stopTime)
         {
-            if (!DateTime.TryParse(start, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
-                return NotFound("Invalid start date");
-            if (!DateTime.TryParse(stop, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
-                return NotFound("Invalid stop date");
+            if (!DateTime.TryParse(startTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
+                return NotFound("Invalid start time");
+            if (!DateTime.TryParse(stopTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
+                return NotFound("Invalid stop time");
 
             List<VehicleFlaggedEvent> flaggedEventHistory =
                                m_Context.VehicleFlaggedEvent.Where(
@@ -103,12 +124,12 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
             + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverDispatch)]
-        public ActionResult<List<VehiclePerformanceEvent>> PerformanceEvents(string start, string stop)
+        public ActionResult<List<VehiclePerformanceEvent>> PerformanceEvents(string startTime, string stopTime)
         {
-            if (!DateTime.TryParse(start, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
-                return NotFound("Invalid start date");
-            if (!DateTime.TryParse(stop, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
-                return NotFound("Invalid stop date");
+            if (!DateTime.TryParse(startTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
+                return NotFound("Invalid start time");
+            if (!DateTime.TryParse(stopTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
+                return NotFound("Invalid stop time");
 
             List<VehiclePerformanceEvent> performanceEventHistory =
                                m_Context.VehiclePerformanceEvent.Where(
@@ -141,12 +162,12 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
             + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverDispatch)]
-        public ActionResult<List<VehiclePerformanceThreshold>> PerformanceThresholds(string start, string stop)
+        public ActionResult<List<VehiclePerformanceThreshold>> PerformanceThresholds(string startTime, string stopTime)
         {
-            if (!DateTime.TryParse(start, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
-                return NotFound("Invalid start date");
-            if (!DateTime.TryParse(stop, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
-                return NotFound("Invalid stop date");
+            if (!DateTime.TryParse(startTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
+                return NotFound("Invalid start time");
+            if (!DateTime.TryParse(stopTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
+                return NotFound("Invalid stop time");
 
             List<VehiclePerformanceThreshold> performanceThresholds =
                                m_Context.VehiclePerformanceThreshold.Where(
@@ -179,12 +200,12 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
             + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverDispatch)]
-        public ActionResult<List<VehicleFaultCodeEvent>> VehicleFaults(string start, string stop)
+        public ActionResult<List<VehicleFaultCodeEvent>> VehicleFaults(string startTime, string stopTime)
         {
-            if (!DateTime.TryParse(start, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
-                return NotFound("Invalid start date");
-            if (!DateTime.TryParse(stop, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
-                return NotFound("Invalid stop date");
+            if (!DateTime.TryParse(startTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
+                return NotFound("Invalid start time");
+            if (!DateTime.TryParse(stopTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
+                return NotFound("Invalid stop time");
 
             List<VehicleFaultCodeEvent> faultEvents =
                                m_Context.VehicleFaultCodeEvent.Where(
@@ -213,11 +234,53 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return NotFound("Invalid id");
         }
 
+        private LocationHistory GetPageCourseLocationHistory(DateTime startDate, DateTime stopDate, TimeResolution timeResolution, int page, int count, ref int totalCount)
+        {
+            totalCount = m_Context.CoarseVehicleLocationTimeHistory.Where( 
+                                    x => x.dateTime >= startDate &&
+                                    x.dateTime <= stopDate)
+                                    .Count();
+
+
+            var data = m_Context.CoarseVehicleLocationTimeHistory.Where(
+                                    x => x.dateTime >= startDate &&
+                                    x.dateTime <= stopDate)
+                                    .OrderBy(x => x.sequence)
+                                    .Skip((page-1)*count)
+                                    .Take(count)
+                                    .ToList();
+
+            var result = new LocationHistory(data, m_appSettings.ProviderId);
+            result.timeResolution = timeResolution;
+            return result;
+        }
+
+        private LocationHistory GetPageLatestCourseLocationHistory(TimeResolution timeResolution, int page, int count, ref int totalCount)
+        {
+            totalCount = m_Context.CoarseVehicleLocationTimeHistory
+                            .GroupBy(l => l.vehicleId, (key, g) => g.OrderByDescending(e => e.dateTime).FirstOrDefault())
+                            .Count();
+
+
+            var data = m_Context.CoarseVehicleLocationTimeHistory
+                            .GroupBy(l => l.vehicleId, (key, g) => g.OrderByDescending(e => e.dateTime).FirstOrDefault())
+                            .OrderBy(x => x.sequence)
+                            .Skip((page - 1) * count)
+                            .Take(count)
+                            .ToList();
+
+            var result = new LocationHistory(data, m_appSettings.ProviderId);
+            result.timeResolution = timeResolution;
+            return result;
+        }
+
         private LocationHistory GetCourseLocationHistory(DateTime startDate, DateTime stopDate, TimeResolution timeResolution)
         {
+
             var data = m_Context.CoarseVehicleLocationTimeHistory.Where(
-                                                 x => x.dateTime >= startDate &&
-                                                      x.dateTime <= stopDate).ToList();
+                                                x => x.dateTime >= startDate &&
+                                                x.dateTime <= stopDate)
+                                                .ToList();
 
             var result = new LocationHistory(data, m_appSettings.ProviderId);
             result.timeResolution = timeResolution;
@@ -267,12 +330,12 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Authorize(Roles = TelematicsRoles.Admin
             + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.VehicleQuery
             + "," + TelematicsRoles.DriverFollow + "," + TelematicsRoles.VehicleFollow)]
-        public ActionResult<VehicleInfoHistory> FleetVehicleInfos(string start, string stop)
+        public ActionResult<VehicleInfoHistory> FleetVehicleInfos(string startTime, string stopTime)
         {
-            if (!DateTime.TryParse(start, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
-                return NotFound("Invalid start date");
-            if (!DateTime.TryParse(stop, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
-                return NotFound("Invalid stop date");
+            if (!DateTime.TryParse(startTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
+                return NotFound("Invalid start time");
+            if (!DateTime.TryParse(stopTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
+                return NotFound("Invalid stop time");
 
             LocationHistory locHistory = GetCourseLocationHistory(startDate, stopDate, TimeResolution.TIMERESOLUTION_NOT_MAX);
             List<VehicleFlaggedEvent> flaggedEventHistory =

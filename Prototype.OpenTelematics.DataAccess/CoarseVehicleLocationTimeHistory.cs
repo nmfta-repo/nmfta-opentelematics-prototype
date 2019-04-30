@@ -11,5 +11,6 @@ namespace Prototype.OpenTelematics.DataAccess
         public DateTimeOffset dateTime { get; set; }
         public decimal latitude { get; set; }
         public decimal longitude { get; set; }
+        public Int64 sequence { get; set; }
     }
 }
