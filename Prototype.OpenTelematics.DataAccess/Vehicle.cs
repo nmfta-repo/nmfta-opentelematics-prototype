@@ -1,7 +1,5 @@
-﻿using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Prototype.OpenTelematics.DataAccess
 {
@@ -11,6 +9,8 @@ namespace Prototype.OpenTelematics.DataAccess
         public string name { get; set; }
         public string cmvVIN { get; set; }
         public string licensePlate { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int sequence { get; set; }
     }
 }

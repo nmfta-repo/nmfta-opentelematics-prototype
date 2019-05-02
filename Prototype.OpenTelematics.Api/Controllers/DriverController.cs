@@ -135,7 +135,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Route("driveravailability/{id}")]
         [HttpGet]
         [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
-        public ActionResult<DriverAvailability> Get(string id, DateTime start, DateTime stop)
+        public ActionResult<DriverAvailability> Get(string id, DateTime startTime, DateTime stopTime)
         {
             if (!Guid.TryParse(id, out var guid))
             {
@@ -144,10 +144,10 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
             // TODO:K Find How Time Resolution is set
             var courseLocationHistory =
-                m_Context.CoarseVehicleLocationTimeHistory.Where(c => c.driverId == guid && c.dateTime >= start && c.dateTime <= stop);
-            var dutyStatusLogs = m_Context.DutyStatusLog.Where(c => c.driverId == guid && c.dateTime >= start && c.dateTime <= stop);
+                m_Context.CoarseVehicleLocationTimeHistory.Where(c => c.driverId == guid && c.dateTime >= startTime && c.dateTime <= stopTime);
+            var dutyStatusLogs = m_Context.DutyStatusLog.Where(c => c.driverId == guid && c.dateTime >= startTime && c.dateTime <= stopTime);
             var vehicleFlaggedEvents =
-                m_Context.VehicleFlaggedEvent.Where(c => c.driverId == guid && c.eventStart >= start && c.eventEnd <= stop);
+                m_Context.VehicleFlaggedEvent.Where(c => c.driverId == guid && c.eventStart >= startTime && c.eventEnd <= stopTime);
             var model = new DriverAvailability
             {
                 CoarseVehicleLocationTimeHistory = new CoarseVehicleLocationTimeHistoryModel
@@ -173,15 +173,15 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [HttpGet]
         [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverQuery + "," + 
                            TelematicsRoles.DriverFollow + "," + TelematicsRoles.HR)]
-        public ActionResult<BreakRulesAndWaivers> GetBreakRulesAndWaivers(string id, DateTime start, DateTime stop)
+        public ActionResult<BreakRulesAndWaivers> GetBreakRulesAndWaivers(string id, DateTime startTime, DateTime stopTime)
         {
             if (!Guid.TryParse(id, out var guid))
             {
                 return NotFound("Invalid id");
             }
 
-            var driverBreakRules = m_Context.DriverBreakRule.Where(c => c.driverId == guid && c.activeFrom >= start && c.activeTo <= stop);
-            var driverWaivers = m_Context.DriverWaiver.Where(c => c.driverId == guid && c.waiverDay >= start && c.waiverDay <= stop);
+            var driverBreakRules = m_Context.DriverBreakRule.Where(c => c.driverId == guid && c.activeFrom >= startTime && c.activeTo <= stopTime);
+            var driverWaivers = m_Context.DriverWaiver.Where(c => c.driverId == guid && c.waiverDay >= startTime && c.waiverDay <= stopTime);
             var model = new BreakRulesAndWaivers
             {
                 BreakRules = driverBreakRules.ToArray(),
@@ -315,12 +315,12 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
         [Route("drivers/{driverId}/performance_summaries")]
         [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.HR)]
-        public ActionResult<DriverPerformanceSummaryModel> DriverPerformanceSummaries(string driverId, string start, string stop)
+        public ActionResult<DriverPerformanceSummaryModel> DriverPerformanceSummaries(string driverId, string startTime, string stopTime)
         {
 
-            if (!DateTime.TryParse(start, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startTime))
+            if (!DateTime.TryParse(startTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDateTime))
                 return BadRequest("Invalid start time");
-            if (!DateTime.TryParse(stop, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopTime))
+            if (!DateTime.TryParse(stopTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDateTime))
                 return BadRequest("Invalid stop time");
             if (!Guid.TryParse(driverId, out var guid))
                 return BadRequest("Invalid driver id");
@@ -334,8 +334,8 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
             var summaries = m_Context.DriverPerformanceSummary.Where
                 (s => s.driverId == guid &&
-                 s.eventStart >= startTime &&
-                 s.eventStart <= stopTime)
+                 s.eventStart >= startDateTime &&
+                 s.eventStart <= stopDateTime)
                 .ToList();
 
             DriverPerformanceSummaryModel result = new DriverPerformanceSummaryModel();
