@@ -18,48 +18,47 @@ Fleet Location
       center: latLng,
       mapTypeId: 'terrain'
     });
+
+    update();
   }
 
-  $(document).ready(function () {
-    (function update() {
-      $.ajax({
-        url: "/fleetLatestLocationJson",
-        success: function (data) {
-          var locationsData = JSON.parse(data)
-          if (map && locationsData) {
-            var vehicles = locationsData.data;
-            for (var j = 0; j < vehicles.length; j++) {
-              var vehicle = vehicles[j];
-              var latlngStr = vehicle.location.split(" ");
-              var latLng = new google.maps.LatLng(parseFloat(latlngStr[0]), parseFloat(latlngStr[1]));
+  function update() {
+    $.ajax({
+      url: "/fleetLatestLocationJson",
+      success: function (data) {
+        var locationsData = JSON.parse(data)
+        if (locationsData) {
+          var vehicles = locationsData.data;
+          for (var j = 0; j < vehicles.length; j++) {
+            var vehicle = vehicles[j];
+            var latlngStr = vehicle.location.split(" ");
+            var latLng = new google.maps.LatLng(parseFloat(latlngStr[0]), parseFloat(latlngStr[1]));
 
-              // if vehicle exists update the position
-              if (vehicle.vehicle_id in markersArray) {
-                var marker = markersArray[vehicle.vehicle_id];
-                marker.setPosition(latLng);
-              }
-              else {
-                // add the vehicle to the marker
-                var marker = new google.maps.Marker({
-                  position: latLng,
-                  title: "vehicle",
-                  map: map,
-                  icon: { url: truckImg, scaledSize: new google.maps.Size(75, 75) }
-                });
-                markersArray[vehicle.vehicle_id] = marker;
-              }
+            // if vehicle exists update the position
+            if (vehicle.vehicle_id in markersArray) {
+              var marker = markersArray[vehicle.vehicle_id];
+              marker.setPosition(latLng);
+            }
+            else {
+              // add the vehicle to the marker
+              var marker = new google.maps.Marker({
+                position: latLng,
+                title: "vehicle",
+                map: map,
+                icon: { url: truckImg, scaledSize: new google.maps.Size(75, 75) }
+              });
+              markersArray[vehicle.vehicle_id] = marker;
             }
           }
-        },
-      }).then(function () {  
-        // on completion, restart after 15 seconds
-        setTimeout(update, 15000);  
-      });
-    })();
-  });
+        }
+      },
+    }).then(function () {
+      // on completion, restart after 15 seconds
+      setTimeout(update, 15000);
+    });
+  }
 
 </script>
-<script async defer
-  src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap">
-  </script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap">
+</script>
 {% endblock %}

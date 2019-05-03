@@ -4,6 +4,8 @@ import jsons
 from datetime import datetime
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.views.decorators.http import require_GET, require_POST
+from django.views.decorators.csrf import ensure_csrf_cookie
 import jsonpickle
 
 from .helper import *
@@ -48,3 +50,22 @@ def fleetLatestLocationJson(request):
     result = client.use_case_driver_messaging_by_geo_location \
         .retrieve_all_latest_vehicle_location_time_history_objects(version=API_VERSION, page=1,count=100)
     return JsonResponse(jsonpickle.encode(result), safe=False)
+
+@require_GET
+@ensure_csrf_cookie
+def exportData(request):
+    return render(request, "otapiui/exportData.html",
+    {
+            'current_time': datetime.now(),
+    }
+)
+
+@require_POST
+@ensure_csrf_cookie
+def acceptExportRequest(request):
+    return render(request, "otapiui/exportData.html",
+    {
+            'current_time': datetime.now(),
+    }
+)
+

@@ -7,4 +7,5 @@ urlpatterns = [
     path("systemStatusJson", views.systemStatusJson, name="systemStatusJson"),
     path("fleetLatestLocation", views.fleetLatestLocation, name="fleet_latest_location"),
     path("fleetLatestLocationJson", views.fleetLatestLocationJson, name="fleetLatestLocationJson"),
+    path("exportData", views.exportData, name="export_data"),
 ]
