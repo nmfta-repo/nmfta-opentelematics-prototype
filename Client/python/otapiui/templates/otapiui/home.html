@@ -1,7 +1,8 @@
 {% extends "otapiui/layout.html" %}
+{% load static %}
 {% block title %}
 Home Page
 {% endblock %}
 {% block content %}
-Home Page  {{Vehicle.vehicle_info}}
+<img src="{% static 'otapiui/prototype_splash_page.png' %}" class="img-fluid" style="max-height:80vh"/>
 {% endblock %}

@@ -26,7 +26,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
         /// Returns Current System Status
         /// </summary>
         /// <returns>Service System Status</returns>
-        [Route("status")]
+        [Route("health/current")]
         [HttpGet]
         public ActionResult<ProviderStatusModel> Get()
         {
@@ -61,7 +61,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
         /// </summary>
         /// <param name="days">Number of days</param>
         /// <returns>Incident Summary</returns>
-        [Route("incidents")]
+        [Route("health/recents")]
         [HttpGet]
         public ActionResult<IncidentsModel> Incidents(int days = 30)
         {
