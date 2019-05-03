@@ -14,7 +14,7 @@ Fleet Location
   function initMap() {
     var latLng = new google.maps.LatLng(42.110578, -88.033689);
     map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 6,
+      zoom: 7,
       center: latLng,
       mapTypeId: 'terrain'
     });
@@ -23,7 +23,7 @@ Fleet Location
   $(document).ready(function () {
     (function update() {
       $.ajax({
-        url: "/fleetLocationsJson",
+        url: "/fleetLatestLocationJson",
         success: function (data) {
           var locationsData = JSON.parse(data)
           if (map && locationsData) {
@@ -60,6 +60,6 @@ Fleet Location
 
 </script>
 <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAJNdaP50Wo55CCIchXcvqloWd7_bjm9Es&callback=initMap">
+  src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap">
   </script>
 {% endblock %}

@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 import jsonpickle
 
-import helper
+from .helper import *
 
 # Create your views here.
 def index(request):
@@ -17,7 +17,7 @@ def index(request):
 )
 
 def system_status(request):
-    client = helper.getOtapiSdkClient()
+    client = getOtapiSdkClient()
     result = client.use_case_check_provider_s_state_of_health.check_current_state_of_health(1)
     return render(request, "otapiui/status.html",
     {
@@ -26,15 +26,16 @@ def system_status(request):
     }
 )
 
-def fleetLocations(request):
-    return render(request, "otapiui/fleetLocations.html",
+def fleetLatestLocation(request):
+    return render(request, "otapiui/fleetLatestLocation.html",
     {
             'current_time': datetime.now(),
+            'google_maps_api_key' : GOOGLE_MAPS_API_KEY
     }
 )
 
-def fleetLocationsJson(request):
-    client = helper.getOtapiSdkClient()
+def fleetLatestLocationJson(request):
+    client = getOtapiSdkClient()
     result = client.use_case_driver_messaging_by_geo_location \
-        .retrieve_all_latest_vehicle_location_time_history_objects(version=helper.API_VERSION, page=1,count=100)
+        .retrieve_all_latest_vehicle_location_time_history_objects(version=API_VERSION, page=1,count=100)
     return JsonResponse(jsonpickle.encode(result), safe=False)
