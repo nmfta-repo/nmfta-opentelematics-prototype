@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Prototype.OpenTelematics.DataAccess
@@ -12,6 +11,7 @@ namespace Prototype.OpenTelematics.DataAccess
         public DateTimeOffset dateTime { get; set; }
         public decimal latitude { get; set; }
         public decimal longitude { get; set; }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Int64 sequence { get; set; }
     }

@@ -47,6 +47,7 @@ namespace Prototype.Telematics.DataSimulator
                     //await Task.Delay(m_heartbeat * 1000);
 
                 }
+                //if we reach the end, turnaround and head back
                 SortRoute(BACKWARD);
                 foreach (HwyDataPoint point in m_route)
                 {
