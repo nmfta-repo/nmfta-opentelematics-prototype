@@ -7,6 +7,7 @@ from django.shortcuts import render
 import jsonpickle
 
 from .helper import *
+#import helper
 
 # Create your views here.
 def index(request):
@@ -21,10 +22,18 @@ def system_status(request):
     result = client.use_case_check_provider_s_state_of_health.check_current_state_of_health(1)
     return render(request, "otapiui/status.html",
     {
-            'current_time': datetime.now(),
-            'system_status' : result
+        'current_time': datetime.now(),
+        'system_status' : result
     }
 )
+
+def systemStatusJson(request):
+    client = getOtapiSdkClient()
+    result = client.use_case_check_provider_s_state_of_health.check_current_state_of_health(1)
+    data = {
+        'service_status': result.service_status,
+    }
+    return JsonResponse(data)
 
 def fleetLatestLocation(request):
     return render(request, "otapiui/fleetLatestLocation.html",
