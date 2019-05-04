@@ -101,7 +101,7 @@ namespace Prototype.OpenTelematics.Api
 
             app.UseStatusCodePages();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseClientRateLimiting();
             app.UseMvc();
