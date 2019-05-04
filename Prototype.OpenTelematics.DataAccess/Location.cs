@@ -11,7 +11,7 @@ namespace Prototype.OpenTelematics.DataAccess
         public decimal longitude { get; set; }
         public string identifiedPlace { get; set; }
         public string identifiedState { get; set; }
-        public decimal distanceFrom { get; set; }
+        public decimal? distanceFrom { get; set; }
         public string directionFrom { get; set; }
     }
 }

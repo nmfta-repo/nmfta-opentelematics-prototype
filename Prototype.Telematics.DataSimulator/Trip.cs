@@ -62,13 +62,13 @@ namespace Prototype.Telematics.DataSimulator
 
         private void AddDataPoint(HwyDataPoint point)
         {
-            CoarseVehicleLocationTimeHistory loc = new CoarseVehicleLocationTimeHistory();
+            VehicleLocationTimeHistory loc = new VehicleLocationTimeHistory();
             loc.dateTime = DateTimeOffset.UtcNow;
             loc.driverId = m_driver.Id;
             loc.vehicleId = m_vehicle.Id;
             loc.latitude = point.Latitude;
             loc.longitude = point.Longitude;
-            m_context.CoarseVehicleLocationTimeHistory.Add(loc);
+            m_context.VehicleLocationTimeHistory.Add(loc);
             m_context.SaveChanges();
         }
 

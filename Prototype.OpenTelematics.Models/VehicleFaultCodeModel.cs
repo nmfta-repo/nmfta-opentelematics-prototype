@@ -8,8 +8,7 @@ namespace Prototype.OpenTelematics.Models
         public Guid Id { get; set; }
         public string providerId { get; set; }
         public Guid vehicleId { get; set; }
-        public decimal longitude { get; set; }
-        public decimal latitude { get; set; }
+        public string location { get; set; }
         public string eventComment { get; set; }
         public DateTimeOffset triggerDate { get; set; }
         public DateTimeOffset clearedDate { get; set; }
@@ -18,7 +17,7 @@ namespace Prototype.OpenTelematics.Models
         public string parameterOrSubsystemIdType { get; set; }
         public int faultCodeParameterOrSubsystemId { get; set; }
         public int sourceAddress { get; set; }
-        public int? suspectParameterNumber { get; set; }
+        public int suspectParameterNumber { get; set; }
         public int failureModeIdentifier { get; set; }
         public bool urgentFlag { get; set; }
         public int odometer { get; set; }
@@ -34,8 +33,7 @@ namespace Prototype.OpenTelematics.Models
             Id = item.Id;
             providerId = provider;
             vehicleId = item.vehicleId;
-            longitude = item.longitude;
-            latitude = item.latitude;
+            location = string.Format("{0} {1}", item.latitude, item.longitude);
             eventComment = item.eventComment;
             triggerDate = item.triggerDate;
             clearedDate = item.clearedDate;

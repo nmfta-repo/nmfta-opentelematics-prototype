@@ -21,8 +21,8 @@ namespace Prototype.OpenTelematics.Models
         /// The Duty Status Logs of the requested `driverId` for the requested time period [`start`,
         /// `stop`)
         /// </summary>
-        [JsonProperty("dutyStatusLogs", Required = Required.Always)]
-        public DutyStatusLog[] DutyStatusLogs { get; set; }
+        [JsonProperty("logEvents", Required = Required.Always)]
+        public LogEvent[] LogEvents { get; set; }
 
         /// <summary>
         /// All Vehicle Flagged Events which are associated with the requested `driverId` and which
@@ -31,13 +31,5 @@ namespace Prototype.OpenTelematics.Models
         [JsonProperty("vehicleFlaggedEvents", Required = Required.Always)]
         public VehicleFlaggedEvent[] VehicleFlaggedEvents { get; set; }
     }
-
-    public class CoarseVehicleLocationTimeHistoryModel
-    {
-        [JsonProperty("data", Required = Required.Always)]
-        public CoarseVehicleLocationTimeHistory[] VehicleLocationTimeHistories { get; set; }
-
-        [JsonProperty("timeResolution", Required = Required.Always)]
-        public string TimeResolution { get; set; }
-    }    
+   
 }

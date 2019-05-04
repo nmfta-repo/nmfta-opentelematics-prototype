@@ -79,7 +79,7 @@ namespace Prototype.Telematics.DataSimulator
 
         static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
         {
-            Console.WriteLine("Cancelling");
+            Console.WriteLine("Cancelling......");
             if (e.SpecialKey == ConsoleSpecialKey.ControlC)
             {
                 _cancelled = true;

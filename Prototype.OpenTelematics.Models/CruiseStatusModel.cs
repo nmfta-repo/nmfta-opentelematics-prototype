@@ -10,11 +10,13 @@ namespace Prototype.OpenTelematics.Models
         public bool ccClutchSwitch { get; set; }
         public bool ccCruiseSwitch { get; set; }
         public bool ccResumeSwitch { get; set; }
+        public bool ccAccelerationSwitch { get; set; }
         public bool ccBrakeSwitch { get; set; }
         public int ccSpeed { get; set; }
 
         public CruiseStatusModel(VehicleFaultCodeEvent item)
         {
+            ccAccelerationSwitch = item.ccAccelerationSwitch;
             ccBrakeSwitch = item.ccBrakeSwitch;
             ccClutchSwitch = item.ccClutchSwitch;
             ccCoastSwitch = item.ccCoastSwitch;

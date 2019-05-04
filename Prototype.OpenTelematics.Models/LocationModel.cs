@@ -7,7 +7,7 @@ namespace Prototype.OpenTelematics.Models
         public string location { get; set; }
         public string identifiedPlace { get; set; }
         public string identifiedState { get; set; }
-        public decimal distanceFrom { get; set; }
+        public decimal? distanceFrom { get; set; }
         public string directionFrom { get; set; }
 
         public LocationModel(Location loc)

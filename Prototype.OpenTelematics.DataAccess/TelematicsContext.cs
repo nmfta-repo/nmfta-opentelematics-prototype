@@ -15,7 +15,6 @@ namespace Prototype.OpenTelematics.DataAccess
         {
         }
 
-        public virtual DbSet<CoarseVehicleLocationTimeHistory> CoarseVehicleLocationTimeHistory { get; set; }
         public virtual DbSet<CurrentServiceStatus> CurrentServiceStatus { get; set; }
         public virtual DbSet<CurrentServiceStatusFactor> CurrentServiceStatusFactor { get; set; }
         public virtual DbSet<Driver> Driver { get; set; }
@@ -23,8 +22,8 @@ namespace Prototype.OpenTelematics.DataAccess
         public virtual DbSet<DriverPerformanceSummary> DriverPerformanceSummary { get; set; }
         public virtual DbSet<DriverWaiver> DriverWaiver { get; set; }
         public virtual DbSet<DriverWorkLog> DriverWorkLog { get; set; }
-        public virtual DbSet<DutyStatusLog> DutyStatusLog { get; set; }
-        public virtual DbSet<DutyStatusLogAnnotation> DutyStatusLogAnnotation { get; set; }
+        public virtual DbSet<LogEvent> LogEvent { get; set; }
+        public virtual DbSet<LogEventAnnotation> LogEventAnnotation { get; set; }
         public virtual DbSet<ServiceStatusEvent> ServiceStatusEvent { get; set; }
         public virtual DbSet<ServiceStatusEventFactor> ServiceStatusEventFactor { get; set; }
         public virtual DbSet<Vehicle> Vehicle { get; set; }
@@ -32,12 +31,14 @@ namespace Prototype.OpenTelematics.DataAccess
         public virtual DbSet<VehicleFaultCodeEvent> VehicleFaultCodeEvent { get; set; }
         public virtual DbSet<VehiclePerformanceEvent> VehiclePerformanceEvent { get; set; }
         public virtual DbSet<VehiclePerformanceThreshold> VehiclePerformanceThreshold { get; set; }
+        public virtual DbSet<VehicleLocationTimeHistory> VehicleLocationTimeHistory { get; set; }
         public virtual DbSet<StopGeographicDetails> StopGeographicDetails { get; set; }
         public virtual DbSet<Location> Location { get; set; }
         public virtual DbSet<Route> Route { get; set; }
         public virtual DbSet<VehicleStopXRef> VehicleStopXRef { get; set; }
         public virtual DbSet<VehicleMessage> VehicleMessage { get; set; }
         public virtual DbSet<HwyDataPoint> HwyDataPoints { get; set; }
+        public virtual DbSet<TokenTranslation> TokenTranslation { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -49,15 +50,6 @@ namespace Prototype.OpenTelematics.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.0-rtm-35687");
-
-            modelBuilder.Entity<CoarseVehicleLocationTimeHistory>(entity =>
-            {
-                entity.Property(e => e.Id).HasDefaultValueSql("newid()");
-
-                entity.Property(e => e.latitude).HasColumnType("numeric(18, 8)");
-
-                entity.Property(e => e.longitude).HasColumnType("numeric(18, 8)");
-            });
 
             modelBuilder.Entity<CurrentServiceStatus>(entity =>
             {
@@ -79,17 +71,29 @@ namespace Prototype.OpenTelematics.DataAccess
 
             modelBuilder.Entity<Driver>(entity =>
             {
-                entity.Property(e => e.Id).HasDefaultValueSql("newid()");
+                entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.country).HasMaxLength(50);
+                entity.Property(e => e.country)
+                    .IsRequired()
+                    .HasMaxLength(50);
 
-                entity.Property(e => e.driverLicenseNumber).HasMaxLength(50);
+                entity.Property(e => e.driverHomeTerminal).HasMaxLength(50);
 
-                entity.Property(e => e.driverHomeTerminal).HasMaxLength(10);
+                entity.Property(e => e.driverLicenseNumber)
+                    .IsRequired()
+                    .HasMaxLength(50);
 
-                entity.Property(e => e.region).HasMaxLength(50);
+                entity.Property(e => e.enabled).HasDefaultValueSql("((1))");
 
-                entity.Property(e => e.username).HasMaxLength(250);
+                entity.Property(e => e.password).HasMaxLength(250);
+
+                entity.Property(e => e.region)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.username)
+                    .IsRequired()
+                    .HasMaxLength(250);
             });
 
             modelBuilder.Entity<DriverBreakRule>(entity =>
@@ -129,50 +133,6 @@ namespace Prototype.OpenTelematics.DataAccess
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<DutyStatusLog>(entity =>
-            {
-                entity.Property(e => e.Id).HasDefaultValueSql("newid()");
-
-                entity.Property(e => e.distanceLastValid).HasColumnType("numeric(18, 5)");
-
-                entity.Property(e => e.eventDataChecksum)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.eventRecordStatus)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.eventType)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.latitude).HasColumnType("numeric(18, 8)");
-
-                entity.Property(e => e.longitude).HasColumnType("numeric(18, 8)");
-
-                entity.Property(e => e.malfunction)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.origin)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.outputFileComment)
-                    .IsRequired()
-                    .HasMaxLength(1000);
-
-                entity.Property(e => e.state)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.status)
-                    .IsRequired()
-                    .HasMaxLength(100);
-            });
-
-
             modelBuilder.Entity<DriverWorkLog>(entity =>
             {
                 entity.Property(e => e.Id).HasDefaultValueSql("newid()");
@@ -184,19 +144,6 @@ namespace Prototype.OpenTelematics.DataAccess
                 entity.Property(e => e.hoursWorked).HasColumnType("numeric(18, 4)");
 
             });
-
-            modelBuilder.Entity<DutyStatusLogAnnotation>(entity =>
-            {
-                entity.Property(e => e.Id).HasDefaultValueSql("newid()");
-
-                entity.Property(e => e.comment)
-                    .IsRequired()
-                    .HasMaxLength(4000);
-            });
-
-
-            modelBuilder.Entity<DutyStatusLog>()
-                .HasMany(a => a.annotations);
 
             modelBuilder.Entity<ServiceStatusEvent>(entity =>
             {
@@ -220,11 +167,17 @@ namespace Prototype.OpenTelematics.DataAccess
             {
                 entity.Property(e => e.Id).HasDefaultValueSql("newid()");
 
+                entity.Property(e => e.cmvVIN)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.licensePlate)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
                 entity.Property(e => e.name).HasMaxLength(100);
 
-                entity.Property(e => e.cmvVIN).HasMaxLength(100);
-
-                entity.Property(e => e.licensePlate).HasMaxLength(50);
+                entity.Property(e => e.sequence).ValueGeneratedOnAdd();
             });
 
             modelBuilder.Entity<VehicleFlaggedEvent>(entity =>
@@ -232,8 +185,6 @@ namespace Prototype.OpenTelematics.DataAccess
                 entity.Property(e => e.Id).HasDefaultValueSql("newid()");
 
                 entity.Property(e => e.accelerationPercent).HasColumnType("numeric(18, 5)");
-
-                entity.Property(e => e.cruiseStatus).IsRequired();
 
                 entity.Property(e => e.ecmSpeed).HasColumnType("numeric(18, 5)");
 
@@ -249,13 +200,11 @@ namespace Prototype.OpenTelematics.DataAccess
 
                 entity.Property(e => e.gpsHeading).HasColumnType("numeric(18, 5)");
 
-                entity.Property(e => e.gpsQuality).HasColumnType("numeric(18, 5)");
+                entity.Property(e => e.gpsQuality).HasMaxLength(50);
 
                 entity.Property(e => e.gpsSpeed).HasColumnType("numeric(18, 5)");
 
                 entity.Property(e => e.ignitionStatus).IsRequired();
-
-                entity.Property(e => e.odometer).HasColumnType("numeric(18, 5)");
 
                 entity.Property(e => e.trigger)
                     .IsRequired()
@@ -266,20 +215,33 @@ namespace Prototype.OpenTelematics.DataAccess
             {
                 entity.Property(e => e.Id).HasDefaultValueSql("newid()");
 
-                entity.Property(e => e.vehicleId).HasMaxLength(36);
+                entity.Property(e => e.clearType).HasMaxLength(50);
+
+                entity.Property(e => e.eventComment).HasMaxLength(500);
+
+                entity.Property(e => e.gpsQuality)
+                    .IsRequired()
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.latitude).HasColumnType("numeric(18, 8)");
 
                 entity.Property(e => e.longitude).HasColumnType("numeric(18, 8)");
 
-                entity.Property(e => e.eventComment).HasMaxLength(500);
-
-                entity.Property(e => e.parameterOrSubsystemIdType).HasDefaultValue("")
+                entity.Property(e => e.parameterOrSubsystemIdType)
+                    .IsRequired()
                     .HasMaxLength(50);
+            });
 
-                entity.Property(e => e.gpsQuality).HasMaxLength(50);
+            modelBuilder.Entity<VehicleLocationTimeHistory>(entity =>
+            {
+                entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.clearType).HasMaxLength(50);
+                entity.Property(e => e.latitude).HasColumnType("numeric(18, 8)");
+
+                entity.Property(e => e.longitude).HasColumnType("numeric(18, 8)");
+
+                entity.Property(e => e.sequence).ValueGeneratedOnAdd();
+
             });
 
             modelBuilder.Entity<VehiclePerformanceThreshold>(entity =>
@@ -292,11 +254,7 @@ namespace Prototype.OpenTelematics.DataAccess
             {
                 entity.Property(e => e.Id).HasDefaultValueSql("newid()");
 
-                entity.Property(e => e.vehicleId).HasMaxLength(36);
-
                 entity.Property(e => e.eventComment).HasMaxLength(1000);
-
-                entity.Property(e => e.performanceThresholdId).HasMaxLength(36);
 
                 entity.Property(e => e.engineLoadStopped).HasColumnType("numeric(3, 2)");
 
@@ -314,7 +272,7 @@ namespace Prototype.OpenTelematics.DataAccess
             {
                 entity.Property(e => e.Id).HasDefaultValueSql("newid()");
 
-                entity.Property(e => e.stopName).HasMaxLength(200);
+                entity.Property(e => e.stopName).HasMaxLength(500);
 
                 entity.Property(e => e.address).HasMaxLength(500);
 
@@ -343,10 +301,56 @@ namespace Prototype.OpenTelematics.DataAccess
 
             });
 
-            modelBuilder.Entity<DutyStatusLog>()
-                .HasOne(t => t.location)
-                .WithOne();
-                
+            modelBuilder.Entity<LogEvent>(entity =>
+            {
+                entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.coDrivers).HasMaxLength(1000);
+
+                entity.Property(e => e.comment)
+                    .IsRequired()
+                    .HasMaxLength(1000);
+
+                entity.Property(e => e.distanceLastValid).HasColumnType("numeric(18, 5)");
+
+                entity.Property(e => e.eventDataChecksum)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.eventType)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.origin)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.state)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.HasOne(d => d.location)
+                    .WithOne();
+            });
+
+            modelBuilder.Entity<LogEventAnnotation>(entity =>
+            {
+                entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.comment)
+                    .IsRequired()
+                    .HasMaxLength(4000);
+
+            });
+
+            modelBuilder.Entity<TokenTranslation>(entity =>
+            {
+                entity.Property(e => e.msgid).IsRequired().HasMaxLength(100);
+
+                entity.Property(e => e.origin).HasMaxLength(500);
+
+                entity.Property(e => e.msgstr).HasMaxLength(1000);
+            });
 
             OnModelCreatingPartial(modelBuilder);
         }

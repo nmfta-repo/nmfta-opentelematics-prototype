@@ -69,7 +69,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Authorize(Roles =
         TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
              + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
-        public ActionResult<LocationHistory> VehicleCourseLocations(string vehicleId, string startTime, string stopTime)
+        public ActionResult<VehicleLocationTimeHistoryModel> VehicleCourseLocations(string vehicleId, string startTime, string stopTime)
         {
             if (!DateTime.TryParse(startTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDateTime))
                 return NotFound("Invalid start date");
@@ -78,14 +78,12 @@ namespace Prototype.OpenTelematics.Api.Controllers
             if (!Guid.TryParse(vehicleId, out var guid))
                 return NotFound("Invalid vehicle id");
 
-            var data = m_Context.CoarseVehicleLocationTimeHistory.Where(
+            var data = m_Context.VehicleLocationTimeHistory.Where(
                                                  x => x.dateTime >= startDateTime &&
                                                       x.dateTime <= stopDateTime && 
                                                       x.vehicleId == guid).ToList();
 
-            var result = new LocationHistory(data, m_appSettings.ProviderId);
-            //TODO: How to determine timeResolution?
-            result.timeResolution = TimeResolution.TIMERESOLUTION_MAX;
+            var result = new VehicleLocationTimeHistoryModel(data, m_appSettings.ProviderId);
             return result;
         }
 
@@ -118,12 +116,12 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Authorize(Roles =
         TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
             + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
-        public ActionResult<List<VehicleFaultCodeEvent>> VehicleFaultCodeEvents(string vehicleId, string start, string stopTime)
+        public ActionResult<List<VehicleFaultCodeEvent>> VehicleFaultCodeEvents(string vehicleId, string startTime, string stopTime)
         {
-            if (!DateTime.TryParse(start, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDateTime))
-                return NotFound("Invalid start date");
+            if (!DateTime.TryParse(startTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDateTime))
+                return NotFound("Invalid start time");
             if (!DateTime.TryParse(stopTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDateTime))
-                return NotFound("Invalid stop date");
+                return NotFound("Invalid stop time");
             if (!Guid.TryParse(vehicleId, out var guid))
                 return NotFound("Invalid vehicle id");
 

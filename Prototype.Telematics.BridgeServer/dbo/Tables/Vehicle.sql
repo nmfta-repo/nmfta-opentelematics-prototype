@@ -1,8 +1,8 @@
 ﻿CREATE TABLE [dbo].[Vehicle]
 (
-	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT newid(), 
     [name] NVARCHAR(100) NULL, 
-    [cmvVIN] NVARCHAR(100) NULL, 
-    [licensePlate] NVARCHAR(50) NULL, 
+    [cmvVIN] NVARCHAR(100) NOT NULL, 
+    [licensePlate] NVARCHAR(50) NOT NULL, 
     [sequence] INT IDENTITY(1000, 1) NOT NULL
 )

@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DutyStatusLogFollow.cs" />
+    <Compile Remove="DutyStatusLogModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Prototype.OpenTelematics.DataAccess\Prototype.OpenTelematics.DataAccess.csproj" />
   </ItemGroup>
 

@@ -80,8 +80,8 @@ namespace Prototype.OpenTelematics.Api.Controllers
                 routeId = routeGuidId,
                 address = postedModel.stopAddress,
                 stopName = postedModel.stopName,
-                latitude = coordinates.latitude,
-                longitude = coordinates.longitude,
+                latitude = coordinates.latitude ?? 0,
+                longitude = coordinates.longitude ?? 0,
                 stopDeadline = postedModel.stopDeadline
             };
 
@@ -141,8 +141,8 @@ namespace Prototype.OpenTelematics.Api.Controllers
                 return BadRequest("Invalid Stop Location");
             }
 
-            stopGeographicDetails.latitude = coordinates.latitude;
-            stopGeographicDetails.longitude = coordinates.longitude;
+            stopGeographicDetails.latitude = coordinates.latitude ?? 0;
+            stopGeographicDetails.longitude = coordinates.longitude ?? 0;
             stopGeographicDetails.comment = postedModel.comment;
 
             if (postedModel.entryArea != null)
@@ -217,8 +217,8 @@ namespace Prototype.OpenTelematics.Api.Controllers
                 routeId = route.Id,
                 address = postedModel.stopAddress,
                 stopName = postedModel.stopName,
-                latitude = stopCoordinates.latitude,
-                longitude = stopCoordinates.longitude,
+                latitude = stopCoordinates.latitude ?? 0,
+                longitude = stopCoordinates.longitude ?? 0,
                 stopDeadline = postedModel.stopDeadline
             };
 

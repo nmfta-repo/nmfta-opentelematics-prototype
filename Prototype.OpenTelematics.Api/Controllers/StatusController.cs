@@ -86,5 +86,25 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
             return incidentsModel;
         }
+
+
+        /// <summary>
+        /// Based on [LinguiJS formats](https://lingui.js.org/ref/catalog-formats.html); where the preferred format is gettext PO
+        /// files, which are closely represented here.Unfortunately the Lingui JS raw format and JSON formats cannot be represented
+        /// in API Blueprint's formal spec language.
+        /// </summary>
+        /// <returns>List of tokens and corresponding strings</returns>
+        [Route("i18n")]
+        [HttpGet]
+        public ActionResult<TokenTranslationsModel> TokenTranslations()
+        {
+            var translations = m_Context.TokenTranslation.Select(t => t).ToList();
+            var translationsModel = new TokenTranslationsModel
+            {
+                data = translations
+            };
+            return translationsModel;
+        }
+
     }
 }

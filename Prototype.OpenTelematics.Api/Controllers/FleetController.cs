@@ -38,7 +38,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
             count = count ?? 50;
             int totalCount = 0;
 
-            LocationHistory result = GetPageCourseLocationHistory(startDate, stopDate, TimeResolution.TIMERESOLUTION_MAX, (int)page, (int)count, ref totalCount);
+            LocationHistory result = GetPageLocationHistory(startDate, stopDate, false, (int)page, (int)count, ref totalCount);
             Response.Headers.Add("X-Total-Count", totalCount.ToString());
 
             return result;
@@ -55,7 +55,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
             count = count ?? 50;
             int totalCount = 0;
 
-            LocationHistory result = GetPageLatestCourseLocationHistory(TimeResolution.TIMERESOLUTION_MAX, (int)page, (int)count, ref totalCount);
+            LocationHistory result = GetPageLatestCourseLocationHistory(false, (int)page, (int)count, ref totalCount);
             Response.Headers.Add("X-Total-Count", totalCount.ToString());
 
             return result;
@@ -70,7 +70,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
         {
             if (Guid.TryParse(id, out var guid))
             {
-                CoarseVehicleLocationTimeHistory result = m_Context.CoarseVehicleLocationTimeHistory.FirstOrDefault(c => c.Id == guid);
+                VehicleLocationTimeHistory result = m_Context.VehicleLocationTimeHistory.FirstOrDefault(c => c.Id == guid);
                 if (result != null)
                     return new VehicleLocation(result, m_appSettings.ProviderId);
                 else
@@ -234,15 +234,15 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return NotFound("Invalid id");
         }
 
-        private LocationHistory GetPageCourseLocationHistory(DateTime startDate, DateTime stopDate, TimeResolution timeResolution, int page, int count, ref int totalCount)
+        private LocationHistory GetPageLocationHistory(DateTime startDate, DateTime stopDate, bool isCourse, int page, int count, ref int totalCount)
         {
-            totalCount = m_Context.CoarseVehicleLocationTimeHistory.Where( 
+            totalCount = m_Context.VehicleLocationTimeHistory.Where( 
                                     x => x.dateTime >= startDate &&
                                     x.dateTime <= stopDate)
                                     .Count();
 
 
-            var data = m_Context.CoarseVehicleLocationTimeHistory.Where(
+            var data = m_Context.VehicleLocationTimeHistory.Where(
                                     x => x.dateTime >= startDate &&
                                     x.dateTime <= stopDate)
                                     .OrderBy(x => x.sequence)
@@ -250,41 +250,51 @@ namespace Prototype.OpenTelematics.Api.Controllers
                                     .Take(count)
                                     .ToList();
 
-            var result = new LocationHistory(data, m_appSettings.ProviderId);
-            result.timeResolution = timeResolution;
-            return result;
+            LocationHistory locHistory;
+            if (isCourse)
+                locHistory = new CoarseVehicleLocationTimeHistoryModel(data, m_appSettings.ProviderId);
+            else
+                locHistory = new VehicleLocationTimeHistoryModel(data, m_appSettings.ProviderId);
+
+            return locHistory;
         }
 
-        private LocationHistory GetPageLatestCourseLocationHistory(TimeResolution timeResolution, int page, int count, ref int totalCount)
+        private LocationHistory GetPageLatestCourseLocationHistory(bool isCourse, int page, int count, ref int totalCount)
         {
-            totalCount = m_Context.CoarseVehicleLocationTimeHistory
+            totalCount = m_Context.VehicleLocationTimeHistory
                             .GroupBy(l => l.vehicleId, (key, g) => g.OrderByDescending(e => e.dateTime).FirstOrDefault())
                             .Count();
 
 
-            var data = m_Context.CoarseVehicleLocationTimeHistory
+            var data = m_Context.VehicleLocationTimeHistory
                             .GroupBy(l => l.vehicleId, (key, g) => g.OrderByDescending(e => e.dateTime).FirstOrDefault())
                             .OrderBy(x => x.sequence)
                             .Skip((page - 1) * count)
                             .Take(count)
                             .ToList();
 
-            var result = new LocationHistory(data, m_appSettings.ProviderId);
-            result.timeResolution = timeResolution;
-            return result;
+            LocationHistory locHistory;
+            if (isCourse)
+                locHistory = new CoarseVehicleLocationTimeHistoryModel(data, m_appSettings.ProviderId);
+            else
+                locHistory = new VehicleLocationTimeHistoryModel(data, m_appSettings.ProviderId);
+            return locHistory;
         }
 
-        private LocationHistory GetCourseLocationHistory(DateTime startDate, DateTime stopDate, TimeResolution timeResolution)
+        private LocationHistory GetCourseLocationHistory(DateTime startDate, DateTime stopDate, bool isCourse)
         {
 
-            var data = m_Context.CoarseVehicleLocationTimeHistory.Where(
+            var data = m_Context.VehicleLocationTimeHistory.Where(
                                                 x => x.dateTime >= startDate &&
                                                 x.dateTime <= stopDate)
                                                 .ToList();
 
-            var result = new LocationHistory(data, m_appSettings.ProviderId);
-            result.timeResolution = timeResolution;
-            return result;
+            LocationHistory locHistory;
+            if (isCourse)
+                locHistory = new CoarseVehicleLocationTimeHistoryModel(data, m_appSettings.ProviderId);
+            else
+                locHistory = new VehicleLocationTimeHistoryModel(data, m_appSettings.ProviderId);
+            return locHistory;
         }
 
         [Route("fleet/faults/feed")]
@@ -337,7 +347,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
             if (!DateTime.TryParse(stopTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
                 return NotFound("Invalid stop time");
 
-            LocationHistory locHistory = GetCourseLocationHistory(startDate, stopDate, TimeResolution.TIMERESOLUTION_NOT_MAX);
+            LocationHistory locHistory = GetCourseLocationHistory(startDate, stopDate, true);
             List<VehicleFlaggedEvent> flaggedEventHistory =
                                            m_Context.VehicleFlaggedEvent.Where(
                                                    x => x.eventStart >= startDate &&

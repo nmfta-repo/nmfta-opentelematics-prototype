@@ -259,4 +259,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Sequence" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="5bf81780-6511-41f5-b8d0-87d4de17f4b3" ChangeDateTime="05/02/2019 18:25:55">
+    <Property Name="ElementName" Value="[dbo].[FK_EventLogAnnotation_ToTable]" />
+    <Property Name="ElementType" Value="SqlForeignKeyConstraint" />
+    <Property Name="ParentElementName" Value="[dbo].[EventLogAnnotation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[FK_EventLogAnnotation_EventLog]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f716d36a-1f49-4d5c-8293-996eb4da94d0" ChangeDateTime="05/02/2019 18:27:10">
+    <Property Name="ElementName" Value="[dbo].[EventLogAnnotation].[eventLogId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[EventLogAnnotation]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="logEventId" />
+  </Operation>
 </Operations>

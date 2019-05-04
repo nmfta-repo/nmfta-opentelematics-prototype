@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[VehiclePerformanceThreshold]
 (
-	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
-    [activeFrom] DATETIMEOFFSET NULL, 
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT newid(), 
+    [activeFrom] DATETIMEOFFSET NOT NULL, 
     [activeTo] DATETIMEOFFSET NULL, 
     [rpmOverValue] INT NULL, 
     [overSpeedValue] INT NULL, 
