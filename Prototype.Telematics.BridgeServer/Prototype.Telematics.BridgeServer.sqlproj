@@ -110,5 +110,6 @@
     <None Include="dbo\Data\dbo.Driver.Table.Data.sql" />
     <None Include="dbo\Data\dbo.HwyDataPoints.Table.Data.sql" />
     <None Include="dbo\Data\dbo.Vehicle.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.TokenTranslation.Data.sql" />
   </ItemGroup>
 </Project>
