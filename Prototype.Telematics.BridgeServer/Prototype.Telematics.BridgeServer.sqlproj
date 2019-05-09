@@ -103,7 +103,6 @@
     <Build Include="dbo\Tables\LogEvent.sql" />
     <Build Include="dbo\Tables\LogEventAnnotation.sql" />
     <Build Include="dbo\Tables\TokenTranslation.sql" />
-    <Build Include="dbo\Tables\FaultsRaw.sql" />
     <Build Include="dbo\Tables\SimulatedData_FaultEvents.sql" />
   </ItemGroup>
   <ItemGroup>
