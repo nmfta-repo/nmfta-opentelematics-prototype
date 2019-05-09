@@ -268,7 +268,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
         }
 
 
-        [Route("api/event_logs/feed")]
+        [Route("event_logs/feed")]
         [HttpGet]
         [Authorize(Roles = TelematicsRoles.DriverFollow + "," + TelematicsRoles.DriverDispatch 
             + "," + TelematicsRoles.HR + "," + TelematicsRoles.Admin)]
