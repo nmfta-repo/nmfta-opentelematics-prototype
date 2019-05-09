@@ -343,3 +343,7 @@ healthchecksdb
 /Client/python/env/Scripts
 /Client/python/.vscode
 /Prototype.Telematics.OverpassDataImporter
+/Prototype.Telematics.BridgeServer/dbo/Tables/FaultsRaw.sql
+/Prototype.Telematics.BreadcrumbDataImporter
+/Prototype.Telematics.FaultDataImporter
+/Prototype.Telematics.DataImporter.sln

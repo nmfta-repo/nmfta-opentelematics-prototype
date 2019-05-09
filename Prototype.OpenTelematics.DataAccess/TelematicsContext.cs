@@ -37,8 +37,9 @@ namespace Prototype.OpenTelematics.DataAccess
         public virtual DbSet<Route> Route { get; set; }
         public virtual DbSet<VehicleStopXRef> VehicleStopXRef { get; set; }
         public virtual DbSet<VehicleMessage> VehicleMessage { get; set; }
-        public virtual DbSet<HwyDataPoint> HwyDataPoints { get; set; }
         public virtual DbSet<TokenTranslation> TokenTranslation { get; set; }
+        public virtual DbSet<SimulatedData_HwyDataPoints> SimulatedData_HwyDataPoints { get; set; }
+        public virtual DbSet<SimulatedData_FaultEvent> SimulatedData_FaultEvents { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

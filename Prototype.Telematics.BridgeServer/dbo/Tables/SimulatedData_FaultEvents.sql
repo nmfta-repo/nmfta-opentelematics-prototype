@@ -1,0 +1,23 @@
+﻿CREATE TABLE [dbo].[SimulatedData_FaultEvents]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY(1000, 1), 
+	[latitude] NUMERIC(18, 8) NULL,
+    [longitude] NUMERIC(18, 8) NULL, 
+    [vehicleId] UNIQUEIDENTIFIER NULL, 
+	[eventComment] NVARCHAR(500) NULL, 
+	[occurencesCount] INT NULL, 
+    [messageIdentifier] INT NULL, 
+    [parameterOrSubsystemIdType] NVARCHAR(50) NULL, 
+    [faultCodeParameterOrSubsystemId] INT NULL, 
+    [sourceAddress] INT NULL, 
+    [suspectParameterNumber] INT NULL, 
+    [failureModeIdentifier] INT NULL, 
+    [urgentFlag] BIT NULL, 
+    [odometer] NUMERIC(18, 2) NULL, 
+    [engineRpm] INT NULL, 
+    [ecmSpeed] NUMERIC(18, 2) NULL, 
+	[gpsQuality] NVARCHAR(50) NULL, 
+    [clearType] NVARCHAR(50) NULL, 
+    [createOrder] INT NULL, 
+    [57FaultsTrigger] BIT NULL DEFAULT 0, 
+)

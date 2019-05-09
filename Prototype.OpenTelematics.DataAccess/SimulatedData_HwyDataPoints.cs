@@ -1,6 +1,6 @@
 ﻿namespace Prototype.OpenTelematics.DataAccess
 { 
-    public class HwyDataPoint
+    public class SimulatedData_HwyDataPoints
     {
         public int Id { get; set; }
         public string NodeId { get; set; }

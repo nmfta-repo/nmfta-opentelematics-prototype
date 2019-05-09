@@ -273,4 +273,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="logEventId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="2e23807b-0a8c-4455-bb4e-09b44fbcc17c" ChangeDateTime="05/07/2019 22:30:02">
+    <Property Name="ElementName" Value="[dbo].[FaultsRaw].[GPS_Quality]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FaultsRaw]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="GPS Quality" />
+  </Operation>
 </Operations>

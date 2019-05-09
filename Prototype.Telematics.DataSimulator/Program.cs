@@ -45,7 +45,7 @@ namespace Prototype.Telematics.DataSimulator
             //get the drivers, vechicles and routes
             List<Driver> drivers = context.Driver.ToList();
             List<Vehicle> vehicles = context.Vehicle.ToList();
-            List<string> routeNames = context.HwyDataPoints.Select(x => x.HwySectionName).Distinct().ToList();
+            List<string> routeNames = context.SimulatedData_HwyDataPoints.Select(x => x.HwySectionName).Distinct().ToList();
 
             if ((NumberOfDrivers > drivers.Count) 
                 || (NumberOfDrivers > vehicles.Count)
@@ -68,11 +68,11 @@ namespace Prototype.Telematics.DataSimulator
             {
                 Driver driver = drivers[i];
                 Vehicle vehicle = vehicles[i];
-                List<HwyDataPoint> route = context.HwyDataPoints.Where(x => x.HwySectionName == routeNames[i]).ToList();    
+                List<SimulatedData_HwyDataPoints> route = context.SimulatedData_HwyDataPoints.Where(x => x.HwySectionName == routeNames[i]).ToList();    
                 Trip trip = new Trip(driver, vehicle, route, HeartbeatSeconds, config.GetConnectionString("SecurityConnection"));
                 Console.WriteLine(string.Format("Adding driver {0} and vehicle {1} to route {2}", driver.username, vehicle.name, routeNames[i]));
 
-                backgroundTasks[i] = Task.Run(() => trip.Go());
+                backgroundTasks[i] = Task.Run(() => trip.Go(i));
             }
             Task.WaitAll(backgroundTasks, token);
         }

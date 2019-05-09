@@ -20,9 +20,9 @@ namespace Prototype.OpenTelematics.Models
         public int suspectParameterNumber { get; set; }
         public int failureModeIdentifier { get; set; }
         public bool urgentFlag { get; set; }
-        public int odometer { get; set; }
+        public decimal odometer { get; set; }
         public int engineRpm { get; set; }
-        public int ecmSpeed { get; set; }
+        public decimal ecmSpeed { get; set; }
         public CruiseStatusModel cruiseStatus { get; set; }
         public IgnitionStatusModel ignitionStatus { get; set; }
         public string gpsQuality { get; set; }

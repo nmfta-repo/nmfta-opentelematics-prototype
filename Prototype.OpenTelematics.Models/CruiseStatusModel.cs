@@ -12,7 +12,7 @@ namespace Prototype.OpenTelematics.Models
         public bool ccResumeSwitch { get; set; }
         public bool ccAccelerationSwitch { get; set; }
         public bool ccBrakeSwitch { get; set; }
-        public int ccSpeed { get; set; }
+        public decimal ccSpeed { get; set; }
 
         public CruiseStatusModel(VehicleFaultCodeEvent item)
         {

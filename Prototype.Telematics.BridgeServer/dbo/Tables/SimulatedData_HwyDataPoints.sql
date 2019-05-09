@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[HwyDataPoints]
+﻿CREATE TABLE [dbo].[SimulatedData_HwyDataPoints]
 (
 	[Id] INT IDENTITY(1000,1) NOT NULL PRIMARY KEY,  
     [NodeId] NVARCHAR(50)  NULL,

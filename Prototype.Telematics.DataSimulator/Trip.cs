@@ -17,11 +17,11 @@ namespace Prototype.Telematics.DataSimulator
 
         Driver m_driver;
         Vehicle m_vehicle;
-        List<HwyDataPoint> m_route;
+        List<SimulatedData_HwyDataPoints> m_route;
         TelematicsContext m_context;
         int m_heartbeat;
 
-        public Trip(Driver driver, Vehicle vehicle, List<HwyDataPoint> route, int heartbeat, string connString)
+        public Trip(Driver driver, Vehicle vehicle, List<SimulatedData_HwyDataPoints> route, int heartbeat, string connString)
         {
             m_driver = driver;
             m_vehicle = vehicle;
@@ -33,12 +33,16 @@ namespace Prototype.Telematics.DataSimulator
             m_context = new TelematicsContext(options);
         }
 
-        public void Go()
+        public void Go(int driverNumber)
         {
+            //first, pause for a few seconds, to stagger the drivers starting
+            Thread.Sleep(driverNumber * 7 * 1000);
+
+            //Ok, let's go!
             while (!Program._cancelled)  
             {
                 SortRoute(FORWARD);
-                foreach (HwyDataPoint point in m_route)
+                foreach (SimulatedData_HwyDataPoints point in m_route)
                 {
                     if (Program._cancelled)
                         break;
@@ -49,7 +53,7 @@ namespace Prototype.Telematics.DataSimulator
                 }
                 //if we reach the end, turnaround and head back
                 SortRoute(BACKWARD);
-                foreach (HwyDataPoint point in m_route)
+                foreach (SimulatedData_HwyDataPoints point in m_route)
                 {
                     if (Program._cancelled)
                         break;
@@ -60,7 +64,7 @@ namespace Prototype.Telematics.DataSimulator
             }
         }
 
-        private void AddDataPoint(HwyDataPoint point)
+        private void AddDataPoint(SimulatedData_HwyDataPoints point)
         {
             VehicleLocationTimeHistory loc = new VehicleLocationTimeHistory();
             loc.dateTime = DateTimeOffset.UtcNow;
@@ -74,7 +78,7 @@ namespace Prototype.Telematics.DataSimulator
 
         private void SortRoute(string routeDirection)
         {
-            HwyDataPoint point = m_route[0];
+            SimulatedData_HwyDataPoints point = m_route[0];
             if (point.Direction == NORTH_SOUTH)
                 if (routeDirection == FORWARD)
                     m_route = m_route.OrderBy(x => x.Latitude).ToList();

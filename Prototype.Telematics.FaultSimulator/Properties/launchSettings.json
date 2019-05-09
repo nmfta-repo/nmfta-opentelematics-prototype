@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Prototype.Telematics.FaultSimulator": {
+      "commandName": "Project",
+      "commandLineArgs": "5 false"
+    }
+  }
+}

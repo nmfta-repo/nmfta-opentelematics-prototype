@@ -19,9 +19,9 @@ namespace Prototype.OpenTelematics.DataAccess
         public int suspectParameterNumber { get; set; }
         public int failureModeIdentifier { get; set; }
         public bool urgentFlag { get; set; }
-        public int odometer { get; set; }
+        public decimal odometer { get; set; }
         public int engineRpm { get; set; }
-        public int ecmSpeed { get; set; }
+        public decimal ecmSpeed { get; set; }
         public bool ccSwitch { get; set; }
         public bool ccSetSwitch { get; set; }
         public bool ccCoastSwitch { get; set; }
@@ -30,7 +30,7 @@ namespace Prototype.OpenTelematics.DataAccess
         public bool ccResumeSwitch { get; set; }
         public bool ccAccelerationSwitch { get; set; }
         public bool ccBrakeSwitch { get; set; }
-        public int ccSpeed { get; set; }
+        public decimal ccSpeed { get; set; }
         public bool ignitionAccessory { get; set; }
         public bool ignitionRunContact { get; set; }
         public bool ignitionCrankContact { get; set; }
