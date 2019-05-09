@@ -9,5 +9,7 @@ urlpatterns = [
     path("fleetLatestLocationJson", views.fleetLatestLocationJson, name="fleetLatestLocationJson"),
     path("feedFollowLogEvent", views.feedFollowLogEvent, name="feed_follow_log_event"),
     path("feedFollowLogEventJson", views.feedFollowLogEventJson, name="feed_follow_log_event_json"),
+    path("feedFollowFaultEvent", views.feedFollowFaultEvent, name="feed_follow_fault_event"),
+    path("feedFollowFaultEventJson", views.feedFollowFaultEventJson, name="feed_follow_fault_event_json"),
     path("exportData", views.exportData, name="export_data"),
 ]

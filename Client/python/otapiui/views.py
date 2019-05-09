@@ -55,7 +55,6 @@ def feedFollowLogEvent(request):
     return render(request, "otapiui/feedFollowLogEvent.html",
     {
             'current_time': datetime.now(),
-            # 'log_events' : result
     }    
     )
 
@@ -78,6 +77,31 @@ def feedFollowLogEventJson(request):
         item.origin_description = getTranslation(item.origin)
         item.state_description = getTranslation(item.state)
     return JsonResponse(jsonpickle.encode(result), safe=False)
+
+def feedFollowFaultEvent(request):
+    return render(request, "otapiui/feedFollowFaultEvent.html",
+    {
+            'current_time': datetime.now(),
+    }    
+    )
+
+def feedFollowFaultEventJson(request):
+    client = getOtapiSdkClient()
+    token = request.GET.get('token')
+    allVehicles = getAllEntities("/v1.0/vehicles","all_vehicles")
+    result = client.use_case_in_field_maintenance_repair.follow_fleet_fault_code_events(token=token)
+    feedResult = {"token" : result.token, "feed" : []}
+    for item in result.feed:
+        foundFaultCode = getFaultEventCode(item.source_address, item.suspect_parameter_number, 
+            item.failure_mode_identifier, item.occurences)
+        if (foundFaultCode == None):
+            continue
+        vehicle = next((item2 for item2 in allVehicles if item2["id"] == item.vehicle_id), None)
+        item.license_plate = ""
+        if (vehicle != None):
+            item.license_plate = vehicle["licensePlate"]
+        feedResult["feed"].append(item)
+    return JsonResponse(jsonpickle.encode(feedResult), safe=False)
 
 
 @require_GET

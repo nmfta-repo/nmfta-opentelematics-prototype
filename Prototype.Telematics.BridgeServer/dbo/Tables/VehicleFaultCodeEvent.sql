@@ -33,5 +33,5 @@
     [ignitionAidContact] BIT NOT NULL, 
     [gpsQuality] NVARCHAR(50) NOT NULL, 
     [clearType] NVARCHAR(50) NULL, 
-    CONSTRAINT [FK_VehicleFaultCodeEvent_Vehicle] FOREIGN KEY ([VehicleId]) REFERENCES [Vehicle]([Id])
+    CONSTRAINT [FK_VehicleFaultCodeEvent_Vehicle] FOREIGN KEY ([vehicleId]) REFERENCES [Vehicle]([Id])
 )

@@ -1,0 +1,53 @@
+{% extends "otapiui/layout.html" %}
+{% load static %}
+{% block title %}
+Feed Follow Log Events
+{% endblock %}
+{% block content %}
+<h3>Feed Follow Log Event</h3>
+<div class="table-responsive">
+  <table id="log_event_table" class="table">
+    <thead><tr><td>Triggered</td><td>Vehicle</td><td>Location</td><td>Source Address</td><td>Suspect Parameter Number</td><td>Failure Mode Identifier</td><td>Occurrences</td></tr></thead>
+    <tbody></tbody>
+  </table>
+  </div>
+<script>
+
+var token = "";
+  $(document).ready(function() {
+    update();
+  });
+
+  function update() {
+    $.ajax({
+      url: "/feedFollowFaultEventJson?token=" + token,
+      success: function (data) {
+        var feedFollowData = JSON.parse(data)
+        if (feedFollowData) {
+          token = feedFollowData.token;
+          for(i = 0;i<feedFollowData.feed.length;i++) {
+            var item = feedFollowData.feed[i];
+            var location = item.location;
+            var cells = "<td>" + item.triggered_date + "</td>" +
+                        "<td>" + item.license_plate + "</td>" +
+                        "<td>" + item.location + "</td>" +
+                        "<td>" + item.source_address + "</td>" +
+                        "<td>" + item.suspect_parameter_number + "</td>" +
+                        "<td>" + item.failure_mode_identifier + "</td>" +
+                        "<td>" + item.occurences + "</td>";
+            var newRowContent = "<tr>" + cells + "</tr>";
+            if ($("#log_event_table tbody tr").length > 50) {
+              $("#log_event_table tbody tr:first").remove()
+            }
+
+            $("#log_event_table tbody").append(newRowContent);
+          }
+        }
+      },
+    }).then(function () {
+      // on completion, restart after 15 seconds
+      setTimeout(update, 15000);
+    });
+  }
+</script>
+{% endblock %}

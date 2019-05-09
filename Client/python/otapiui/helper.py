@@ -1,4 +1,7 @@
 from django.core.cache import cache
+from django.conf import settings
+import os
+import json
 import jsonpickle
 import requests
 import base64
@@ -34,6 +37,24 @@ def getTranslation(input):
     if (translation == None):
         return  input
     return translation.msgstr
+
+def getFaultCodeMap():
+    faultCodeMap = cache.get("faultCodeMap")
+    if (faultCodeMap != None):
+        return faultCodeMap
+    with open(os.path.join(settings.BASE_DIR, 'app/FaultCode.json')) as faultCode_file:
+        faultCodeMap = json.load(faultCode_file)
+        cache.set("faultCodeMap", faultCodeMap)
+        return faultCodeMap
+
+def getFaultEventCode(sa, spn, fmi, occurrences):
+    faultCodeMap = getFaultCodeMap()
+    foundFaultCode = next((item for item in faultCodeMap["fault_code"]
+        if item["SA"] == sa and (item["SPN"] == -1 or item["SPN"] == spn) and \
+            (item["FMI"] == -1 or item["FMI"] == fmi) and \
+            (item["Min_Occurrences"] <= occurrences)) \
+                , None)
+    return foundFaultCode 
 
 def apply(http_request, username, password):
     username = username
