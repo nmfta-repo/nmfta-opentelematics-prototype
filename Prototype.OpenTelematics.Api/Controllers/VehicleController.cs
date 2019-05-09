@@ -22,6 +22,18 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
         }
 
+        /// <summary>
+        /// Returns All Driver Information
+        /// </summary>
+        /// <returns></returns>
+        [Route("vehicles")]
+        [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery)]
+        public ActionResult<List<Vehicle>> AllVehicles()
+        {
+            var result = m_Context.Vehicle.ToList();
+            return result;
+        }
+
         [Route("vehicles/{id}")]
         [HttpGet]
         [Authorize(Roles =

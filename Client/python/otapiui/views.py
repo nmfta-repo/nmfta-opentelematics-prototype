@@ -21,7 +21,7 @@ def index(request):
 
 def system_status(request):
     client = getOtapiSdkClient()
-    result = client.use_case_check_provider_s_state_of_health.check_current_state_of_health(1)
+    result = client.use_case_check_provider_state_of_health.check_current_state_of_health()
     return render(request, "otapiui/status.html",
     {
         'current_time': datetime.now(),
@@ -31,7 +31,7 @@ def system_status(request):
 
 def systemStatusJson(request):
     client = getOtapiSdkClient()
-    result = client.use_case_check_provider_s_state_of_health.check_current_state_of_health(1)
+    result = client.use_case_check_provider_state_of_health.check_current_state_of_health()
     data = {
         'service_status': result.service_status,
     }
@@ -48,8 +48,37 @@ def fleetLatestLocation(request):
 def fleetLatestLocationJson(request):
     client = getOtapiSdkClient()
     result = client.use_case_driver_messaging_by_geo_location \
-        .retrieve_all_latest_vehicle_location_time_history_objects(version=API_VERSION, page=1,count=100)
+        .get_fleet_latest_locations(page=1,count=100)
     return JsonResponse(jsonpickle.encode(result), safe=False)
+
+def feedFollowLogEvent(request):
+    return render(request, "otapiui/feedFollowLogEvent.html",
+    {
+            'current_time': datetime.now(),
+            # 'log_events' : result
+    }    
+    )
+
+def feedFollowLogEventJson(request):
+    client = getOtapiSdkClient()
+    token = request.GET.get('token')
+    allDrivers = getAllEntities("/v1.0/drivers","all_drivers")
+    allVehicles = getAllEntities("/v1.0/vehicles","all_vehicles")
+    result = client.use_case_driver_route_and_directions_done.follow_fleet_log_events(token=token)
+    for item in result.feed:
+        driver = next((item2 for item2 in allDrivers if item2["id"] == item.driver_id), None)
+        item.driver_name = ""
+        if (driver != None):
+            item.driver_name = driver["username"]
+        vehicle = next((item2 for item2 in allVehicles if item2["id"] == item.vehicle_id), None)
+        item.license_plate = ""
+        if (vehicle != None):
+            item.license_plate = vehicle["licensePlate"]
+        item.event_type_description = getTranslation(item.event_type)
+        item.origin_description = getTranslation(item.origin)
+        item.state_description = getTranslation(item.state)
+    return JsonResponse(jsonpickle.encode(result), safe=False)
+
 
 @require_GET
 @ensure_csrf_cookie

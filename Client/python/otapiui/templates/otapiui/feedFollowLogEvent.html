@@ -1,0 +1,56 @@
+{% extends "otapiui/layout.html" %}
+{% load static %}
+{% block title %}
+Feed Follow Log Events
+{% endblock %}
+{% block content %}
+<h3>Feed Follow Log Event</h3>
+<div class="table-responsive">
+  <table id="log_event_table" class="table">
+    <thead><tr><td>Created</td><td>Driver</td><td>Vehicle</td><td>Distance</td><td>Event</td><td>Location</td><td>Place</td><td>Origin</td><td>State</td><td>Comment</td></tr></thead>
+    <tbody></tbody>
+  </table>
+  </div>
+<script>
+
+var token = "";
+  $(document).ready(function() {
+    update();
+  });
+
+  function update() {
+    $.ajax({
+      url: "/feedFollowLogEventJson?token=" + token,
+      success: function (data) {
+        var feedFollowData = JSON.parse(data)
+        if (feedFollowData) {
+          token = feedFollowData.token;
+          for(i = 0;i<feedFollowData.feed.length;i++) {
+            var item = feedFollowData.feed[i];
+            var location = item.location;
+            var cells = "<td>" + new Date(item.date_time).toLocaleString() + "</td>" +
+                        "<td>" + item.driver_name + "</td>" +
+                        "<td>" + item.license_plate + "</td>" +
+                        "<td>" + item.distance_last_valid + "</td>" +
+                        "<td>" + item.event_type_description + "</td>" +
+                        "<td>" + (location != null ? location.latitude + " " + location.longitude : " ") + "</td>" +
+                        "<td>" + (location != null ? location.identified_place  : " ") + "</td>" +
+                        "<td>" + item.origin_description + "</td>" +
+                        "<td>" + item.state_description + "</td>" +
+                        "<td>" + item.comment + "</td>";
+            var newRowContent = "<tr>" + cells + "</tr>";
+            if ($("#log_event_table tbody tr").length > 50) {
+              $("#log_event_table tbody tr:first").remove()
+            }
+
+            $("#log_event_table tbody").append(newRowContent);
+          }
+        }
+      },
+    }).then(function () {
+      // on completion, restart after 15 seconds
+      setTimeout(update, 15000);
+    });
+  }
+</script>
+{% endblock %}

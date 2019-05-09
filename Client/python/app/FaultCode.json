@@ -1,0 +1,613 @@
+{
+  "SA": [
+    {
+      "id": 61,
+      "description": "Exhaust Emission Controller"
+    },
+    {
+      "id": 85,
+      "description": "Diesel Particulate Filter Controller"
+    },
+    {
+      "id": 0,
+      "description": "Engine #1"
+    }
+  ],
+  "SPN": [
+    {
+      "id": -1,
+      "description": "All"
+    },
+    {
+      "id": 27,
+      "description": "Engine Exhaust Gas Recirculation Valve Position"
+    },
+    {
+      "id": 81,
+      "description": "Engine Diesel Particulate Filter Inlet Pressure"
+    },
+    {
+      "id": 91,
+      "description": "Accelerator Pedal Position 1"
+    },
+    {
+      "id": 100,
+      "description": "Engine Oil Pressure"
+    },
+    {
+      "id": 111,
+      "description": "Engine Collant level"
+    },
+    {
+      "id": 157,
+      "description": "Engine Injector Meetring Rail 1 Pressure"
+    },
+    {
+      "id": 597,
+      "description": "Brake Switch"
+    },
+    {
+      "id": 598,
+      "description": "Clutch Switch"
+    },
+    {
+      "id": 1569,
+      "description": "Engine Protection Torque Derate"
+    },
+    {
+      "id": 2659,
+      "description": "Engine Exhaust Gas Recirculation (EGR) Mass Flow Rate"
+    },
+    {
+      "id": 2791,
+      "description": "Engine Exhaust Gas Recirculation (EGR) Valve Control"
+    },
+    {
+      "id": 3031,
+      "description": "After treatment 1 SCR Catalyst Tank Temperature"
+    },
+    {
+      "id": 3058,
+      "description": "Engine Exhaust Gas Recirculation (EGR) System Monitor"
+    },
+    {
+      "id": 3216,
+      "description": "After treatment 1 Intake NOx"
+    },
+    {
+      "id": 3218,
+      "description": "After treatment 1 Intake Gas Sensor Power Status"
+    },
+    {
+      "id": 3226,
+      "description": "After treatment 1 Outlet NOx"
+    },
+    {
+      "id": 3242,
+      "description": "After treatment 1 Diesel Particulate Filter Intake Gas Temperature"
+    },
+    {
+      "id": 3245,
+      "description": "After treatment 1 Exhaust Gas Temperature 3"
+    },
+    {
+      "id": 3246,
+      "description": "After treatment 1 Diesel Particulate Filter Outlet Gas Temperature"
+    },
+    {
+      "id": 3251,
+      "description": "After treatment 1 Diesel Particulate Filter Differential Pressure"
+    },
+    {
+      "id": 3360,
+      "description": "After treatment 1 SCR Catalyst Tank Controller"
+    },
+    {
+      "id": 3361,
+      "description": "After treatment 1 SCR Catalyst Dosing Unit"
+    },
+    {
+      "id": 3362,
+      "description": "After treatment 1 SCR Catalyst Dosing Unit Input Lines"
+    },
+    {
+      "id": 3363,
+      "description": "After treatment 1 SCR Catalyst Tank Heater"
+    },
+    {
+      "id": 3382,
+      "description": "Generator Output Voltage Bias Percentage"
+    },
+    {
+      "id": 3464,
+      "description": "Engine Throttle Actuator 1 Control Command"
+    },
+    {
+      "id": 3490,
+      "description": "After treatment 1 Purge Air Actuator"
+    },
+    {
+      "id": 3556,
+      "description": "After treatment Fuel Injector 1"
+    },
+    {
+      "id": 3609,
+      "description": "Diesel Particulate Filter Intake Pressure 1"
+    },
+    {
+      "id": 3719,
+      "description": "Diesel Particulate Filter 1 Soot Load Percent"
+    },
+    {
+      "id": 3936,
+      "description": "After treatment Diesel Particulate Filter System"
+    },
+    {
+      "id": 4096,
+      "description": "NOx limits exceeded due to Empty Reagent Tank"
+    },
+    {
+      "id": 4334,
+      "description": "After treatment 1 SCR Dosing Reagent Absolute Pressure"
+    },
+    {
+      "id": 4340,
+      "description": "After treatment 1 SCR Catalyst Reagent Line Heater 1 State"
+    },
+    {
+      "id": 4342,
+      "description": "After treatment 1 SCR Catalyst Reagent Line Heater 2 State"
+    },
+    {
+      "id": 4344,
+      "description": "After treatment 1 SCR Catalyst Reagent Line Heater 3 State"
+    },
+    {
+      "id": 4346,
+      "description": "After treatment 1 SCR Catalyst Reagent Line Heater 4 State"
+    },
+    {
+      "id": 4364,
+      "description": "After treatment 1 SCR Conversion Efficiency"
+    },
+    {
+      "id": 4376,
+      "description": "After treatment 1 SCR Catalyst Reagent Return Valve"
+    },
+    {
+      "id": 4752,
+      "description": "Engine Exhaust Gas Recirculation (EGR) Cooler Efficiency"
+    },
+    {
+      "id": 4765,
+      "description": "After treatment 1 Diesel Oxidation Catalyst Intake Gas Temperature"
+    },
+    {
+      "id": 4766,
+      "description": "After treatment 1 Diesel Oxidation Catalyst Outlet Gas Temperature"
+    },
+    {
+      "id": 5018,
+      "description": "After treatment 1 Diesel Oxidation Catalyst System"
+    },
+    {
+      "id": 5246,
+      "description": "After treatment SCR Operator Inducement Severity"
+    },
+    {
+      "id": 5319,
+      "description": "After treatment DPF Incomplete Regen"
+    },
+    {
+      "id": 5394,
+      "description": "After treatment Diesel Exhaust Fluid Dosing Valve 1"
+    },
+    {
+      "id": 5397,
+      "description": "DPF Regen too ofent"
+    },
+    {
+      "id": 5491,
+      "description": "After treatment Diesel Exhaust Fluid Line Heater"
+    },
+    {
+      "id": 5742,
+      "description": "After treatment Diesel Particulate Filter Temperature Sensor Module"
+    },
+    {
+      "id": 5743,
+      "description": "After treatment Selective Catalytic Reduction Temperature Sensor Module"
+    }
+  ],
+  "FMI": [
+    {
+      "id": -1,
+      "description": "All"
+
+    },
+    {
+      "id": 0,
+      "description": "Data Valid But above Normal Operating Range (most severe)"
+
+    },
+    {
+      "id": 1,
+      "description": "Data Valid But Below Normal Operating Range (most severe)"
+
+    },
+    {
+      "id": 18,
+      "description": "Data Valid But Below Normal Operating Range (moderate severity)"
+
+    },
+    {
+      "id": 17,
+      "description": "Data Valid But Below Normal Operating Range (least severe)"
+
+    },
+    {
+      "id": 2,
+      "description": "Date Erratic, Intermittent or Incorrect"
+
+    },
+    {
+      "id": 11,
+      "description": "Failure Mode Not Identifiable"
+
+    },
+    {
+      "id": 7,
+      "description": "Mechanical System Not Responding Properly"
+
+    },
+    {
+      "id": 31,
+      "description": "Not Available Or Condition Exists"
+
+    }
+  ],
+  "fault_code": [
+    {
+      "SA": 61,
+      "SPN": -1,
+      "FMI": -1,
+      "Min_Occurrences": 1
+    },
+    {
+      "SA": 85,
+      "SPN": -1,
+      "FMI": -1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 27,
+      "FMI": -1,
+      "Min_Occurrences": 5
+    },
+    {
+      "SA": 0,
+      "SPN": 81,
+      "FMI": -1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 91,
+      "FMI": 1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 100,
+      "FMI": 1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 100,
+      "FMI": 18,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 111,
+      "FMI": 17,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 111,
+      "FMI": 2,
+      "Min_Occurrences": 50
+    },
+    {
+      "SA": 0,
+      "SPN": 111,
+      "FMI": 18,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 111,
+      "FMI": 11,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 111,
+      "FMI": 1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 157,
+      "FMI": -1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 597,
+      "FMI": -1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 598,
+      "FMI": -1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 1569,
+      "FMI": -1,
+      "Min_Occurrences": 1
+    },
+    {
+      "SA": 0,
+      "SPN": 2659,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 2791,
+      "FMI": -1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 3031,
+      "FMI": -1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 3058,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 3216,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 3218,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 3226,
+      "FMI": -1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 3242,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 3245,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 3246,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 3251,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 3360,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 3361,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 3362,
+      "FMI": -1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 3363,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 3382,
+      "FMI": -1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 3464,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 3490,
+      "FMI": 7,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 3556,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 3609,
+      "FMI": -1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 3719,
+      "FMI": 0,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 3936,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 4096,
+      "FMI": 31,
+      "Min_Occurrences": 1
+    },
+    {
+      "SA": 0,
+      "SPN": 4334,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 4340,
+      "FMI": -1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 4342,
+      "FMI": -1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 4344,
+      "FMI": -1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 4346,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 4364,
+      "FMI": 1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 4376,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 4752,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 4765,
+      "FMI": -1,
+      "Min_Occurrences": 35
+    },
+    {
+      "SA": 0,
+      "SPN": 4766,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 5018,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 5246,
+      "FMI": -1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 5319,
+      "FMI": 31,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 5394,
+      "FMI": -1,
+      "Min_Occurrences": 1
+    },
+    {
+      "SA": 0,
+      "SPN": 5397,
+      "FMI": 31,
+      "Min_Occurrences": 1
+    },
+    {
+      "SA": 0,
+      "SPN": 5491,
+      "FMI": -1,
+      "Min_Occurrences": 2
+    },
+    {
+      "SA": 0,
+      "SPN": 5742,
+      "FMI": -1,
+      "Min_Occurrences": 3
+    },
+    {
+      "SA": 0,
+      "SPN": 5743,
+      "FMI": -1,
+      "Min_Occurrences": 2
+    }
+  ] 
+}
