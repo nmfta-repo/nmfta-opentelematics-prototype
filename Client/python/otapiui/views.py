@@ -1,7 +1,7 @@
 import re
 import requests
 import jsons
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
@@ -55,7 +55,6 @@ def feedFollowLogEvent(request):
     return render(request, "otapiui/feedFollowLogEvent.html",
     {
             'current_time': datetime.now(),
-            # 'log_events' : result
     }    
     )
 
@@ -79,22 +78,55 @@ def feedFollowLogEventJson(request):
         item.state_description = getTranslation(item.state)
     return JsonResponse(jsonpickle.encode(result), safe=False)
 
+def feedFollowFaultEvent(request):
+    return render(request, "otapiui/feedFollowFaultEvent.html",
+    {
+            'current_time': datetime.now()
+    }    
+    )
+
+def feedFollowFaultEventJson(request):
+    client = getOtapiSdkClient()
+    token = request.GET.get('token')
+    allVehicles = getAllEntities("/v1.0/vehicles","all_vehicles")
+    result = client.use_case_in_field_maintenance_repair.follow_fleet_fault_code_events(token=token)
+    feedResult = {"token" : result.token, "feed" : []}
+    for item in result.feed:
+        foundFaultCode = getFaultEventCode(item.source_address, item.suspect_parameter_number, 
+            item.failure_mode_identifier, item.occurences)
+        if (foundFaultCode == None):
+            continue
+        vehicle = next((item2 for item2 in allVehicles if item2["id"] == item.vehicle_id), None)
+        item.license_plate = ""
+        if (vehicle != None):
+            item.license_plate = vehicle["licensePlate"]
+        feedResult["feed"].append(item)
+    return JsonResponse(jsonpickle.encode(feedResult), safe=False)
+
 
 @require_GET
-@ensure_csrf_cookie
 def exportData(request):
+    client = getOtapiSdkClient()
+    full_export = []
+    vehicle_export = []
+    today = date.today()
+    dates = [today + timedelta(days=i) for i in range(-5, 0)]
+    for dayOf in dates:
+        try:
+            export = client.use_case_data_export.test_if_complete_export_ready(dayOf)
+            if (export != None):
+                full_export.append({"dayOf" : dayOf, "location" : export.location})
+            export = client.use_case_data_export.test_if_vehicle_only_export_ready(dayOf)
+            if (export != None):
+                vehicle_export.append({"dayOf" : dayOf, "location" : export.location})
+        except :
+            print("error occurred")
     return render(request, "otapiui/exportData.html",
     {
-            'current_time': datetime.now(),
-    }
-)
-
-@require_POST
-@ensure_csrf_cookie
-def acceptExportRequest(request):
-    return render(request, "otapiui/exportData.html",
-    {
-            'current_time': datetime.now(),
+        'current_time': datetime.now(),
+        'full_export' : full_export,
+        'vehicle_export' : vehicle_export
+    
     }
 )
 

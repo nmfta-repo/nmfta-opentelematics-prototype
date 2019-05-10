@@ -280,4 +280,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="GPS Quality" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="b4e60278-ef20-4b5a-ba82-b8129b317121" ChangeDateTime="05/10/2019 10:15:58">
+    <Property Name="ElementName" Value="[dbo].[DailyExport].[date]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[DailyExport]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="export_date" />
+  </Operation>
 </Operations>
