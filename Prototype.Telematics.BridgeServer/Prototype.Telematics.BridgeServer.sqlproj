@@ -104,6 +104,7 @@
     <Build Include="dbo\Tables\LogEventAnnotation.sql" />
     <Build Include="dbo\Tables\TokenTranslation.sql" />
     <Build Include="dbo\Tables\SimulatedData_FaultEvents.sql" />
+    <Build Include="dbo\Tables\Export.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Prototype.Telematics.BridgeServer.refactorlog" />

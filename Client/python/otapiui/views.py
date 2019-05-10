@@ -1,7 +1,7 @@
 import re
 import requests
 import jsons
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
@@ -81,7 +81,7 @@ def feedFollowLogEventJson(request):
 def feedFollowFaultEvent(request):
     return render(request, "otapiui/feedFollowFaultEvent.html",
     {
-            'current_time': datetime.now(),
+            'current_time': datetime.now()
     }    
     )
 
@@ -105,20 +105,28 @@ def feedFollowFaultEventJson(request):
 
 
 @require_GET
-@ensure_csrf_cookie
 def exportData(request):
+    client = getOtapiSdkClient()
+    full_export = []
+    vehicle_export = []
+    today = date.today()
+    dates = [today + timedelta(days=i) for i in range(-5, 0)]
+    for dayOf in dates:
+        try:
+            export = client.use_case_data_export.test_if_complete_export_ready(dayOf)
+            if (export != None):
+                full_export.append({"dayOf" : dayOf, "location" : export.location})
+            export = client.use_case_data_export.test_if_vehicle_only_export_ready(dayOf)
+            if (export != None):
+                vehicle_export.append({"dayOf" : dayOf, "location" : export.location})
+        except :
+            print("error occurred")
     return render(request, "otapiui/exportData.html",
     {
-            'current_time': datetime.now(),
-    }
-)
-
-@require_POST
-@ensure_csrf_cookie
-def acceptExportRequest(request):
-    return render(request, "otapiui/exportData.html",
-    {
-            'current_time': datetime.now(),
+        'current_time': datetime.now(),
+        'full_export' : full_export,
+        'vehicle_export' : vehicle_export
+    
     }
 )
 

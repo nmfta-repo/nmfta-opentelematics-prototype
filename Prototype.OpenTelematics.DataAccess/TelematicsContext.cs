@@ -22,6 +22,7 @@ namespace Prototype.OpenTelematics.DataAccess
         public virtual DbSet<DriverPerformanceSummary> DriverPerformanceSummary { get; set; }
         public virtual DbSet<DriverWaiver> DriverWaiver { get; set; }
         public virtual DbSet<DriverWorkLog> DriverWorkLog { get; set; }
+        public virtual DbSet<Export> Export { get; set; }
         public virtual DbSet<LogEvent> LogEvent { get; set; }
         public virtual DbSet<LogEventAnnotation> LogEventAnnotation { get; set; }
         public virtual DbSet<ServiceStatusEvent> ServiceStatusEvent { get; set; }
@@ -144,6 +145,16 @@ namespace Prototype.OpenTelematics.DataAccess
 
                 entity.Property(e => e.hoursWorked).HasColumnType("numeric(18, 4)");
 
+            });
+
+            modelBuilder.Entity<Export>(entity =>
+            {
+                entity.Property(e => e.Id).HasDefaultValueSql("newid()");
+
+                entity.Property(e => e.export_date).HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                entity.Property(e => e.export_type).HasDefaultValue("Full")
+                    .HasMaxLength(25);
             });
 
             modelBuilder.Entity<ServiceStatusEvent>(entity =>
