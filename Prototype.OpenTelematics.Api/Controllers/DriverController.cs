@@ -17,6 +17,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
     /// Controller that process and returns data for all Driver related operations
     /// </summary>
     [ApiController]
+    [Authorize]
     public class DriverController : TelematicsBaseController
     {
 

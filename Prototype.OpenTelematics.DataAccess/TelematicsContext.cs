@@ -40,6 +40,8 @@ namespace Prototype.OpenTelematics.DataAccess
         public virtual DbSet<TokenTranslation> TokenTranslation { get; set; }
         public virtual DbSet<SimulatedData_HwyDataPoints> SimulatedData_HwyDataPoints { get; set; }
         public virtual DbSet<SimulatedData_FaultEvent> SimulatedData_FaultEvents { get; set; }
+        public virtual DbSet<SimulatedData_LogEvent> SimulatedData_LogEvent { get; set; }
+        public virtual DbSet<SimulatedData_LogEventAnnotation> SimulatedData_LogEventAnnotation { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

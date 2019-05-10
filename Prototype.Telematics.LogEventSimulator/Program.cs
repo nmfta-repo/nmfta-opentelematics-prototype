@@ -2,13 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using Prototype.OpenTelematics.DataAccess;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace Prototype.Telematics.FaultSimulator
+namespace Prototype.Telematics.LogEventSimulator
 {
     class Program
     {
@@ -17,7 +14,7 @@ namespace Prototype.Telematics.FaultSimulator
 
         /// <summary>
         /// args[0] = heartbeat frequency in seconds, 
-        ///           after startup 1 fault code is added per heartbeat
+        ///           after startup 1 event code is added per heartbeat
         /// args[1] = repeat faults?  'true' or 'false'
         ///           once we run out of simulated data, should we start over?
         /// </summary>
@@ -38,26 +35,28 @@ namespace Prototype.Telematics.FaultSimulator
                 .Options;
             var context = new TelematicsContext(options);
 
-            FaultSimulator sim = new FaultSimulator(context, bKeepGoing);
+            LogEventSimulator sim = new LogEventSimulator(context, bKeepGoing);
 
             //handle Ctrl+C to cancel the simulation
             Console.CancelKeyPress += new ConsoleCancelEventHandler(Console_CancelKeyPress);
-            Console.CancelKeyPress += new ConsoleCancelEventHandler(FaultSimulator.Stop);
+            Console.CancelKeyPress += new ConsoleCancelEventHandler(LogEventSimulator.Stop);
             CancellationTokenSource source = new CancellationTokenSource();
             CancellationToken token = source.Token;
 
             sim.Go();
-        }
 
+        }
 
         static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
         {
-            Console.WriteLine("Cancelling fault code updates......");
+            Console.WriteLine("Cancelling log event updates.....");
             if (e.SpecialKey == ConsoleSpecialKey.ControlC)
             {
                 _cancelled = true;
                 e.Cancel = true;
             }
         }
+
+
     }
 }

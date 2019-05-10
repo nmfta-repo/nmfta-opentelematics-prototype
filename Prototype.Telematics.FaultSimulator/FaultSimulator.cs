@@ -50,12 +50,13 @@ namespace Prototype.Telematics.FaultSimulator
             {
                 AddAFault(this, null);
             }
+            Console.WriteLine("Press Ctrl+C to stop.");
 
             //Add one event at every heartbeat interval
             heartbeatTimer.Elapsed += AddAFault;
             heartbeatTimer.AutoReset = true;
             heartbeatTimer.Enabled = true;
-            Console.ReadLine();
+            while (!Program._cancelled) { }
         }
 
         private void AddAFault(Object source, ElapsedEventArgs e)
@@ -97,36 +98,38 @@ namespace Prototype.Telematics.FaultSimulator
         private void createFault(Vehicle vehicle, SimulatedData_FaultEvent fault)
         {
             Console.WriteLine("Adding fault code event to vehicle " + vehicle.Id.ToString() + ": event Id: " + fault.Id.ToString());
-            VehicleFaultCodeEvent vfce = new VehicleFaultCodeEvent();
-            vfce.vehicleId = vehicle.Id;
-            vfce.longitude = fault.longitude;
-            vfce.latitude = fault.latitude;
-            vfce.eventComment = fault.eventComment;
-            vfce.triggerDate = DateTimeOffset.UtcNow;
-            vfce.occurences = fault.occurencesCount;
-            vfce.messageIdentifier = fault.messageIdentifier;
-            vfce.parameterOrSubsystemIdType = fault.parameterOrSubsystemIdType;
-            vfce.sourceAddress = fault.sourceAddress;
-            vfce.suspectParameterNumber = fault.suspectParameterNumber;
-            vfce.failureModeIdentifier = fault.failureModeIdentifier;
-            vfce.urgentFlag = fault.urgentFlag;
-            vfce.odometer = fault.odometer;
-            vfce.engineRpm = fault.engineRpm;
-            vfce.ecmSpeed = fault.ecmSpeed;
-            vfce.ccAccelerationSwitch = false;
-            vfce.ccBrakeSwitch = false;
-            vfce.ccClutchSwitch = false;
-            vfce.ccCoastSwitch = false;
-            vfce.ccCruiseSwitch = false;
-            vfce.ccResumeSwitch = false;
-            vfce.ccSetSwitch = false;
-            vfce.ccSpeed = 0.0M;
-            vfce.ccSwitch = false;
-            vfce.ignitionAccessory = false;
-            vfce.ignitionAidContact = false;
-            vfce.ignitionCrankContact = false;
-            vfce.ignitionRunContact = false;
-            vfce.gpsQuality = fault.gpsQuality;
+            VehicleFaultCodeEvent vfce = new VehicleFaultCodeEvent
+            {
+                vehicleId = vehicle.Id,
+                longitude = fault.longitude,
+                latitude = fault.latitude,
+                eventComment = fault.eventComment,
+                triggerDate = DateTimeOffset.UtcNow,
+                occurences = fault.occurencesCount,
+                messageIdentifier = fault.messageIdentifier,
+                parameterOrSubsystemIdType = fault.parameterOrSubsystemIdType,
+                sourceAddress = fault.sourceAddress,
+                suspectParameterNumber = fault.suspectParameterNumber,
+                failureModeIdentifier = fault.failureModeIdentifier,
+                urgentFlag = fault.urgentFlag,
+                odometer = fault.odometer,
+                engineRpm = fault.engineRpm,
+                ecmSpeed = fault.ecmSpeed,
+                ccAccelerationSwitch = false,
+                ccBrakeSwitch = false,
+                ccClutchSwitch = false,
+                ccCoastSwitch = false,
+                ccCruiseSwitch = false,
+                ccResumeSwitch = false,
+                ccSetSwitch = false,
+                ccSpeed = 0.0M,
+                ccSwitch = false,
+                ignitionAccessory = false,
+                ignitionAidContact = false,
+                ignitionCrankContact = false,
+                ignitionRunContact = false,
+                gpsQuality = fault.gpsQuality,
+            };
             m_context.Add(vfce);
             m_context.SaveChanges();
         }

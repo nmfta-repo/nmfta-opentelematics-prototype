@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Prototype.Telematics.LogEventSimulator": {
+      "commandName": "Project",
+      "commandLineArgs": "10 true"
+    }
+  }
+}

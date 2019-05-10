@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Prototype.Telematics.DataSimulator
 {
@@ -49,7 +48,6 @@ namespace Prototype.Telematics.DataSimulator
                     AddDataPoint(point);
                     Thread.Sleep(m_heartbeat * 1000);
                     //await Task.Delay(m_heartbeat * 1000);
-
                 }
                 //if we reach the end, turnaround and head back
                 SortRoute(BACKWARD);
@@ -66,12 +64,14 @@ namespace Prototype.Telematics.DataSimulator
 
         private void AddDataPoint(SimulatedData_HwyDataPoints point)
         {
-            VehicleLocationTimeHistory loc = new VehicleLocationTimeHistory();
-            loc.dateTime = DateTimeOffset.UtcNow;
-            loc.driverId = m_driver.Id;
-            loc.vehicleId = m_vehicle.Id;
-            loc.latitude = point.Latitude;
-            loc.longitude = point.Longitude;
+            VehicleLocationTimeHistory loc = new VehicleLocationTimeHistory
+            {
+                dateTime = DateTimeOffset.UtcNow,
+                driverId = m_driver.Id,
+                vehicleId = m_vehicle.Id,
+                latitude = point.Latitude,
+                longitude = point.Longitude,
+            };
             m_context.VehicleLocationTimeHistory.Add(loc);
             m_context.SaveChanges();
         }

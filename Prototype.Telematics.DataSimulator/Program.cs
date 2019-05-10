@@ -13,10 +13,12 @@ namespace Prototype.Telematics.DataSimulator
     class Program
     {
         public static bool _cancelled;
+        public static int _StatusUpdateInterval;
 
         /// <summary>
         /// args[0] = number of drivers to simulate
-        /// args[1] = heartbeat frequency in seconds
+        /// args[1] = seconds between adding a location history for a vehicle, in seconds
+        /// args[2] = seconds between system status health updates
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
@@ -24,6 +26,7 @@ namespace Prototype.Telematics.DataSimulator
 
             int NumberOfDrivers = Int32.Parse(args[0]);
             int HeartbeatSeconds = Int32.Parse(args[1]);
+            _StatusUpdateInterval = Int32.Parse(args[2]) * 1000;
 
             //setup
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
@@ -41,6 +44,9 @@ namespace Prototype.Telematics.DataSimulator
             CancellationTokenSource source = new CancellationTokenSource();
             CancellationToken token = source.Token;
 
+            //setup the system health status simulator
+            StatusSimulator statusSim = new StatusSimulator(context);
+            Console.CancelKeyPress += new ConsoleCancelEventHandler(StatusSimulator.Stop);
 
             //get the drivers, vechicles and routes
             List<Driver> drivers = context.Driver.ToList();
@@ -62,8 +68,8 @@ namespace Prototype.Telematics.DataSimulator
                 return;
             }
 
-            //start simulation
-            var backgroundTasks = new Task[NumberOfDrivers];
+            //start vehicle location simulation
+            var backgroundTasks = new Task[NumberOfDrivers + 1];
             for (int i = 0; i < NumberOfDrivers; i++)
             {
                 Driver driver = drivers[i];
@@ -74,12 +80,13 @@ namespace Prototype.Telematics.DataSimulator
 
                 backgroundTasks[i] = Task.Run(() => trip.Go(i));
             }
+            backgroundTasks[NumberOfDrivers] = Task.Run(() => statusSim.Go());
             Task.WaitAll(backgroundTasks, token);
         }
 
         static void Console_CancelKeyPress(object sender, ConsoleCancelEventArgs e)
         {
-            Console.WriteLine("Cancelling......");
+            Console.WriteLine("Cancelling vehicle location updates.....");
             if (e.SpecialKey == ConsoleSpecialKey.ControlC)
             {
                 _cancelled = true;

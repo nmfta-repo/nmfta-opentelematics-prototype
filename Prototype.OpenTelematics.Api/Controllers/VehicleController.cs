@@ -13,6 +13,7 @@ using System.Linq;
 namespace Prototype.OpenTelematics.Api.Controllers
 {
     [ApiController]
+    [Authorize]
     public class VehicleController : TelematicsBaseController
     {
 
