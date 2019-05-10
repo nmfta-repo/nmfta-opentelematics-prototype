@@ -14,8 +14,8 @@ namespace Prototype.Telematics.LogEventSimulator
 
         /// <summary>
         /// args[0] = heartbeat frequency in seconds, 
-        ///           after startup 1 event code is added per heartbeat
-        /// args[1] = repeat faults?  'true' or 'false'
+        ///           after startup 1 event is added per heartbeat
+        /// args[1] = repeat events?  'true' or 'false'
         ///           once we run out of simulated data, should we start over?
         /// </summary>
         /// <param name="args"></param>
