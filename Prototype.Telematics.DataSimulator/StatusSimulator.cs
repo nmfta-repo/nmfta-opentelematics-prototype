@@ -48,16 +48,16 @@ namespace Prototype.Telematics.DataSimulator
         {
             int rem = 0;
 
-            //if counter is divisible by 7, add a degraded performance status
-            Math.DivRem(m_statusCounter, 7, out rem);
+            //if counter is divisible by 5, add a degraded performance status
+            Math.DivRem(m_statusCounter, 3, out rem);
             if (rem == 0)
             {
                 CreateStatus(SystemStatus.SERVICESTATUS_DEGRADED_PERFORMANCE);
             }
             else
             {
-                //if counter is divisible by 19, add a partial outage status
-                Math.DivRem(m_statusCounter, 19, out rem);
+                //if counter is divisible by 7, add a partial outage status
+                Math.DivRem(m_statusCounter, 5, out rem);
                 if (rem == 0)
                     CreateStatus(SystemStatus.SERVICESTATUS_PARTIAL_OUTAGE);
                 else

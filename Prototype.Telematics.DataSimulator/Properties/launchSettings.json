@@ -2,7 +2,7 @@
   "profiles": {
     "Prototype.Telematics.DataSimulator": {
       "commandName": "Project",
-      "commandLineArgs": "5 20 30"
+      "commandLineArgs": "5 20 60"
     }
   }
 }

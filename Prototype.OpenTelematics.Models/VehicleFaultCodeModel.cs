@@ -10,7 +10,7 @@ namespace Prototype.OpenTelematics.Models
         public Guid vehicleId { get; set; }
         public string location { get; set; }
         public string eventComment { get; set; }
-        public DateTimeOffset triggerDate { get; set; }
+        public DateTimeOffset triggeredDate { get; set; }
         public DateTimeOffset clearedDate { get; set; }
         public int occurences { get; set; }
         public int messageIdentifier { get; set; }
@@ -35,7 +35,7 @@ namespace Prototype.OpenTelematics.Models
             vehicleId = item.vehicleId;
             location = string.Format("{0} {1}", item.latitude, item.longitude);
             eventComment = item.eventComment;
-            triggerDate = item.triggerDate;
+            triggeredDate = item.triggerDate;
             clearedDate = item.clearedDate;
             occurences = item.occurences;
             messageIdentifier = item.messageIdentifier;
