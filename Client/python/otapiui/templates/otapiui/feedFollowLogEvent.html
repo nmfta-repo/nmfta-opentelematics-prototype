@@ -28,7 +28,7 @@ var token = "";
           for(i = 0;i<feedFollowData.feed.length;i++) {
             var item = feedFollowData.feed[i];
             var location = item.location;
-            var cells = "<td>" + new Date(item.date_time).toLocaleString() + "</td>" +
+            var cells = "<td style='white-space: nowrap'>" + new Date(item.date_time).toLocaleString() + "</td>" +
                         "<td>" + item.driver_name + "</td>" +
                         "<td>" + item.license_plate + "</td>" +
                         "<td>" + item.distance_last_valid + "</td>" +

@@ -9,7 +9,6 @@ import base64
 #OTAPI SDK
 from opentelematicsapi.opentelematicsapi_client import OpentelematicsapiClient
 
-API_VERSION = 1
 API_HOST = "{api_host}"
 API_USER_NAME = "{api_user_name}"
 API_PASSWORD = "{api_password}"
@@ -55,6 +54,14 @@ def getFaultEventCode(sa, spn, fmi, occurrences):
             (item["Min_Occurrences"] <= occurrences)) \
                 , None)
     return foundFaultCode 
+
+def getEventTranslation(map, id):
+    faultCodeMap = getFaultCodeMap()
+    translation = next((item for item in faultCodeMap[map] if item["id"] == id), None)
+    if (translation == None):
+        return  id
+    return str(translation["id"]) + " - " + translation["description"]
+
 
 def apply(http_request, username, password):
     username = username

@@ -15,8 +15,6 @@ namespace Prototype.OpenTelematics.DataAccess
         {
         }
 
-        public virtual DbSet<CurrentServiceStatus> CurrentServiceStatus { get; set; }
-        public virtual DbSet<CurrentServiceStatusFactor> CurrentServiceStatusFactor { get; set; }
         public virtual DbSet<Driver> Driver { get; set; }
         public virtual DbSet<DriverBreakRule> DriverBreakRule { get; set; }
         public virtual DbSet<DriverPerformanceSummary> DriverPerformanceSummary { get; set; }
@@ -54,24 +52,6 @@ namespace Prototype.OpenTelematics.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.0-rtm-35687");
-
-            modelBuilder.Entity<CurrentServiceStatus>(entity =>
-            {
-                entity.Property(e => e.Id).HasDefaultValueSql("newid()");
-
-                entity.Property(e => e.Status)
-                    .IsRequired()
-                    .HasMaxLength(100);
-            });
-
-            modelBuilder.Entity<CurrentServiceStatusFactor>(entity =>
-            {
-                entity.Property(e => e.Id).HasDefaultValueSql("newid()");
-
-                entity.Property(e => e.Factor)
-                    .IsRequired()
-                    .HasMaxLength(1000);
-            });
 
             modelBuilder.Entity<Driver>(entity =>
             {

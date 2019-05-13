@@ -31,7 +31,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
         public ActionResult<ProviderStatusModel> Get()
         {
             // get the current system status
-            var incident = m_Context.CurrentServiceStatus.OrderByDescending(c => c.dateTime).FirstOrDefault();
+            var incident = m_Context.ServiceStatusEvent.OrderByDescending(c => c.dateTime).FirstOrDefault();
 
             // assume everything is good
             if (incident == null)
@@ -45,7 +45,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
             }
 
             // get the factors and return result
-            var factors = m_Context.CurrentServiceStatusFactor.Where(c => c.eventId == incident.Id).Select(c=>c.Factor).ToArray();
+            var factors = m_Context.ServiceStatusEventFactor.Where(c => c.eventId == incident.Id).Select(c=>c.Factor).ToArray();
             var model = new ProviderStatusModel
             {
                 dateTime = incident.dateTime,

@@ -87,8 +87,6 @@
     <Build Include="dbo\Tables\VehicleFlaggedEvent.sql" />
     <Build Include="dbo\Tables\ServiceStatusEvent.sql" />
     <Build Include="dbo\Tables\ServiceStatusEventFactor.sql" />
-    <Build Include="dbo\Tables\CurrentServiceStatus.sql" />
-    <Build Include="dbo\Tables\CurrentServiceStatusFactor.sql" />
     <Build Include="dbo\Tables\Vehicle.sql" />
     <Build Include="dbo\Tables\StopGeographicDetails.sql" />
     <Build Include="dbo\Tables\VehicleFaultCodeEvent.sql" />

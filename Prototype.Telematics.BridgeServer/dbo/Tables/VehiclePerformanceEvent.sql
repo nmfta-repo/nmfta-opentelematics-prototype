@@ -47,5 +47,5 @@
     [ldwActive] BIT NULL, 
     [ldwDisable] BIT NULL, 
     CONSTRAINT [FK_VehiclePerformanceEvent_VechiclePerformanceThreshold] FOREIGN KEY ([performanceThresholdId]) REFERENCES [VehiclePerformanceThreshold]([Id]), 
-    CONSTRAINT [FK_VehiclePerformanceEvent_Vehicle] FOREIGN KEY ([VehicleId]) REFERENCES [Vehicle]([Id]) 
+    CONSTRAINT [FK_VehiclePerformanceEvent_Vehicle] FOREIGN KEY ([vehicleId]) REFERENCES [Vehicle]([Id]) 
 )
