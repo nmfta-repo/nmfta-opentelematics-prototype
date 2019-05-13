@@ -119,5 +119,6 @@
     <None Include="dbo\Data\dbo.SimulatedData_FaultEvents.Table.Data.sql" />
     <None Include="dbo\Data\dbo.SimulatedData_LogEvent.Table.Data.sql" />
     <None Include="dbo\Data\dbo.SimulatedData_LogEventAnnotation.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.SimulatedData_Location.Table.Data.sql" />
   </ItemGroup>
 </Project>
