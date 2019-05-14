@@ -8,11 +8,16 @@ import base64
 
 #OTAPI SDK
 from opentelematicsapi.opentelematicsapi_client import OpentelematicsapiClient
+from opentelematicsapi.configuration import Configuration
 
+API_SCHEME = "http://"
 API_HOST = "{api_host}"
 API_USER_NAME = "{api_user_name}"
 API_PASSWORD = "{api_password}"
 GOOGLE_MAPS_API_KEY = "{google_maps_key}"
+
+# Swap to Use HTTPS
+Configuration.environments[Configuration.environment][Configuration.Server.DEFAULT] = API_SCHEME + "{defaultHost}"
 
 def getOtapiSdkClient():
     basic_auth_user_name = API_USER_NAME
@@ -80,7 +85,7 @@ def getAllEntities(end_point : str, cache_id : str):
     apply(httpRequest, API_USER_NAME, API_PASSWORD)
     httpRequest.headers["content-type"] = "application/json"
     httpRequest.headers["charset"] = "utf-8"
-    response = httpRequest.get("http://" + API_HOST + end_point, headers=httpRequest.headers, verify=False)
+    response = httpRequest.get(API_SCHEME + API_HOST + end_point, headers=httpRequest.headers, verify=False)
     entities = jsonpickle.decode(response.content)
     cache.set(cache_id, entities)
     return entities
