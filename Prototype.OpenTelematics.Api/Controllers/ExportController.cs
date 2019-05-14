@@ -31,7 +31,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Authorize]
         public ActionResult<ExportModel> AllRecords(DateTime dayOf)
         {
-            var export = m_Context.Export.FirstOrDefault(c => c.export_date == dayOf && c.export_type == "Full");
+            var export = m_Context.Export.FirstOrDefault(c => c.export_date == dayOf.Date && c.export_type == "Full");
 
             if (export == null)
                 return StatusCode(202);
@@ -51,7 +51,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Authorize]
         public ActionResult<ExportModel> AllVehicles(DateTime dayOf)
         {
-            var export = m_Context.Export.FirstOrDefault(c => c.export_date == dayOf && c.export_type == "Vehicle");
+            var export = m_Context.Export.FirstOrDefault(c => c.export_date == dayOf.Date && c.export_type == "Vehicle");
 
             if (export == null)
                 return StatusCode(202);

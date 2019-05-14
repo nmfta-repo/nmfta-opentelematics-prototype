@@ -337,6 +337,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
                                        .Include(l => l.location)
                                        .Include(a => a.annotations)
                                        .Where(x => x.dateTime >= fromTime && x.dateTime <= toTime)
+                                       .OrderBy(c=>c.dateTime)
                                        .ToList();
 
             dsl.feed = LogEventsToLogEventModel(logs);

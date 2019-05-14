@@ -7,7 +7,7 @@ Feed Follow Log Events
 <h3>Feed Follow Log Event</h3>
 <div class="table-responsive">
   <table id="log_event_table" class="table">
-    <thead><tr><td>Triggered</td><td>Vehicle</td><td>Location</td><td>Source Address</td><td>Suspect Parameter Number</td><td>Failure Mode Identifier</td><td>Occurrences</td></tr></thead>
+    <thead><tr><td>Triggered</td><td>Vehicle</td><td>Location</td><td>Source Address</td><td>Suspect Parameter Number</td><td>Failure Mode Identifier</td><td>Occurrences</td><td>Matching Alert Definition</td></tr></thead>
     <tbody></tbody>
   </table>
   </div>
@@ -28,13 +28,14 @@ var token = "";
           for(i = 0;i<feedFollowData.feed.length;i++) {
             var item = feedFollowData.feed[i];
             var location = item.location;
-            var cells = "<td>" + item.triggered_date + "</td>" +
+            var cells = "<td style='white-space: nowrap'>" +  new Date(item.triggered_date).toLocaleString() + "</td>" +
                         "<td>" + item.license_plate + "</td>" +
                         "<td>" + item.location + "</td>" +
-                        "<td>" + item.source_address + "</td>" +
+                        "<td>" + item.sa_description + "</td>" +
                         "<td>" + item.suspect_parameter_number + "</td>" +
                         "<td>" + item.failure_mode_identifier + "</td>" +
-                        "<td>" + item.occurences + "</td>";
+                        "<td>" + item.occurences + "</td>" +
+                        "<td>" + "SA: " + item.sa_description + "<br/>SPN : " + item.spn_description + "<br/>FMI : " + item.fmi_description + "<br/> Min Occurences: " + item.min_occurrences + "</td>";
             var newRowContent = "<tr>" + cells + "</tr>";
             if ($("#log_event_table tbody tr").length > 50) {
               $("#log_event_table tbody tr:first").remove()

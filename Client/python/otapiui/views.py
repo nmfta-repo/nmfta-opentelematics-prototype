@@ -100,6 +100,11 @@ def feedFollowFaultEventJson(request):
         item.license_plate = ""
         if (vehicle != None):
             item.license_plate = vehicle["licensePlate"]
+        item.sa_description = getEventTranslation("SA",item.source_address)
+        item.spn_description = getEventTranslation("SPN",item.suspect_parameter_number)
+        item.fmi_description = getEventTranslation("FMI",item.failure_mode_identifier)
+        item.min_occurrences = foundFaultCode["Min_Occurrences"]
+
         feedResult["feed"].append(item)
     return JsonResponse(jsonpickle.encode(feedResult), safe=False)
 

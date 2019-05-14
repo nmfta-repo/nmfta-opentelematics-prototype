@@ -349,6 +349,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
             vfcf.token = m_dataProtector.Protect(toTime.ToString());
             var logs = m_Context.VehicleFaultCodeEvent
                                        .Where(x => x.triggerDate >= fromTime && x.triggerDate <= toTime)
+                                       .OrderBy(x=>x.triggerDate)
                                        .ToList();
             vfcf.feed = VehicleFaultCodeListToModelList(logs);
             return vfcf;
