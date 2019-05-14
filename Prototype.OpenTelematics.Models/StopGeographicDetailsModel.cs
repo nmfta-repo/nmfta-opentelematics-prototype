@@ -14,7 +14,7 @@ namespace Prototype.OpenTelematics.Models
         public string address { get; set; }
         public string comment { get; set; }
         public string location { get; set; }
-        public string[] entryArea { get; set; }
+        public List<string> entryArea { get; set; }
 
         public StopGeographicDetailsModel(StopGeographicDetails item, string ProviderId)
         {
@@ -24,8 +24,9 @@ namespace Prototype.OpenTelematics.Models
             stopName = item.stopName;
             address = item.address;
             comment = item.comment;
-            location = string.Format("{0} {1}", item.latitude, item.longitude);            
-            entryArea = item.entryArea.Split(";");
+            location = string.Format("{0} {1}", item.latitude, item.longitude);
+            if (!string.IsNullOrEmpty(item.entryArea))
+                entryArea = new List<string>(item.entryArea.Split(';'));
         }
     }
 }

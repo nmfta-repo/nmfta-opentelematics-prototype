@@ -221,7 +221,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return string.Empty;
         }
 
-        [Route("api/drivers/{driverId}")]
+        [Route("/drivers/{driverId}")]
         [HttpPatch]
         [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.HR)]
         public ActionResult<string> Driver(string driverId, DriverChangeModel model)

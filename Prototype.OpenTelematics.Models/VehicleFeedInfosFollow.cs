@@ -7,6 +7,6 @@ namespace Prototype.OpenTelematics.Models
     public class VehicleFeedInfosFollow
     {
         public string token { get; set; }
-        public List<VehicleInfoHistory> feed { get; set; }
+        public VehicleInfoHistory feed { get; set; }
     }
 }

@@ -108,8 +108,8 @@ namespace Prototype.OpenTelematics.Models
             lkaActive = item.lkaActive;
             ldwActive = item.ldwActive;
             ldwDisable = item.ldwDisable;
-
-            thresholds = new VehiclePerformanceThresholdModel(item.thresholds, provider);
+            if (item.thresholds != null)
+                thresholds = new VehiclePerformanceThresholdModel(item.thresholds, provider);
         }
     }
 }

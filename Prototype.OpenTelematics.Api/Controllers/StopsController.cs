@@ -149,7 +149,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
             if (postedModel.entryArea != null)
             {
-                stopGeographicDetails.entryArea = JsonConvert.SerializeObject(postedModel.entryArea);
+                stopGeographicDetails.entryArea = string.Join(";", postedModel.entryArea);
             }
 
             // add and save

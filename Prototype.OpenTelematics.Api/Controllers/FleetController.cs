@@ -150,7 +150,14 @@ namespace Prototype.OpenTelematics.Api.Controllers
             {
                 VehiclePerformanceEvent data = m_Context.VehiclePerformanceEvent.FirstOrDefault(c => c.Id == guid);
                 if (data != null)
+                {
+                    if (data.performanceThresholdId != null)
+                    {
+                        VehiclePerformanceThreshold threshold = m_Context.VehiclePerformanceThreshold.FirstOrDefault(c => c.Id == data.performanceThresholdId);
+                        data.thresholds = threshold;
+                    }
                     return new VehiclePerformanceEventModel(data, m_appSettings.ProviderId);
+                }
                 else
                     return NotFound("id Not Found");
             }
@@ -396,7 +403,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [HttpGet]
         [Authorize(Roles = TelematicsRoles.Admin    
             + "," + TelematicsRoles.DriverFollow + "," + TelematicsRoles.VehicleFollow)]
-        public ActionResult<VehicleInfoHistory> FleetVehicleInfos(string token)
+        public ActionResult<VehicleFeedInfosFollow> FleetVehicleInfos(string token)
         {
             DateTimeOffset fromTime;
             DateTimeOffset toTime = DateTimeOffset.Now.ToUniversalTime();
@@ -432,14 +439,15 @@ namespace Prototype.OpenTelematics.Api.Controllers
                                             m_Context.VehicleFaultCodeEvent.Where(
                                                     x => x.triggerDate >= fromTime &&
                                                     x.triggerDate <= toTime).ToList();
-            VehicleInfoHistory result = new VehicleInfoHistory
+            VehicleInfoHistory history = new VehicleInfoHistory
             {
                 coarseVehicleLocationTimeHistories = locHistory,
                 flaggedVehicleFaultEvents = VehicleFaultCodeListToModelList(flaggedEventHistory),
                 vehiclePerformanceEvents = VehiclePerformanceListToModelList(performanceEventHistory),
                 vehicleFaultCodeEvents = VehicleFaultCodeListToModelList(vehicleFaultCodeEventHistory)
             };
-            return result;
+            vfif.feed = history;
+            return vfif;
         }
 
         private List<VehiclePerformanceEventModel> VehiclePerformanceListToModelList(List<VehiclePerformanceEvent> events)
