@@ -25,11 +25,11 @@ namespace Prototype.OpenTelematics.Models
         /// <summary>
         /// the Region Specific Breaks Rules for this driver for the requested time period
         /// </summary>
-        public DriverBreakRule[] BreakRules { get; set; }
+        public DriverBreakRuleModel[] BreakRules { get; set; }
 
         /// <summary>
         /// the Region Specific Waivers for this driver for the requested time period
         /// </summary>
-        public DriverWaiver[] Waivers { get; set; }
+        public DriverWaiverModel[] Waivers { get; set; }
     }
 }

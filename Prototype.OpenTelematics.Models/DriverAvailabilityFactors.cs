@@ -22,14 +22,14 @@ namespace Prototype.OpenTelematics.Models
         /// `stop`)
         /// </summary>
         [JsonProperty("logEvents", Required = Required.Always)]
-        public LogEvent[] LogEvents { get; set; }
+        public LogEventModel[] LogEvents { get; set; }
 
         /// <summary>
         /// All Vehicle Flagged Events which are associated with the requested `driverId` and which
         /// occur within the requested time period [`start`, `stop`)
         /// </summary>
         [JsonProperty("vehicleFlaggedEvents", Required = Required.Always)]
-        public VehicleFlaggedEvent[] VehicleFlaggedEvents { get; set; }
+        public VehicleFlaggedEventModel[] VehicleFlaggedEvents { get; set; }
     }
    
 }

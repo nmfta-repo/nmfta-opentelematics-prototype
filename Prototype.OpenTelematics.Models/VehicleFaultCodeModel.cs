@@ -7,6 +7,7 @@ namespace Prototype.OpenTelematics.Models
     {
         public Guid Id { get; set; }
         public string providerId { get; set; }
+        public DateTimeOffset serverTime { get; set; }
         public Guid vehicleId { get; set; }
         public string location { get; set; }
         public string eventComment { get; set; }
@@ -32,6 +33,7 @@ namespace Prototype.OpenTelematics.Models
         {
             Id = item.Id;
             providerId = provider;
+            serverTime = DateTimeOffset.UtcNow;
             vehicleId = item.vehicleId;
             location = string.Format("{0} {1}", item.latitude, item.longitude);
             eventComment = item.eventComment;

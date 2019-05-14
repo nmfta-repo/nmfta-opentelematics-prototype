@@ -9,6 +9,7 @@ namespace Prototype.OpenTelematics.Models
     {
         public Guid id { get; set; }
         public string providerId { get; set; }
+        public DateTimeOffset serverTime { get; set; }
         public DateTimeOffset? dateTime { get; set; }
         public Guid vehicleId { get; set; }
         public Guid driverId { get; set; }
@@ -45,6 +46,7 @@ namespace Prototype.OpenTelematics.Models
             }
 
             this.dateTime = log.dateTime;
+            this.serverTime = DateTimeOffset.UtcNow;
             this.editDateTime = log.editDateTime;
             this.distanceLastValid = log.distanceLastValid;
             this.editDateTime = log.editDateTime;

@@ -47,6 +47,7 @@ namespace Prototype.OpenTelematics.Models
     {
         public Guid id { get; set; }
         public string providerId { get; set; }
+        public DateTimeOffset serverTime { get; set; }
         public Guid vehicleId { get; set; }
         public Guid driverId { get; set; }
         public DateTimeOffset dateTime { get; set; }
@@ -56,6 +57,7 @@ namespace Prototype.OpenTelematics.Models
         {            
             id = model.Id;
             providerId = ProviderId;
+            serverTime = DateTimeOffset.UtcNow;
             vehicleId = model.vehicleId;
             driverId = model.driverId;
             dateTime = model.dateTime;

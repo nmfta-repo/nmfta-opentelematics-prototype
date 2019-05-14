@@ -23,20 +23,22 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
         }
 
-        [Route("stops/{stopId}")]
+        [Route("stops/{id}")]
         [HttpGet]
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.DriverDispatch )]
-        public ActionResult<StopGeographicDetails> Get(string stopId)
+        public ActionResult<StopGeographicDetailsModel> Get(string id)
         {
-            if (Guid.TryParse(stopId, out var guid))
+            if (Guid.TryParse(id, out var guid))
             {
-                var result = m_Context.StopGeographicDetails.FirstOrDefault(c => c.Id == guid);
-
-                return result;
+                var stop = m_Context.StopGeographicDetails.FirstOrDefault(c => c.Id == guid);
+                if (stop != null)
+                    return new StopGeographicDetailsModel(stop, m_appSettings.ProviderId);
+                else
+                    return NotFound("id Not Found");
             }
-
-            return NotFound("Invalid id");
+            else
+                return BadRequest("Invalid id");
         }
 
         /// <summary>
@@ -120,13 +122,13 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
             if (!Guid.TryParse(stopId, out var stopGuidId))
             {
-                return NotFound("Invalid Stop id");
+                return BadRequest("Invalid stopId");
             }
 
             var stopGeographicDetails = m_Context.StopGeographicDetails.FirstOrDefault(c => c.Id == stopGuidId);
             if (stopGeographicDetails == null)
             {
-                return NotFound("Invalid Stop id");
+                return NotFound("Invalid stopId");
             }
 
             if (string.IsNullOrWhiteSpace(postedModel.location))
@@ -175,30 +177,30 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
             if (!Guid.TryParse(vehicleId, out var vehicleGuidId))
             {
-                return NotFound("Invalid Vehicle id");
+                return BadRequest("Invalid vehicleId");
             }
 
             if (string.IsNullOrWhiteSpace(postedModel.startLocation))
             {
-                return BadRequest("Invalid Start Location");
+                return BadRequest("Invalid startLocation");
             }
 
             // extract latitude and longitude
             var startCoordinates = Helper.TryParseLocation(postedModel.startLocation);
             if (startCoordinates.latitude == null || startCoordinates.longitude == null)
             {
-                return BadRequest("Invalid Start Location");
+                return BadRequest("Invalid startLocation");
             }
 
             if (string.IsNullOrWhiteSpace(postedModel.stopLocation))
             {
-                return BadRequest("Invalid Stop Location");
+                return BadRequest("Invalid stopLocation");
             }
 
             var stopCoordinates = Helper.TryParseLocation(postedModel.stopLocation);
             if (stopCoordinates.latitude == null || stopCoordinates.longitude == null)
             {
-                return BadRequest("Invalid Stop Location");
+                return BadRequest("Invalid stopLocation");
             }
 
             var route = new Route

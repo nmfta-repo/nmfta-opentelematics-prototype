@@ -51,10 +51,12 @@ namespace Prototype.OpenTelematics.DataAccess
         public bool? overrpmLowThrottle { get; set; }
         public bool? overrpmHiThrottle { get; set; }
         public bool? lkaDisable { get; set; }
+        public bool? lkaActive { get; set; }
         public bool? ldwActive { get; set; }
         public bool? ldwDisable { get; set; }
 
         [ForeignKey("performanceThresholdId")]
         public VehiclePerformanceThreshold thresholds { get; set; }
+
     }
 }

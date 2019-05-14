@@ -45,19 +45,22 @@ namespace Prototype.OpenTelematics.Api.Controllers
         /// </summary>
         /// <param name="id">Driver Identifier</param>
         /// <returns>Driver Data</returns>
-        [Route("byid/drivers/{id}")]
+        [Route("drivers/{id}")]
         [HttpGet]
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
-        public ActionResult<Driver> Get(string id)
+        public ActionResult<DriverModel> Get(string id)
         {
             if (Guid.TryParse(id, out var guid))
             {
-                var result = m_Context.Driver.FirstOrDefault(c => c.Id == guid);
-                return result;
+                var data = m_Context.Driver.FirstOrDefault(c => c.Id == guid);
+                if (data != null)
+                    return new DriverModel(data, m_appSettings.ProviderId);
+                else
+                    return NotFound("id Not Found");
             }
-
-            return NotFound("Invalid id");
+            else
+                return BadRequest("Invalid id");
         }
 
         /// <summary>
@@ -81,15 +84,18 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [HttpGet]
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
-        public ActionResult<DriverBreakRule> GetBreakRuleById(string id)
+        public ActionResult<DriverBreakRuleModel> GetBreakRuleById(string id)
         {
             if (Guid.TryParse(id, out var guid))
             {
-                var result = m_Context.DriverBreakRule.FirstOrDefault(c => c.Id == guid);
-                return result;
+                var data = m_Context.DriverBreakRule.FirstOrDefault(c => c.Id == guid);
+                if (data != null)
+                    return new DriverBreakRuleModel(data, m_appSettings.ProviderId);
+                else
+                    return NotFound("id Not Found");
             }
-
-            return NotFound("Invalid id");
+            else
+                return BadRequest("Invalid id");
         }
 
         /// <summary>
@@ -114,15 +120,18 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [HttpGet]
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
-        public ActionResult<DriverWaiver> GetWaiverById(string id)
+        public ActionResult<DriverWaiverModel> GetWaiverById(string id)
         {
             if (Guid.TryParse(id, out var guid))
             {
-                var result = m_Context.DriverWaiver.FirstOrDefault(c => c.Id == guid);
-                return result;
+                var data = m_Context.DriverWaiver.FirstOrDefault(c => c.Id == guid);
+                if (data != null)
+                    return new DriverWaiverModel(data, m_appSettings.ProviderId);
+                else
+                    return NotFound("id Not Found");
             }
-
-            return NotFound("Invalid id");
+            else
+                return BadRequest("Invalid id");
         }
 
         /// <summary>
@@ -139,8 +148,12 @@ namespace Prototype.OpenTelematics.Api.Controllers
         {
             if (!Guid.TryParse(driverId, out var guid))
             {
-                return BadRequest("Invalid id");
+                return BadRequest("Invalid driverId");
             }
+
+            var driver = m_Context.Driver.FirstOrDefault(c => c.Id == guid);
+            if (driver == null)
+                return NotFound("driverId Not Found");
 
             var courseLocationHistory =
                 m_Context.VehicleLocationTimeHistory.Where(c => c.driverId == guid && c.dateTime >= startTime && c.dateTime <= stopTime);
@@ -152,8 +165,8 @@ namespace Prototype.OpenTelematics.Api.Controllers
             var model = new DriverAvailability
             {
                 CoarseVehicleLocationTimeHistory = locationhistoryModel,
-                LogEvents = dutyStatusLogs.ToArray(),
-                VehicleFlaggedEvents = vehicleFlaggedEvents.ToArray()
+                LogEvents = LogEventsToLogEventModel(dutyStatusLogs.ToList()).ToArray(),
+                VehicleFlaggedEvents = VehicleFlaggedEventsToVehicleFlaggedEventsModel(vehicleFlaggedEvents.ToList()).ToArray()
             };
 
             return model;
@@ -174,15 +187,19 @@ namespace Prototype.OpenTelematics.Api.Controllers
         {
             if (!Guid.TryParse(driverId, out var guid))
             {
-                return BadRequest("Invalid id");
+                return BadRequest("Invalid driverId");
             }
+            var driver = m_Context.Driver.FirstOrDefault(c => c.Id == guid);
+            if (driver == null)
+                return NotFound("driverId Not Found");
 
             var driverBreakRules = m_Context.DriverBreakRule.Where(c => c.driverId == guid && c.activeFrom >= startTime && c.activeTo <= stopTime);
             var driverWaivers = m_Context.DriverWaiver.Where(c => c.driverId == guid && c.waiverDay >= startTime && c.waiverDay <= stopTime);
+
             var model = new BreakRulesAndWaivers
             {
-                BreakRules = driverBreakRules.ToArray(),
-                Waivers = driverWaivers.ToArray()
+                BreakRules = BreakRulesToBreakRulesModel(driverBreakRules.ToList()).ToArray(),
+                Waivers = WaiversToWaiverModels(driverWaivers.ToList()).ToArray()
             };
 
             return model;
@@ -192,13 +209,13 @@ namespace Prototype.OpenTelematics.Api.Controllers
         /// Update Duty Status Change
         /// <para>TODO:K Validate Incoming Data and Save to back-end</para>
         /// </summary>
-        /// <param name="id">Driver Identifier</param>
+        /// <param name="driverId">Driver Identifier</param>
         /// <param name="postedModel">Updated Duty Status Change</param>
         /// <returns>Patch Status</returns>
-        [Route("driveravailability/dutystatuschanges/{id}")]
+        [Route("/drivers/{driverId}/duty_status")]
         [HttpPatch]
         [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverDuty)]
-        public ActionResult<string> PatchDutyStatusChange(string id, DutyStatusChangeModel postedModel)
+        public ActionResult<string> PatchDutyStatusChange(string driverId, DutyStatusChangeModel postedModel)
         {
             System.IO.File.WriteAllText(@"DutyStatusChange_REQ.json",postedModel.ToJson());
             return string.Empty;
@@ -268,6 +285,29 @@ namespace Prototype.OpenTelematics.Api.Controllers
                 return BadRequest("Invalid driverId");
         }
 
+        /// <summary>
+        /// Returns specific event log information for passed in <paramref name="id"/>
+        /// </summary>
+        /// <param name="id">event log Identifier</param>
+        /// <returns>Event log Data</returns>
+        [Route("event_logs/{id}")]
+        [HttpGet]
+        [Authorize(Roles =
+            TelematicsRoles.Admin + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
+        public ActionResult<LogEventModel> GetEventLogById(string id)
+        {
+            if (Guid.TryParse(id, out var guid))
+            {
+                var data = m_Context.LogEvent.FirstOrDefault(c => c.Id == guid);
+                if (data != null)
+                    return new LogEventModel(data, m_appSettings.ProviderId);
+                else
+                    return NotFound("id Not Found");
+            }
+            else
+                return BadRequest("Invalid id");
+        }
+
 
         [Route("event_logs/feed")]
         [HttpGet]
@@ -280,8 +320,9 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
             if (string.IsNullOrEmpty(token))
             {
-                //set a reasonable start time
-                fromTime = new DateTimeOffset(2019, 01, 01, 0, 0, 0, 0, TimeSpan.FromHours(0));
+                //TODO: When null, should be set to 'now'
+                //for the demo, set start time = 5/1/19
+                fromTime = new DateTimeOffset(2019, 05, 01, 0, 0, 0, 0, TimeSpan.FromHours(0));
             }
             else
             {
@@ -298,11 +339,11 @@ namespace Prototype.OpenTelematics.Api.Controllers
                                        .Where(x => x.dateTime >= fromTime && x.dateTime <= toTime)
                                        .ToList();
 
-            dsl.feed = LogEventsToFollowModel(logs);
+            dsl.feed = LogEventsToLogEventModel(logs);
             return dsl;
         }
 
-        private List<LogEventModel> LogEventsToFollowModel(List<LogEvent> logs)
+        private List<LogEventModel> LogEventsToLogEventModel(List<LogEvent> logs)
         {
             List<LogEventModel> logList = new List<LogEventModel>();
             foreach(LogEvent log in logs)
@@ -310,17 +351,41 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return logList;
         }
 
+        private List<VehicleFlaggedEventModel> VehicleFlaggedEventsToVehicleFlaggedEventsModel(List<VehicleFlaggedEvent> events)
+        {
+            List<VehicleFlaggedEventModel> eventList = new List<VehicleFlaggedEventModel>();
+            foreach (VehicleFlaggedEvent vfe in events)
+                eventList.Add(new VehicleFlaggedEventModel(vfe, m_appSettings.ProviderId));
+            return eventList;
+        }
+
+        private List<DriverBreakRuleModel> BreakRulesToBreakRulesModel(List<DriverBreakRule> breaks)
+        {
+            List<DriverBreakRuleModel> breakRuleModels = new List<DriverBreakRuleModel>();
+            foreach (DriverBreakRule dbr in breaks)
+                breakRuleModels.Add(new DriverBreakRuleModel(dbr, m_appSettings.ProviderId));
+            return breakRuleModels;
+        }
+
+        private List<DriverWaiverModel> WaiversToWaiverModels(List<DriverWaiver> waivers)
+        {
+            List<DriverWaiverModel> waiverModels = new List<DriverWaiverModel>();
+            foreach (DriverWaiver waiver in waivers)
+                waiverModels.Add(new DriverWaiverModel(waiver, m_appSettings.ProviderId));
+            return waiverModels;
+        }
+
         [Route("drivers/{driverId}/performance_summaries")]
         [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.HR)]
-        public ActionResult<DriverPerformanceSummaryModel> DriverPerformanceSummaries(string driverId, string startTime, string stopTime)
+        public ActionResult<DriverPerformanceSummaryListModel> DriverPerformanceSummaries(string driverId, string startTime, string stopTime)
         {
 
             if (!DateTime.TryParse(startTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDateTime))
-                return BadRequest("Invalid start time");
+                return BadRequest("Invalid startTime");
             if (!DateTime.TryParse(stopTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDateTime))
-                return BadRequest("Invalid stop time");
+                return BadRequest("Invalid stopTime");
             if (!Guid.TryParse(driverId, out var guid))
-                return BadRequest("Invalid driver id");
+                return BadRequest("Invalid driverId");
 
             // make sure the driver exists
             var driverFound = m_Context.Driver.Any(c => c.Id == guid);
@@ -335,27 +400,35 @@ namespace Prototype.OpenTelematics.Api.Controllers
                  s.eventStart <= stopDateTime)
                 .ToList();
 
-            DriverPerformanceSummaryModel result = new DriverPerformanceSummaryModel();
-            result.performanceSummaries = summaries;
+            DriverPerformanceSummaryListModel result = new DriverPerformanceSummaryListModel();
+            result.performanceSummaries = DriverSummariesListToModel(summaries);
             return result;
+        }
+
+        private List<DriverPerformanceSummaryModel> DriverSummariesListToModel(List<DriverPerformanceSummary> summaries)
+        {
+            List<DriverPerformanceSummaryModel> summaryModel = new List<DriverPerformanceSummaryModel>();
+            foreach (DriverPerformanceSummary summary in summaries)
+                summaryModel.Add(new DriverPerformanceSummaryModel(summary, m_appSettings.ProviderId));
+            return summaryModel;
         }
 
 
         [Route("driver_performance_summaries/{id}")]
         [HttpGet]
         [Authorize(Roles =
-            TelematicsRoles.Admin + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
-        public ActionResult<DriverPerformanceSummary> DriverPerformanceSummary(string id)
+            TelematicsRoles.Admin + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow + "," + TelematicsRoles.HR)]
+        public ActionResult<DriverPerformanceSummaryModel> DriverPerformanceSummary(string id)
         {
             if (Guid.TryParse(id, out var guid))
             {
-                DriverPerformanceSummary result = m_Context.DriverPerformanceSummary.FirstOrDefault(c => c.Id == guid);
-                if (result != null)
-                    return result;
+                DriverPerformanceSummary data = m_Context.DriverPerformanceSummary.FirstOrDefault(c => c.Id == guid);
+                if (data != null)
+                    return new DriverPerformanceSummaryModel(data, m_appSettings.ProviderId);
                 else
-                    return NotFound("Invalid id");
+                    return NotFound("id Not Found");
             }
-            return NotFound("Invalid id");
+            return BadRequest("Invalid id");
         }
     }
 }

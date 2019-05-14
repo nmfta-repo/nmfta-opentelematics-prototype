@@ -27,13 +27,13 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [HttpGet]
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
-            + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverDispatch)]
+            + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
         public ActionResult<LocationHistory> Locations(string startTime, string stopTime, int? page, int? count)
         {
             if (!DateTime.TryParse(startTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
-                return NotFound("Invalid start time");
+                return BadRequest("Invalid startTime");
             if (!DateTime.TryParse(stopTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
-                return NotFound("Invalid stop time");
+                return BadRequest("Invalid stopTime");
             page = page ?? 1;
             count = count ?? 50;
             int totalCount = 0;
@@ -48,7 +48,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [HttpGet]
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
-            + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverDispatch)]
+            + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow + "," + TelematicsRoles.DriverDispatch)]
         public ActionResult<LocationHistory> Locations(int? page, int? count)
         {
             page = page ?? 1;
@@ -74,9 +74,9 @@ namespace Prototype.OpenTelematics.Api.Controllers
                 if (result != null)
                     return new VehicleLocation(result, m_appSettings.ProviderId);
                 else
-                    return NotFound("Invalid id");
+                    return NotFound("id Not Found");
             }
-            return NotFound("Invalid id");
+            return BadRequest("Invalid id");
         }
 
 
@@ -105,13 +105,13 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
             + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
-        public ActionResult<VehicleFlaggedEvent> FlaggedEvent(string id)
+        public ActionResult<VehicleFaultCodeModel> FlaggedEvent(string id)
         {
             if (Guid.TryParse(id, out var guid))
             {
-                VehicleFlaggedEvent result = m_Context.VehicleFlaggedEvent.FirstOrDefault(c => c.Id == guid);
+                VehicleFaultCodeEvent result = m_Context.VehicleFaultCodeEvent.FirstOrDefault(c => c.Id == guid);
                 if (result != null)
-                    return result;
+                    return new VehicleFaultCodeModel(result, m_appSettings.ProviderId);
                 else
                     return NotFound("Invalid id");
             }
@@ -144,17 +144,17 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
             + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
-        public ActionResult<VehiclePerformanceEvent> PerformanceEvent(string id)
+        public ActionResult<VehiclePerformanceEventModel> PerformanceEvent(string id)
         {
             if (Guid.TryParse(id, out var guid))
             {
-                VehiclePerformanceEvent result = m_Context.VehiclePerformanceEvent.FirstOrDefault(c => c.Id == guid);
-                if (result != null)
-                    return result;
+                VehiclePerformanceEvent data = m_Context.VehiclePerformanceEvent.FirstOrDefault(c => c.Id == guid);
+                if (data != null)
+                    return new VehiclePerformanceEventModel(data, m_appSettings.ProviderId);
                 else
-                    return NotFound("Invalid id");
+                    return NotFound("id Not Found");
             }
-            return NotFound("Invalid id");
+            return BadRequest("Invalid id");
         }
 
         [Route("fleet/performance_thresholds")]
@@ -182,17 +182,17 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Authorize(Roles =
             TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
             + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
-        public ActionResult<VehiclePerformanceThreshold> PerformanceThreshold(string id)
+        public ActionResult<VehiclePerformanceThresholdModel> PerformanceThreshold(string id)
         {
             if (Guid.TryParse(id, out var guid))
             {
-                VehiclePerformanceThreshold result = m_Context.VehiclePerformanceThreshold.FirstOrDefault(c => c.Id == guid);
-                if (result != null)
-                    return result;
+                VehiclePerformanceThreshold data = m_Context.VehiclePerformanceThreshold.FirstOrDefault(c => c.Id == guid);
+                if (data != null)
+                    return new VehiclePerformanceThresholdModel(data, m_appSettings.ProviderId);
                 else
-                    return NotFound("Invalid id");
+                    return NotFound("id Not Found");
             }
-            return NotFound("Invalid id");
+            return BadRequest("Invalid id");
         }
 
         [Route("fleet/faults")]
@@ -229,9 +229,28 @@ namespace Prototype.OpenTelematics.Api.Controllers
                 if (result != null)
                     return new VehicleFaultCodeModel(result, m_appSettings.ProviderId);
                 else
-                    return NotFound("Invalid id");
+                    return NotFound("id Not Found");
             }
-            return NotFound("Invalid id");
+            return BadRequest("Invalid id");
+        }
+
+
+        [Route("fleet/flagged_faults/{id}")]
+        [HttpGet]
+        [Authorize(Roles =
+            TelematicsRoles.Admin + "," + TelematicsRoles.VehicleQuery + "," + TelematicsRoles.VehicleFollow
+            + "," + TelematicsRoles.DriverQuery + "," + TelematicsRoles.DriverFollow)]
+        public ActionResult<VehicleFaultCodeModel> VehicleFlaggedFault(string id)
+        {
+            if (Guid.TryParse(id, out var guid))
+            {
+                VehicleFaultCodeEvent result = m_Context.VehicleFaultCodeEvent.FirstOrDefault(c => c.Id == guid);
+                if (result != null)
+                    return new VehicleFaultCodeModel(result, m_appSettings.ProviderId);
+                else
+                    return NotFound("id Not Found");
+            }
+            return BadRequest("Invalid id");
         }
 
         private LocationHistory GetPageLocationHistory(DateTime startDate, DateTime stopDate, bool isCourse, int page, int count, ref int totalCount)
@@ -301,15 +320,16 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [HttpGet]
         [Authorize(Roles = TelematicsRoles.DriverFollow + "," + TelematicsRoles.VehicleFollow
             + "," + TelematicsRoles.Admin)]
-        public ActionResult<VehicleFaultCodeEventFollow> FeedFollowVehcicleFaults(string token)
+        public ActionResult<VehicleFaultCodeEventFollow> FeedFollowVehicleFaults(string token)
         {
             DateTimeOffset fromTime;
             DateTimeOffset toTime = DateTimeOffset.Now.ToUniversalTime();
 
             if (string.IsNullOrEmpty(token))
             {
-                //set a reasonable start time
-                fromTime = new DateTimeOffset(2019, 01, 01, 0, 0, 0, 0, TimeSpan.FromHours(0));
+                //TODO: When null, should be set to 'now'
+                //for the demo, set start time = 5/1/19
+                fromTime = new DateTimeOffset(2019, 05, 01, 0, 0, 0, 0, TimeSpan.FromHours(0));
             }
             else
             {
@@ -343,15 +363,16 @@ namespace Prototype.OpenTelematics.Api.Controllers
         public ActionResult<VehicleInfoHistory> FleetVehicleInfos(string startTime, string stopTime)
         {
             if (!DateTime.TryParse(startTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime startDate))
-                return NotFound("Invalid start time");
+                return BadRequest("Invalid startTime");
             if (!DateTime.TryParse(stopTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime stopDate))
-                return NotFound("Invalid stop time");
+                return BadRequest("Invalid stopTime");
 
             LocationHistory locHistory = GetCourseLocationHistory(startDate, stopDate, true);
-            List<VehicleFlaggedEvent> flaggedEventHistory =
-                                           m_Context.VehicleFlaggedEvent.Where(
-                                                   x => x.eventStart >= startDate &&
-                                                   x.eventStart <= stopDate).ToList();
+            List<VehicleFaultCodeEvent> flaggedEventHistory =
+                                            m_Context.VehicleFaultCodeEvent.Where(
+                                                    x => x.triggerDate >= startDate &&
+                                                    x.triggerDate <= stopDate &&
+                                                    x.urgentFlag == true).ToList();
             List<VehiclePerformanceEvent> performanceEventHistory =
                                             m_Context.VehiclePerformanceEvent
                                                 .Include(VehiclePerformanceThreshold => VehiclePerformanceThreshold.thresholds)
@@ -365,11 +386,68 @@ namespace Prototype.OpenTelematics.Api.Controllers
             VehicleInfoHistory result = new VehicleInfoHistory
             {
                 coarseVehicleLocationTimeHistories = locHistory,
-                flaggedVehiclePerformanceEvents = flaggedEventHistory,
-                vehiclePerformanceEvents = performanceEventHistory,
+                flaggedVehicleFaultEvents = VehicleFaultCodeListToModelList(flaggedEventHistory),
+                vehiclePerformanceEvents = VehiclePerformanceListToModelList(performanceEventHistory),
                 vehicleFaultCodeEvents = VehicleFaultCodeListToModelList(vehicleFaultCodeEventHistory)
             };
             return result;
+        }
+        [Route("fleet/infos/feed")]
+        [HttpGet]
+        [Authorize(Roles = TelematicsRoles.Admin    
+            + "," + TelematicsRoles.DriverFollow + "," + TelematicsRoles.VehicleFollow)]
+        public ActionResult<VehicleInfoHistory> FleetVehicleInfos(string token)
+        {
+            DateTimeOffset fromTime;
+            DateTimeOffset toTime = DateTimeOffset.Now.ToUniversalTime();
+
+            if (string.IsNullOrEmpty(token))
+            {
+                //TODO: When null, should be set to 'now'
+                //for the demo, set start time = 5/1/19
+                fromTime = new DateTimeOffset(2019, 05, 01, 0, 0, 0, 0, TimeSpan.FromHours(0)).ToUniversalTime();
+            }
+            else
+            {
+                string strFromTime = m_dataProtector.Unprotect(token);
+                if (!DateTimeOffset.TryParse(strFromTime, out fromTime))
+                    return BadRequest("token parameter invalid");
+            }
+            var vfif = new VehicleFeedInfosFollow();
+            vfif.token = m_dataProtector.Protect(toTime.ToString());
+
+            LocationHistory locHistory = GetCourseLocationHistory(fromTime.DateTime, toTime.DateTime, true);
+            List<VehicleFaultCodeEvent> flaggedEventHistory =
+                                            m_Context.VehicleFaultCodeEvent.Where(
+                                                    x => x.triggerDate >= fromTime &&
+                                                    x.triggerDate <= toTime &&
+                                                    x.urgentFlag == true).ToList();
+            List<VehiclePerformanceEvent> performanceEventHistory =
+                                            m_Context.VehiclePerformanceEvent
+                                                .Include(VehiclePerformanceThreshold => VehiclePerformanceThreshold.thresholds)
+                                                .Where(
+                                                    x => x.eventStart >= fromTime &&
+                                                    x.eventStart <= toTime).ToList();
+            List<VehicleFaultCodeEvent> vehicleFaultCodeEventHistory =
+                                            m_Context.VehicleFaultCodeEvent.Where(
+                                                    x => x.triggerDate >= fromTime &&
+                                                    x.triggerDate <= toTime).ToList();
+            VehicleInfoHistory result = new VehicleInfoHistory
+            {
+                coarseVehicleLocationTimeHistories = locHistory,
+                flaggedVehicleFaultEvents = VehicleFaultCodeListToModelList(flaggedEventHistory),
+                vehiclePerformanceEvents = VehiclePerformanceListToModelList(performanceEventHistory),
+                vehicleFaultCodeEvents = VehicleFaultCodeListToModelList(vehicleFaultCodeEventHistory)
+            };
+            return result;
+        }
+
+        private List<VehiclePerformanceEventModel> VehiclePerformanceListToModelList(List<VehiclePerformanceEvent> events)
+        {
+            List<VehiclePerformanceEventModel> eventList = new List<VehiclePerformanceEventModel>();
+            foreach (VehiclePerformanceEvent item in events)
+                eventList.Add(new VehiclePerformanceEventModel(item, m_appSettings.ProviderId));
+            return eventList;
         }
 
     }
