@@ -10,20 +10,15 @@ import base64
 from opentelematicsapi.opentelematicsapi_client import OpentelematicsapiClient
 from opentelematicsapi.configuration import Configuration
 
-API_SCHEME = "http://"
-API_HOST = "{api_host}"
-API_USER_NAME = "{api_user_name}"
-API_PASSWORD = "{api_password}"
-GOOGLE_MAPS_API_KEY = "{google_maps_key}"
 
 # Swap to Use HTTPS
-Configuration.environments[Configuration.environment][Configuration.Server.DEFAULT] = API_SCHEME + "{defaultHost}"
+Configuration.environments[Configuration.environment][Configuration.Server.DEFAULT] = settings.API_SCHEME + "{defaultHost}"
 
 def getOtapiSdkClient():
-    basic_auth_user_name = API_USER_NAME
-    basic_auth_password = API_PASSWORD
+    basic_auth_user_name = settings.API_USER_NAME
+    basic_auth_password = settings.API_PASSWORD
     client = OpentelematicsapiClient(basic_auth_user_name, basic_auth_password)
-    client.config.default_host = API_HOST
+    client.config.default_host = settings.API_HOST
     return client
 
 def getTranslationTable():
@@ -82,10 +77,10 @@ def getAllEntities(end_point : str, cache_id : str):
         return entities
     httpRequest = requests.session()
     httpRequest.verify = False
-    apply(httpRequest, API_USER_NAME, API_PASSWORD)
+    apply(httpRequest, settings.API_USER_NAME, settings.API_PASSWORD)
     httpRequest.headers["content-type"] = "application/json"
     httpRequest.headers["charset"] = "utf-8"
-    response = httpRequest.get(API_SCHEME + API_HOST + end_point, headers=httpRequest.headers, verify=False)
+    response = httpRequest.get(settings.API_SCHEME + settings.API_HOST + end_point, headers=httpRequest.headers, verify=False)
     entities = jsonpickle.decode(response.content)
     cache.set(cache_id, entities)
     return entities

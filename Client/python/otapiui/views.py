@@ -2,6 +2,7 @@ import re
 import requests
 import jsons
 from datetime import date, datetime, timedelta
+from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
@@ -41,7 +42,7 @@ def fleetLatestLocation(request):
     return render(request, "otapiui/fleetLatestLocation.html",
     {
             'current_time': datetime.now(),
-            'google_maps_api_key' : GOOGLE_MAPS_API_KEY
+            'google_maps_api_key' : settings.GOOGLE_MAPS_API_KEY
     }
 )
 

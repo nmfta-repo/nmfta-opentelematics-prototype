@@ -24,7 +24,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
             m_RoleManager = roleManager;
         }
 
-        [Route("api/accountmanager/createuser")]
+        [Route("accountmanager/createuser")]
         [HttpGet]
         public ActionResult<string> CreateUser(string userName, string password, string roles)
         {
@@ -58,7 +58,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
             return "Invalid";
         }
 
-        [Route("api/accountmanager/addtorole")]
+        [Route("accountmanager/addtorole")]
         [HttpGet]
         public ActionResult<string> AddToRole(string userName, string roles)
         {

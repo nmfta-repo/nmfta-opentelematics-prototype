@@ -122,3 +122,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+API_SCHEME = "http://"
+API_HOST = "localhost:61386"
+API_USER_NAME = "otapiclient"
+API_PASSWORD = "Python@2019"
+GOOGLE_MAPS_API_KEY = "{google_maps_key}"
