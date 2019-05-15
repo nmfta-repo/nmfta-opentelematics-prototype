@@ -1,5 +1,12 @@
 {% extends "otapiui/layout.html" %}
 {% load static %}
+{% block page_script %}
+<style>
+    .jumbotron {
+        padding: 1rem 2rem;
+    }
+</style>
+{% endblock %}
 {% block title %}
 Home Page
 {% endblock %}
@@ -9,54 +16,101 @@ Home Page
 <div class="row">
     <div class="col-12">
         <div class="jumbotron">
-            <h1 class="display-4">Contributors</h1>
-            <p class="lead">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Impedit eaque et quia autem
-                aperiam optio nostrum, blanditiis quibusdam, quos culpa alias, similique minus dolorem incidunt earum
-                dolorum perspiciatis nisi. Eum.</p>
+            <p class="lead">Prototype implementation of the 0.1-rc.3 version of the Open Telematics API. This GUI
+                client, developed in python is connecting to a server C# implementation of OTAPI.</p>
+            <p class="lead">The following OTAPI endpoints are used in this demo:</p>
+            <div class="row lead">
+                <div class="col-4">
+                    <ul>
+                        <li>health/current</li>
+                        <li>fleet/locations/latest</li>
+                        <li>fleet/faults/feed</li>
+                        <li>event_logs/feed</li>
+                    </ul>
+                </div>
+                <div class="col-4">
+                    <ul>
+                        <li>export/vehiclerecords/status</li>
+                        <li>export/allrecords/status</li>
+                        <li>i18n</li>
+                    </ul>
+                </div>
+            </div>
             <hr class="my-4">
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-12">
-        <div class="container">
-            <div id="otapiSplash" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item">
-                        <img class="d-block w-50" src="{% static 'otapiui/1.nmfta.png' %}" alt="NMFTA">
-                    </div>
-                    <div class="carousel-item active">
-                        <img class="d-block w-50" src="{% static 'otapiui/2.overview.png' %}" alt="overview">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="d-block w-50" src="{% static 'otapiui/3.contributors.png' %}" alt="contributors">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="d-block w-50" src="{% static 'otapiui/4.sefl.png' %}" alt="SEFL">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="d-block w-50" src="{% static 'otapiui/5.geotab.png' %}" alt="GEOTAB">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="d-block w-50" src="{% static 'otapiui/6.samsara.png' %}" alt="Samsara">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="d-block w-50" src="{% static 'otapiui/7.security_campus.png' %}"
-                            alt="SecurityCampus">
-                    </div>
-                    <div class="carousel-item">
-                        <img class="d-block w-50" src="{% static 'otapiui/8.trimble.png' %}" alt="Trimble">
-                    </div>
+    <div class="col-6">
+        <h1 class="display-4">Contributors</h1>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><strong>Fleet Managers</strong></th>
+                        <th><strong>Telematics Providers</strong></th>
+                        <th><strong>Independents</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Bill Brown, SEFL</td>
+                        <td>Geotab</td>
+                        <td>Altaz Valani, Security Compass</td>
+                    </tr>
+                    <tr>
+                        <td>Penske Truck Leasing</td>
+                        <td>Samsara Networks, Inc.</td>
+                        <td>Stephen Raio, U.S. Army Combat Capabilities Development Command</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Omnitracs</td>
+                        <td>Andrew Smith, ISE Inc.</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Dr. Jeremy Daily, UTulsa</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-6">
+            <h1 class="display-4">&nbsp;</h1>
+        <div id="otapiSplash" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="d-block w-50" src="{% static 'otapiui/1.nmfta.png' %}" alt="NMFTA">
                 </div>
-                <a class="carousel-control-prev" href="#otapiSplash" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#otapiSplash" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
+                <div class="carousel-item">
+                    <img class="d-block w-50" src="{% static 'otapiui/2.overview.png' %}" alt="overview">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-50" src="{% static 'otapiui/4.sefl.png' %}" alt="SEFL">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-50" src="{% static 'otapiui/5.geotab.png' %}" alt="GEOTAB">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-50" src="{% static 'otapiui/6.samsara.png' %}" alt="Samsara">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-50" src="{% static 'otapiui/7.security_campus.png' %}" alt="SecurityCampus">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-50" src="{% static 'otapiui/8.trimble.png' %}" alt="Trimble">
+                </div>
             </div>
+            <a class="carousel-control-prev" href="#otapiSplash" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#otapiSplash" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
         </div>
     </div>
 </div>

@@ -132,22 +132,10 @@ namespace Prototype.OpenTelematics.Api.Security
         /// </summary>
         /// <param name="properties">Runtime Properties Parameter</param>
         /// <returns>Validation Result</returns>
-        protected override Task HandleChallengeAsync(AuthenticationProperties properties)
+        protected override async Task HandleChallengeAsync(AuthenticationProperties properties)
         {
-            if (!Request.IsHttps)
-            {
-                const string insecureProtocolMessage = "Only HTTPS access is allowed";
-                Logger.LogInformation(insecureProtocolMessage);
-                Response.StatusCode = 500;
-                var encodedResponseText = Encoding.UTF8.GetBytes(insecureProtocolMessage);
-                Response.Body.Write(encodedResponseText, 0, encodedResponseText.Length);
-            }
-            else
-            {
-               Response.StatusCode = 401;
-            }
-
-            return Task.CompletedTask;
+            Response.Headers["WWW-Authenticate"] = $"Basic realm=\"{Options.Realm}\", charset=\"UTF-8\"";
+            await base.HandleChallengeAsync(properties);
         }
     }
 }

@@ -81,6 +81,8 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
         [Route("download/{id}")]
         [HttpGet]
+        [Authorize(Roles =
+            TelematicsRoles.Admin + "," + TelematicsRoles.DriverQuery)]
         public ActionResult Download(string id)
         {
             if (!Guid.TryParse(id, out var guid))

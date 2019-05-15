@@ -205,7 +205,6 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
         /// <summary>
         /// Update Duty Status Change
-        /// <para>TODO:K Validate Incoming Data and Save to back-end</para>
         /// </summary>
         /// <param name="driverId">Driver Identifier</param>
         /// <param name="postedModel">Updated Duty Status Change</param>

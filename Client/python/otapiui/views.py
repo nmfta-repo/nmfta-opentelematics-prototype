@@ -2,6 +2,7 @@ import re
 import requests
 import jsons
 from datetime import date, datetime, timedelta
+from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_GET, require_POST
@@ -41,7 +42,7 @@ def fleetLatestLocation(request):
     return render(request, "otapiui/fleetLatestLocation.html",
     {
             'current_time': datetime.now(),
-            'google_maps_api_key' : GOOGLE_MAPS_API_KEY
+            'google_maps_api_key' : settings.GOOGLE_MAPS_API_KEY
     }
 )
 
@@ -115,7 +116,7 @@ def exportData(request):
     full_export = []
     vehicle_export = []
     today = date.today()
-    dates = [today + timedelta(days=i) for i in range(-5, 0)]
+    dates = [today + timedelta(days=-i) for i in range(1, 6)]
     for dayOf in dates:
         try:
             export = client.use_case_data_export.test_if_complete_export_ready(dayOf)
