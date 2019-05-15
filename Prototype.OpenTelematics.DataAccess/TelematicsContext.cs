@@ -21,6 +21,7 @@ namespace Prototype.OpenTelematics.DataAccess
         public virtual DbSet<DriverWaiver> DriverWaiver { get; set; }
         public virtual DbSet<DriverWorkLog> DriverWorkLog { get; set; }
         public virtual DbSet<Export> Export { get; set; }
+        public virtual DbSet<DutyStatusChange> DutyStatusChange { get; set; }
         public virtual DbSet<LogEvent> LogEvent { get; set; }
         public virtual DbSet<LogEventAnnotation> LogEventAnnotation { get; set; }
         public virtual DbSet<ServiceStatusEvent> ServiceStatusEvent { get; set; }
@@ -243,6 +244,17 @@ namespace Prototype.OpenTelematics.DataAccess
                 entity.Property(e => e.Id).HasDefaultValueSql("newid()");
 
             });
+
+            modelBuilder.Entity<DutyStatusChange>(entity =>
+            {
+                entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.latitude).HasColumnType("numeric(18, 8)");
+
+                entity.Property(e => e.longitude).HasColumnType("numeric(18, 8)");
+
+            });
+
 
             modelBuilder.Entity<VehiclePerformanceEvent>(entity =>
             {
