@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -31,10 +32,16 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Authorize]
         public ActionResult<ExportModel> AllRecords(DateTime dayOf)
         {
-            var export = m_Context.Export.FirstOrDefault(c => c.export_date == dayOf.Date && c.export_type == "Full");
+            var export = m_Context.Export.FirstOrDefault(c => c.export_date.Date == dayOf.Date && c.export_type == "Full");
 
             if (export == null)
+            {
+                ExportHelper helper = new ExportHelper(m_appSettings.SecurityConnection);
+                string fileName = "Full_Data_" + dayOf.ToString("yyyy.MM.dd") + ".json";
+                Task task = Task.Run(() => helper.ExportAllData(dayOf, m_appSettings.ExportFileLocation, fileName));
+
                 return StatusCode(202);
+            }
 
             var result = new ExportModel
             {
@@ -51,15 +58,22 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Authorize]
         public ActionResult<ExportModel> AllVehicles(DateTime dayOf)
         {
-            var export = m_Context.Export.FirstOrDefault(c => c.export_date == dayOf.Date && c.export_type == "Vehicle");
+            var export = m_Context.Export.FirstOrDefault(c => c.export_date.Date == dayOf.Date && c.export_type == "Vehicle");
 
             if (export == null)
+            {
+                ExportHelper helper = new ExportHelper(m_appSettings.SecurityConnection);
+                string fileName = "Vehicle_Data_" + dayOf.ToString("yyyy.MM.dd") + ".json";
+                Task task = Task.Run(() => helper.ExportVehicleData(dayOf, m_appSettings.ExportFileLocation, fileName));
+
                 return StatusCode(202);
+            }
 
             var result = new ExportModel
             {
                 location = m_appSettings.ApiBase + $"/download/{export.Id}"
             };
+
 
             return result;
         }

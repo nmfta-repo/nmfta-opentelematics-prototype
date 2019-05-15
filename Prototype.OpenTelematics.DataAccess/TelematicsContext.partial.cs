@@ -11,6 +11,22 @@ namespace Prototype.OpenTelematics.DataAccess
     public partial class TelematicsContext
     {
         public DbQuery<Client> Clients { get; set; }
+        public enum ExportType
+        {
+            ExportVehicles,
+            ExportStopGeographicDetails,
+            ExportPerformanceThresholds,
+            ExportVehicleLocationTimeHistory,
+            ExportVehicleFlaggedEvents,
+            ExportVehiclePerformanceEvents,
+            ExportVehicleFaultCodeEvents,
+            ExportStateOfHealth,
+            ExportDrivers,
+            ExportLogEvents,
+            ExportRegionSpecificBreakRules,
+            ExportSpecificWaivers,
+            ExportDriverPerformanceSummary                
+        }
 
         public void AddUserToClient(string clientId, string userId)
         {
@@ -29,6 +45,46 @@ namespace Prototype.OpenTelematics.DataAccess
             this.Database.ExecuteSqlCommand("Exec GetClientForUser @UserId", userIdParameter);
             var result = this.Clients.FromSql("Exec GetClientForUser @UserId", userIdParameter);
             return result.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Receives data from a stored procedure and returns a string.
+        /// It is expected that the ExportType corresponds to a stored procedure name,
+        /// and that the stored proc returns the selected data in JSON format.
+        /// This procedure will append together multiple rows, as the "FOR JSON"
+        /// command in SQL SERVER may split the data across multiple rows!
+        /// </summary>
+        /// <param name="selectedDate">The day's data we are pulling</param>
+        /// <param name="DataType">Enum ExportType - stored proc name</param>
+        /// <returns></returns>
+        public string GetJSONData(DateTime selectedDate, ExportType DataType)
+        {
+            var jsonResult = new StringBuilder();
+
+            var selectedDateParameter = new SqlParameter("@SELECT_DATE", SqlDbType.Date);
+            selectedDateParameter.Value = selectedDate.Date;
+            using (var command = Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "Exec " + DataType.ToString() + " @SELECT_DATE";
+                command.Parameters.Add(selectedDateParameter);
+                
+                Database.OpenConnection();
+                using (var reader = command.ExecuteReader())
+                {
+                    if (!reader.HasRows)
+                    {
+                        jsonResult.Append("[]");
+                    }
+                    else
+                    {
+                        while (reader.Read())
+                        {
+                            jsonResult.Append(reader.GetValue(0).ToString());
+                        }
+                    }
+                }
+            }
+            return jsonResult.ToString();
         }
 
     }

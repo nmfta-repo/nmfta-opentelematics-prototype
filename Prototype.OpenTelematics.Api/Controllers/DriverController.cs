@@ -29,7 +29,6 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
         /// <summary>
         /// Returns All Driver Information
-        /// <para>TODO:K Support Paging and Time Constraints</para>
         /// </summary>
         /// <returns></returns>
         [Route("drivers")]
@@ -100,7 +99,6 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
         /// <summary>
         /// Returns all Driver Waivers
-        /// <para>TODO:K Support Paging and Time Constraints</para>
         /// </summary>
         /// <returns>Region Specific Waivers</returns>
         [Route("region_specific_waivers")]
