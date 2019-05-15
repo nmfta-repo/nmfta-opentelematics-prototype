@@ -118,5 +118,6 @@
     <None Include="dbo\Data\dbo.SimulatedData_LogEvent.Table.Data.sql" />
     <None Include="dbo\Data\dbo.SimulatedData_LogEventAnnotation.Table.Data.sql" />
     <None Include="dbo\Data\dbo.SimulatedData_Location.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.Security.Data.sql" />
   </ItemGroup>
 </Project>

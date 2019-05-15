@@ -10,8 +10,7 @@ import base64
 from opentelematicsapi.opentelematicsapi_client import OpentelematicsapiClient
 from opentelematicsapi.configuration import Configuration
 
-
-# Swap to Use HTTPS
+# Swap to Use HTTP or HTTPS
 Configuration.environments[Configuration.environment][Configuration.Server.DEFAULT] = settings.API_SCHEME + "{defaultHost}"
 
 def getOtapiSdkClient():

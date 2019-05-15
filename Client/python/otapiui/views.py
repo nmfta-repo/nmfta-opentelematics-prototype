@@ -116,7 +116,7 @@ def exportData(request):
     full_export = []
     vehicle_export = []
     today = date.today()
-    dates = [today + timedelta(days=i) for i in range(-5, 0)]
+    dates = [today + timedelta(days=-i) for i in range(1, 6)]
     for dayOf in dates:
         try:
             export = client.use_case_data_export.test_if_complete_export_ready(dayOf)
