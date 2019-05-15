@@ -9,10 +9,16 @@ using Prototype.OpenTelematics.DataAccess;
 namespace Prototype.OpenTelematics.Api
 {
     /// <summary>
-    /// A stand-alone class that contains it's own DB context.
-    /// Created for the purpose of generating an export file
-    /// on a background thread, while the API controller can 
-    /// return to the client.
+    /// A stand-alone class that contains it's own DB context 
+    /// whose purpose is to generate an export file. The export 
+    /// functions can be run on a background thread so the API controller 
+    /// can return to the client, but this approach is a simple solution for 
+    /// demonstrating the export capabilties. In a production 
+    /// environment, the generation of exported data would probably 
+    /// either be a scheduled nightly job, or possibly the request would
+    /// be put into a queue, where a seperate process would pick it up, 
+    /// generate the file, and perform whatever task indicates the file is 
+    /// ready - which in our case is updating the Export table.    
     /// </summary>
     public class ExportHelper 
     {

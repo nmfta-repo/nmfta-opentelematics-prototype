@@ -347,3 +347,4 @@ healthchecksdb
 /Prototype.Telematics.BreadcrumbDataImporter
 /Prototype.Telematics.FaultDataImporter
 /Prototype.Telematics.DataImporter.sln
+/Client/.vscode/launch.json
