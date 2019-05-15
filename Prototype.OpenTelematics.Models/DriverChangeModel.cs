@@ -22,8 +22,5 @@ namespace Prototype.OpenTelematics.Models
 
         [JsonProperty("driverHomeTerminal")]
         public string driverHomeTerminal { get; set; }
-
-        public static DriverChangeModel FromJson(string json) => JsonConvert.DeserializeObject<DriverChangeModel>(json, Prototype.OpenTelematics.Models.Converter.Settings3);
-
     }
 }

@@ -21,7 +21,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
     public class DriverController : TelematicsBaseController
     {
 
-        public DriverController(TelematicsContext context, IOptions<AppSettings> settings, IDataProtectionProvider provider) 
+        public DriverController(TelematicsContext context, IOptions<AppSettings> settings, IDataProtectionProvider provider)
             : base(context, settings, provider)
         {
 
@@ -35,8 +35,8 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverDuty)]
         public ActionResult<List<Driver>> AllDrivers()
         {
-                var result = m_Context.Driver.ToList();
-                return result;
+            var result = m_Context.Driver.ToList();
+            return result;
         }
 
         /// <summary>
@@ -70,8 +70,8 @@ namespace Prototype.OpenTelematics.Api.Controllers
         [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverDuty)]
         public ActionResult<List<DriverBreakRule>> AllBreakRules()
         {
-                var result = m_Context.DriverBreakRule.ToList();
-                return result;
+            var result = m_Context.DriverBreakRule.ToList();
+            return result;
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
         /// <returns>Driver Break Rules and Waivers</returns>
         [Route("drivers/{driverId}/breaks_and_waivers")]
         [HttpGet]
-        [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverQuery + "," + 
+        [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverQuery + "," +
                            TelematicsRoles.DriverFollow + "," + TelematicsRoles.HR)]
         public ActionResult<BreakRulesAndWaivers> GetBreakRulesAndWaivers(string driverId, DateTime startTime, DateTime stopTime)
         {
@@ -207,15 +207,36 @@ namespace Prototype.OpenTelematics.Api.Controllers
         /// Update Duty Status Change
         /// </summary>
         /// <param name="driverId">Driver Identifier</param>
-        /// <param name="postedModel">Updated Duty Status Change</param>
+        /// <param name="model">Updated Duty Status Change</param>
         /// <returns>Patch Status</returns>
         [Route("/drivers/{driverId}/duty_status")]
         [HttpPatch]
         [Authorize(Roles = TelematicsRoles.Admin + "," + TelematicsRoles.DriverDuty)]
-        public ActionResult<string> PatchDutyStatusChange(string driverId, DutyStatusChangeModel postedModel)
+        public ActionResult<string> PatchDutyStatusChange(string driverId, DutyStatusChangeModel model)
         {
-            System.IO.File.WriteAllText(@"DutyStatusChange_REQ.json",postedModel.ToJson());
-            return string.Empty;
+            if (!Guid.TryParse(driverId, out var guid)) return BadRequest("Invalid driverId");
+            var driver = m_Context.Driver.FirstOrDefault(c => c.Id == guid);
+            if (driver == null) return NotFound("driverId not found");
+
+            var coordinates = Helper.TryParseLocation(model.location);
+            if (!string.IsNullOrWhiteSpace(model.location) && (coordinates.latitude == null || coordinates.longitude == null))
+            {
+                return BadRequest("Invalid Location");
+            }
+
+            var dutyStatusChange = new DutyStatusChange
+            {
+                Id = Guid.NewGuid(),
+                driverId = guid,
+                dateTime = model.dateTime,
+                status = model.status,
+                latitude = coordinates.latitude,
+                longitude = coordinates.longitude
+            };
+
+            m_Context.DutyStatusChange.Add(dutyStatusChange);
+            m_Context.SaveChanges();
+            return Ok();
         }
 
         [Route("/drivers/{driverId}")]
@@ -308,7 +329,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
 
         [Route("event_logs/feed")]
         [HttpGet]
-        [Authorize(Roles = TelematicsRoles.DriverFollow + "," + TelematicsRoles.DriverDispatch 
+        [Authorize(Roles = TelematicsRoles.DriverFollow + "," + TelematicsRoles.DriverDispatch
             + "," + TelematicsRoles.HR + "," + TelematicsRoles.Admin)]
         public ActionResult<LogEventFollow> FeedFollowLogEvent(string token)
         {
@@ -327,14 +348,14 @@ namespace Prototype.OpenTelematics.Api.Controllers
                 if (!DateTimeOffset.TryParse(strFromTime, out fromTime))
                     return BadRequest("token parameter invalid");
             }
-                       
+
             var dsl = new LogEventFollow();
             dsl.token = m_dataProtector.Protect(toTime.ToString());
             var logs = m_Context.LogEvent
                                        .Include(l => l.location)
                                        .Include(a => a.annotations)
                                        .Where(x => x.dateTime >= fromTime && x.dateTime <= toTime)
-                                       .OrderBy(c=>c.dateTime)
+                                       .OrderBy(c => c.dateTime)
                                        .ToList();
 
             dsl.feed = LogEventsToLogEventModel(logs);
@@ -344,7 +365,7 @@ namespace Prototype.OpenTelematics.Api.Controllers
         private List<LogEventModel> LogEventsToLogEventModel(List<LogEvent> logs)
         {
             List<LogEventModel> logList = new List<LogEventModel>();
-            foreach(LogEvent log in logs)
+            foreach (LogEvent log in logs)
                 logList.Add(new LogEventModel(log, m_appSettings.ProviderId));
             return logList;
         }
