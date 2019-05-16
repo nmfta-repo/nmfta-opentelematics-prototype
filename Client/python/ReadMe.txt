@@ -1,7 +1,7 @@
 1) Setup Python Virtual Environment => python -m venv env
 2) Install Django Packages => python -m pip install django
 3) Install Requirements => pip install -r requirements.txt
-4) Install OTAPI Python SDK => pip install ../../sdk/python/v0.1-rc.3
+4) Install OTAPI Python SDK => pip install ../../sdk/python/v0.1-rc.4
 5) Update Configuration options in app/settings.py
     API_SCHEME = http:// or https://
     API_HOST =  {location of otapi REST api}
