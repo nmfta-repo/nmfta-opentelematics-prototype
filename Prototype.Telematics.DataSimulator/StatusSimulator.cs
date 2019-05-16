@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace Prototype.Telematics.DataSimulator
 {
@@ -34,7 +36,10 @@ namespace Prototype.Telematics.DataSimulator
             m_heartbeatTimer.Elapsed += AddAStatus;
             m_heartbeatTimer.AutoReset = true;
             m_heartbeatTimer.Enabled = true;
-            while (!Program._cancelled) { }
+            while (!Program._cancelled)
+            {
+                Thread.Sleep(500);
+            }
         }
 
         public static void Stop(object sender, ConsoleCancelEventArgs e)

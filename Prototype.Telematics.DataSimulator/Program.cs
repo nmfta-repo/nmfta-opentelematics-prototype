@@ -81,6 +81,7 @@ namespace Prototype.Telematics.DataSimulator
                 backgroundTasks[i] = Task.Run(() => trip.Go(i));
             }
             backgroundTasks[NumberOfDrivers] = Task.Run(() => statusSim.Go());
+            Console.WriteLine("Press Ctrl+C to stop.");
             Task.WaitAll(backgroundTasks, token);
         }
 

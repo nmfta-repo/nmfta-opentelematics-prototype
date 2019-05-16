@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Timers;
 using Prototype.OpenTelematics.DataAccess;
-
+using Timer = System.Timers.Timer;
 
 namespace Prototype.Telematics.FaultSimulator
 {
@@ -56,7 +57,10 @@ namespace Prototype.Telematics.FaultSimulator
             heartbeatTimer.Elapsed += AddAFault;
             heartbeatTimer.AutoReset = true;
             heartbeatTimer.Enabled = true;
-            while (!Program._cancelled) { }
+            while (!Program._cancelled)
+            {
+                Thread.Sleep(500);
+            }
         }
 
         private void AddAFault(Object source, ElapsedEventArgs e)

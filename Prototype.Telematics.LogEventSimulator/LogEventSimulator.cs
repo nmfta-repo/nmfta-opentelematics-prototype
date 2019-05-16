@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace Prototype.Telematics.LogEventSimulator
 {
@@ -49,7 +51,10 @@ namespace Prototype.Telematics.LogEventSimulator
             heartbeatTimer.Elapsed += AddALogEvent;
             heartbeatTimer.AutoReset = true;
             heartbeatTimer.Enabled = true;
-            while (!Program._cancelled) { }
+            while (!Program._cancelled)
+            {
+                Thread.Sleep(500);
+            }          
         }
 
         private SimulatedData_LogEvent GetNextLogEvent()
