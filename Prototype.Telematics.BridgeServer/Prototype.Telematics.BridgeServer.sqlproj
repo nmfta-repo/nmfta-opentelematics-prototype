@@ -133,5 +133,24 @@
     <None Include="dbo\Data\dbo.SimulatedData_LogEventAnnotation.Table.Data.sql" />
     <None Include="dbo\Data\dbo.SimulatedData_Location.Table.Data.sql" />
     <None Include="dbo\Data\dbo.Security.Data.sql" />
+    <None Include="dbo\Data\dbo.DriverBreakRule.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.DriverPerformanceSummary.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.DriverWaiver.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.DriverWorkLog.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.Export.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.Location.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.LogEvent.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.LogEventAnnotation.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.Route.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.ServiceStatusEvent.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.ServiceStatusEventFactor.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.StopGeographicDetails.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.VehicleFaultCodeEvent.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.VehicleFlaggedEvent.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.VehicleLocationTimeHistory.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.VehicleMessage.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.VehiclePerformanceEvent.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.VehiclePerformanceThreshold.Table.Data.sql" />
+    <None Include="dbo\Data\dbo.VehicleStopXRef.Table.Data.sql" />
   </ItemGroup>
 </Project>
